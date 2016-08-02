@@ -56,14 +56,6 @@ public class UserTest extends DatabaseTest {
 	}
 
 
-
-	
-	
-
-	
-	
-	
-	
 	
 	private User createTestUser() throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{

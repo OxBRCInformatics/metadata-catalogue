@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.NoResultException;
+import javax.persistence.OneToMany;
 import javax.persistence.Query;
 import javax.persistence.Table;
 
@@ -72,9 +73,12 @@ public class User implements Serializable{
 	@JoinTable( name="\"User_UserGroup\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"User Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
-	
 	protected Set<UserGroup> groups;
 
+	@OneToMany(mappedBy = "createdBy")
+	protected Set<CatalogueItem> createdItems;
+
+	
 	public User()
 	{
 		groups = new HashSet<UserGroup>();
