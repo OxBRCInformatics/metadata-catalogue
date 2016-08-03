@@ -298,3 +298,77 @@ CREATE TABLE "Workflow" (
 ALTER TABLE "Workflow" OWNER TO metadatacatalogue;
 ALTER TABLE ONLY "Workflow" ADD CONSTRAINT "Workflow_pkey" PRIMARY KEY (id);
 
+-- Foreign keys for associations
+
+ALTER TABLE ONLY "User_UserGroup"
+    ADD CONSTRAINT "User_UserGroup_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+ALTER TABLE ONLY "User_UserGroup"
+    ADD CONSTRAINT "User_UserGroup_Group_FKey" FOREIGN KEY ("Group Id") REFERENCES "UserGroup"("id");
+
+ALTER TABLE ONLY "CatalogueItem"
+    ADD CONSTRAINT "CatalogueItem_User_FKey" FOREIGN KEY ("Created By") REFERENCES "User"("id");
+
+ALTER TABLE ONLY "Metadata"
+    ADD CONSTRAINT "Metadata_CatalogueItem_FKey" FOREIGN KEY ("Catalogue Item") REFERENCES "CatalogueItem"("id");
+
+ALTER TABLE ONLY "ReadableByUsers"
+    ADD CONSTRAINT "ReadableByUsers_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
+ALTER TABLE ONLY "ReadableByUsers"
+    ADD CONSTRAINT "ReadableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+
+ALTER TABLE ONLY "ReadableByGroups"
+    ADD CONSTRAINT "ReadableByGroups_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
+ALTER TABLE ONLY "ReadableByGroups"
+    ADD CONSTRAINT "ReadableByGroups_Group_FKey" FOREIGN KEY ("Group Id") REFERENCES "UserGroup"("id");
+
+ALTER TABLE ONLY "WriteableByUsers"
+    ADD CONSTRAINT "WriteableByUsers_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
+ALTER TABLE ONLY "WriteableByUsers"
+    ADD CONSTRAINT "WriteableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+
+ALTER TABLE ONLY "WriteableByGroups"
+    ADD CONSTRAINT "WriteableByGroups_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
+ALTER TABLE ONLY "WriteableByGroups"
+    ADD CONSTRAINT "WriteableByGroups_Group_FKey" FOREIGN KEY ("Group Id") REFERENCES "UserGroup"("id");
+
+ALTER TABLE ONLY "Annotation"
+    ADD CONSTRAINT "Annotation_Component_FKey" FOREIGN KEY ("Annotated Component") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "Link"
+    ADD CONSTRAINT "Link_Source_FKey" FOREIGN KEY ("Source") REFERENCES "DataModelComponent"("id");
+ALTER TABLE ONLY "Link"
+    ADD CONSTRAINT "Link_Target_FKey" FOREIGN KEY ("Target") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "ClassifiedComponents"
+    ADD CONSTRAINT "ClassifiedComponents_Classifier_FKey" FOREIGN KEY ("Classifier Id") REFERENCES "Classifier"("id");
+ALTER TABLE ONLY "ClassifiedComponents"
+    ADD CONSTRAINT "ClassifiedComponents_Component_FKey" FOREIGN KEY ("DataModelComponent Id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "DataModel_ImportsFrom"
+    ADD CONSTRAINT "DataModel_ImportsFrom_DataModel_FKey" FOREIGN KEY ("DataModel Id") REFERENCES "DataModel"("id");
+ALTER TABLE ONLY "DataModel_ImportsFrom"
+    ADD CONSTRAINT "DataModel_ImportsFrom_Imports_FKey" FOREIGN KEY ("Imported DataModel Id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "DataClass"
+    ADD CONSTRAINT "DataClass_BelongsTo_FKey" FOREIGN KEY ("Belongs To Model") REFERENCES "DataModel"("id");
+ALTER TABLE ONLY "DataClass"
+    ADD CONSTRAINT "DataClass_ParentModel_FKey" FOREIGN KEY ("Parent Model") REFERENCES "DataModel"("id");
+ALTER TABLE ONLY "DataClass"
+    ADD CONSTRAINT "DataClass_ParentClass_FKey" FOREIGN KEY ("Parent Class") REFERENCES "DataClass"("id");
+    
+ALTER TABLE ONLY "DataElement"
+    ADD CONSTRAINT "DataElement_BelongsTo_FKey" FOREIGN KEY ("Belongs To Model") REFERENCES "DataModel"("id");
+ALTER TABLE ONLY "DataElement"
+    ADD CONSTRAINT "DataElement_ParentClass_FKey" FOREIGN KEY ("Parent Class") REFERENCES "DataClass"("id");
+ALTER TABLE ONLY "DataElement"
+    ADD CONSTRAINT "DataElement_DataType_FKey" FOREIGN KEY ("DataType") REFERENCES "DataType"("id");
+
+ALTER TABLE ONLY "DataType"
+    ADD CONSTRAINT "DataType_BelongsTo_FKey" FOREIGN KEY ("Belongs To Model") REFERENCES "DataModel"("id");
+
+ALTER TABLE ONLY "EnumerationValue"
+    ADD CONSTRAINT "EnumerationValue_Type_FKey" FOREIGN KEY ("Enumeration Type") REFERENCES "EnumerationType"("id");
+    
+ALTER TABLE ONLY "ReferenceType"
+    ADD CONSTRAINT "ReferenceType_Class_FKey" FOREIGN KEY ("Referenced Class") REFERENCES "DataClass"("id");
+    
