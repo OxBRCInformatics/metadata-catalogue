@@ -372,3 +372,70 @@ ALTER TABLE ONLY "EnumerationValue"
 ALTER TABLE ONLY "ReferenceType"
     ADD CONSTRAINT "ReferenceType_Class_FKey" FOREIGN KEY ("Referenced Class") REFERENCES "DataClass"("id");
     
+    
+-- Foriegn keys for inheritance
+    
+ALTER TABLE ONLY "Sharable"
+    ADD CONSTRAINT "Sharable_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "CatalogueItem"("id");
+
+ALTER TABLE ONLY "Annotation"
+    ADD CONSTRAINT "Annotation_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "Sharable"("id");
+
+ALTER TABLE ONLY "Classifier"
+    ADD CONSTRAINT "Classifier_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "Sharable"("id");
+
+ALTER TABLE ONLY "DataModelComponent"
+    ADD CONSTRAINT "DataModelComponent_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "Sharable"("id");
+
+ALTER TABLE ONLY "Link"
+    ADD CONSTRAINT "Link_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "Sharable"("id");
+
+ALTER TABLE ONLY "DataClass"
+    ADD CONSTRAINT "DataClass_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "DataElement"
+    ADD CONSTRAINT "DataElement_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "DataType"
+    ADD CONSTRAINT "DataType_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "EnumerationValue"
+    ADD CONSTRAINT "EnumerationValue_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "Finalisable"
+    ADD CONSTRAINT "Finalisable_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModelComponent"("id");
+
+ALTER TABLE ONLY "EnumerationType"
+    ADD CONSTRAINT "EnumerationType_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataType"("id");
+
+ALTER TABLE ONLY "PrimitiveType"
+    ADD CONSTRAINT "PrimitiveType_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataType"("id");
+
+ALTER TABLE ONLY "ReferenceType"
+    ADD CONSTRAINT "ReferenceType_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataType"("id");
+
+ALTER TABLE ONLY "DataModel"
+    ADD CONSTRAINT "DataModel_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "Finalisable"("id");
+    
+ALTER TABLE ONLY "Database"
+    ADD CONSTRAINT "Database_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "DataSet"
+    ADD CONSTRAINT "DataSet_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "DataStandard"
+    ADD CONSTRAINT "DataStandard_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "Form"
+    ADD CONSTRAINT "Form_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "Message"
+    ADD CONSTRAINT "Message_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "Report"
+    ADD CONSTRAINT "Report_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+ALTER TABLE ONLY "Workflow"
+    ADD CONSTRAINT "Workflow_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
+    
+
