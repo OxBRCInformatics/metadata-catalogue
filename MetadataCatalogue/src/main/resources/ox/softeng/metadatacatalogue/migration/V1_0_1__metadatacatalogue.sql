@@ -102,7 +102,6 @@ CREATE TABLE "Classifier" (
 );
 
 CREATE TABLE "ClassifiedComponents" (
-	id UUID NOT NULL,
 	"Classifier Id" UUID NOT NULL,
 	"DataModelComponent Id" UUID NOT NULL
 );
@@ -113,3 +112,87 @@ CREATE TABLE "Finalisable" (
 	"Release Label" character varying(500)
 );
 
+CREATE TABLE "DataModel" (
+	id UUID NOT NULL,
+	"Author" character varying(500),
+	"Organization" character varying(500),
+	"Type" character varying(100)
+	
+);
+
+CREATE TABLE "DataModel_ImportsFrom" (
+	"DataModel Id" UUID NOT NULL,
+	"Imported DataModel Id" UUID NOT NULL
+);
+
+CREATE TABLE "DataClass" (
+	id UUID NOT NULL,
+	"Belongs To Model" UUID NOT NULL,
+	"Parent Model" UUID,
+	"Parent Class" UUID,
+	"Path" character varying(1000)
+);
+
+CREATE TABLE "DataElement" (
+	id UUID NOT NULL,
+	"Belongs To Model" UUID NOT NULL,
+	"DataType" UUID NOT NULL,
+	"Path" character varying(1000),
+	"Parent Class" UUID
+);
+
+CREATE TABLE "DataType" (
+	id UUID NOT NULL,
+	"Belongs To Model" UUID NOT NULL,
+	"Type" character varying(100)
+);
+
+CREATE TABLE "EnumerationType" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "EnumerationValue" (
+	id UUID NOT NULL,
+	"Key" character varying(10485760),
+	"Value" character varying(10485760),
+	"Enumeration Type" UUID NOT NULL
+);
+
+CREATE TABLE "PrimitiveType" (
+	id UUID NOT NULL,
+	"Units" character varying(100)
+);
+
+CREATE TABLE "ReferenceType" (
+	id UUID NOT NULL,
+	"Referenced Class" UUID NOT NULL
+);
+
+CREATE TABLE "Database" (
+	id UUID NOT NULL,
+	"Dialect" character varying (100)
+);
+
+CREATE TABLE "DataSet" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "DataStandard" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "Form" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "Message" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "Report" (
+	id UUID NOT NULL
+);
+
+CREATE TABLE "Workflow" (
+	id UUID NOT NULL
+);
