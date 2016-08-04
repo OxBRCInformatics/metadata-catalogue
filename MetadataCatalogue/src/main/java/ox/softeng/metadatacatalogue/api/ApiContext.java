@@ -20,15 +20,23 @@ public class ApiContext {
 
 	private EntityManagerFactory emf;
 
-	private User u;
+	private User user;
 	
-	public ApiContext(Properties props, User u)
+	public ApiContext(Properties props, String username, String password) throws Exception
 	{
 		cp = new ConnectionProvider(props);
 		dbTransactionTemplate = new DBTransactionTemplate(cp);
 		dbQueryTemplate = new DBQueryTemplate(cp);
 		emf = cp.newConnection();
-		this.u = u;
+		User u = UserApi.getByEmailAddressAndPassword(this, username, password);
+		if(u != null)
+		{
+			this.user = u;
+		}
+		else
+		{
+			System.err.println("Cannot get ApiContext: no user found with username '" + username +"' and the provided password.");
+		}
 	}
 
 	public ConnectionProvider getCp() {
@@ -47,8 +55,8 @@ public class ApiContext {
 		return emf;
 	}
 
-	public User getU() {
-		return u;
+	public User getUser() {
+		return user;
 	}
 
     public <T> T executeQuery(EMCallable<T> doInTransaction) throws Exception {

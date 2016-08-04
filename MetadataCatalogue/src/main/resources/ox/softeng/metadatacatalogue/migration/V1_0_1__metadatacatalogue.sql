@@ -18,8 +18,10 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE "User" (
-	id UUID NOT NULL,
+	id UUID NOT NULL DEFAULT uuid_generate_v1(),
 	"First Name" character varying(500),
 	"Last Name" character varying(500),
 	"Role" int,
@@ -439,3 +441,7 @@ ALTER TABLE ONLY "Workflow"
     ADD CONSTRAINT "Workflow_Inherit_FKey" FOREIGN KEY ("id") REFERENCES "DataModel"("id");
     
 
+-- Bootstrap User 
+
+INSERT INTO "User"("First Name", "Last Name", "Role", "Email Address", "Password", "Salt")
+			values('Default', 'Administrator', 2, 'admin@metadatacatalogue.com', E'\\x1e44d60f89b8116e5bde177f89c0d5a94778ae8b0a1c92f86dee0e69142f3ee0', E'\\xf3786e112268c22f')

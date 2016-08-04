@@ -17,6 +17,18 @@ public class UserTest extends DatabaseTest {
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
+	public void getBootstrapUserTest() throws Exception
+	{
+		User u = UserApi.getByEmailAddressAndPassword(apiCtx, "admin@metadatacatalogue.com", "password");
+		assertTrue(u!=null);
+		assertTrue(u.getEmailAddress().equals("admin@metadatacatalogue.com"));
+		assertTrue(u.validatePassword("password"));
+		assertFalse(u.validatePassword("notpassword"));
+	}
+	
+	
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
 	public void validatePasswordTest() throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{
 		User u = createTestUser();
@@ -62,6 +74,7 @@ public class UserTest extends DatabaseTest {
 		User u = null;
 		try {
 			u = UserApi.createUser(apiCtx, "John", "Smith", "john.smith@test.com", "password", User.UserRole.User);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail();

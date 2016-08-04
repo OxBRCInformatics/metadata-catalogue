@@ -1,9 +1,13 @@
 package ox.softeng.metadatacatalogue.test.domain.core;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.api.UserApi;
+import ox.softeng.metadatacatalogue.domain.core.User;
+
 
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
-import org.junit.BeforeClass;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -19,11 +23,13 @@ public abstract class DatabaseTest {
 
 	static ApiContext apiCtx;
 	
-	@BeforeClass
-	public static void BeforeClass()
+	@Before
+	public void Before() throws Exception
 	{
-		apiCtx = new ApiContext(null, null);
+		// Get the Bootstrap user
+		apiCtx = new ApiContext(null, "admin@metadatacatalogue.com", "password");
 	}
 
+	
 	
 }
