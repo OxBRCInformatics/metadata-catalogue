@@ -1,5 +1,7 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +30,19 @@ public class DataModelComponent extends Sharable {
 	@OneToMany (mappedBy = "target")
 	protected List<Link> targetForLinks;
 
+	public DataModelComponent()
+	{
+		
+	}
+	
+	public DataModelComponent(String label, String description, User createdBy)
+	{
+		super(label, description, createdBy);
+		classifiers = new HashSet<Classifier>();
+		annotations = new ArrayList<Annotation>();
+		sourceForLinks = new ArrayList<Link>();
+		targetForLinks = new ArrayList<Link>();
+	}
 	
 
 }

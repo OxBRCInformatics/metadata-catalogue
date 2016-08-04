@@ -1,6 +1,8 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -48,5 +50,24 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
 	protected Set<UserGroup> writeableByGroups;
 
-
+	public Sharable()
+	{
+		
+	}
+	
+	public Sharable(String label, String description, User createdBy)
+	{
+		super(label, description, createdBy);
+		readableByEveryone = false;
+		writeableByEveryone = false;
+		readableByUsers = new HashSet<User>();
+		readableByUsers.add(createdBy);
+		writeableByUsers = new HashSet<User>();
+		writeableByUsers.add(createdBy);
+		readableByGroups = new HashSet<UserGroup>();
+		writeableByGroups = new HashSet<UserGroup>();
+	}
+	
+	
+	
 }

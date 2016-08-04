@@ -2,6 +2,7 @@ package ox.softeng.metadatacatalogue.domain.core;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,5 +61,59 @@ public abstract class CatalogueItem implements Serializable {
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;
 
+	public CatalogueItem()
+	{
+		
+	}
+	
+	public CatalogueItem(String label, String description, User createdBy)
+	{
+		this.label = label;
+		this.description = description;
+		this.dateCreated = OffsetDateTime.now();
+		this.lastUpdated = OffsetDateTime.now();
+		this.metadata = new ArrayList<Metadata>();
+		this.createdBy = createdBy;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public String getDtype() {
+		return dtype;
+	}
+
+	public OffsetDateTime getDateCreated() {
+		return dateCreated;
+	}
+
+	public OffsetDateTime getLastUpdated() {
+		return lastUpdated;
+	}
+
+	public List<Metadata> getMetadata() {
+		return metadata;
+	}
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
 	
 }

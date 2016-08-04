@@ -1,5 +1,7 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -52,4 +54,69 @@ public abstract class DataModel extends Finalisable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
 	private Set<DataType> ownedDataTypes;
 
+	public DataModel()
+	{
+		
+	}
+	
+	public DataModel(String label, String description, User createdBy, String author, String organization, String type)
+	{
+		super(label, description, createdBy);
+		this.author = author;
+		this.organization = organization;
+		this.type = type;
+		importsFrom = new HashSet<DataModel>();
+		importedBy = new HashSet<DataModel>();
+
+		childDataClasses = new ArrayList<DataClass>();
+		ownedDataClasses = new HashSet<DataClass>();
+		ownedDataElements = new HashSet<DataElement>();
+		ownedDataTypes = new HashSet<DataType>();
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public Set<DataModel> getImportsFrom() {
+		return importsFrom;
+	}
+
+	public Set<DataModel> getImportedBy() {
+		return importedBy;
+	}
+
+	public List<DataClass> getChildDataClasses() {
+		return childDataClasses;
+	}
+
+	public Set<DataClass> getOwnedDataClasses() {
+		return ownedDataClasses;
+	}
+
+	public Set<DataElement> getOwnedDataElements() {
+		return ownedDataElements;
+	}
+
+	public Set<DataType> getOwnedDataTypes() {
+		return ownedDataTypes;
+	}
+	
+	
 }

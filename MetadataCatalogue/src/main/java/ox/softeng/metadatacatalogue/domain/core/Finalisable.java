@@ -17,4 +17,17 @@ public class Finalisable extends DataModelComponent {
 	@Column(name="\"Release Label\"")
 	protected String releaseLabel;
 
+	public Finalisable()
+	{
+		
+	}
+	
+	public Finalisable(String label, String description, User createdBy)
+	{
+		super(label, description, createdBy);
+		finalised = false;
+	}
+
+	
+	
 }

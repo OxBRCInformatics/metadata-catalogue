@@ -8,4 +8,15 @@ import javax.persistence.Table;
 public class DataSet extends DataModel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public DataSet()
+	{
+		
+	}
+	
+	public DataSet(String label, String description, User createdBy, String author, String organization)
+	{
+		super(label, description, createdBy, author, organization, "DataSet");
+	}
+
 }
