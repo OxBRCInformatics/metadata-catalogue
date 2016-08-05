@@ -51,10 +51,6 @@ public class UserGroup implements Serializable{
 		return groupMembers;
 	}
 
-	public void setGroupMembers(Set<User> groupMembers) {
-		this.groupMembers = groupMembers;
-	}
-
 	public boolean addGroupMember(User e) {
 		return groupMembers.add(e);
 	}

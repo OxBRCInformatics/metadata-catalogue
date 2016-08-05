@@ -1,5 +1,6 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -9,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataClass")
@@ -40,4 +43,80 @@ public class DataClass extends DataModelComponent {
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy="referenceClass")
 	private List<ReferenceType> targetOfReferenceType;
+
+	public DataClass()
+	{
+		
+	}
+	
+	public DataClass(String label, String description, User createdBy, DataModel parentModel)
+	{
+		super(label, description, createdBy);
+		belongsToModel = parentModel;
+		this.parentDataModel = parentModel;
+		childDataClasses = new ArrayList<DataClass>();
+		childDataElements = new ArrayList<DataElement>();
+		targetOfReferenceType = new ArrayList<ReferenceType>();
+	}
+
+	public DataClass(String label, String description, User createdBy, DataClass parentClass)
+	{
+		super(label, description, createdBy);
+		this.parentDataClass = parentClass;
+		belongsToModel = parentClass.belongsToModel;
+		childDataClasses = new ArrayList<DataClass>();
+		childDataElements = new ArrayList<DataElement>();
+		targetOfReferenceType = new ArrayList<ReferenceType>();
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public DataModel getBelongsToModel() {
+		return belongsToModel;
+	}
+
+	public DataModel getParentDataModel() {
+		return parentDataModel;
+	}
+
+	public DataClass getParentDataClass() {
+		return parentDataClass;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public List<DataClass> getChildDataClasses() {
+		return childDataClasses;
+	}
+
+	public List<DataElement> getChildDataElements() {
+		return childDataElements;
+	}
+
+	public List<ReferenceType> getTargetOfReferenceType() {
+		return targetOfReferenceType;
+	}
+	
+	@PreUpdate
+	@PrePersist
+	public void setPath() throws Exception 
+	{
+		if(parentDataModel != null)
+		{
+			path = "" + parentDataModel.getId();
+		}
+		else if(parentDataClass != null)
+		{
+			path = parentDataClass.getPath() + "/" + parentDataClass.getId();
+		}
+		else
+		{
+			throw new Exception("No parent for this data class: " + this.label);
+		}
+	}
+
 }

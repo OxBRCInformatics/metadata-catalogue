@@ -38,5 +38,41 @@ public class Metadata implements Serializable{
 	@Column(length=10485760, name="\"Value\"")
 	protected String value;
 
+	public Metadata()
+	{
+		
+	}
+	
+	public Metadata(CatalogueItem owner, String key, String value)
+	{
+		belongsToCatalogueItem = owner;
+		this.key = key;
+		this.value = value;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public CatalogueItem getBelongsToCatalogueItem() {
+		return belongsToCatalogueItem;
+	}
+	
 	
 }

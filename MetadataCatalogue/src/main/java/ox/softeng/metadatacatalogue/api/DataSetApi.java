@@ -5,9 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import ox.softeng.metadatacatalogue.db.EMCallable;
+import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
+import ox.softeng.metadatacatalogue.domain.core.Metadata;
 
-public class DataSetApi extends CatalogueApi {
+public class DataSetApi extends CatalogueItemApi {
 
 	
 	public static DataSet createDataSet(ApiContext apiCtx, String label, String description, String author, String organization ) throws Exception

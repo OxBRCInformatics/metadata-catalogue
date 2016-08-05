@@ -67,7 +67,6 @@ public class UserTest extends DatabaseTest {
 		assertTrue(matchesNoUser("john.smith@test.comf"));
 	}
 
-
 	
 	private User createTestUser() throws NoSuchAlgorithmException, UnsupportedEncodingException
 	{

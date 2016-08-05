@@ -22,4 +22,14 @@ public class Classifier extends Sharable {
 			inverseJoinColumns = { @JoinColumn (name="\"DataModelComponent Id\"") })
 	protected List<DataModelComponent> classifiedComponents;
 
+	public List<DataModelComponent> getClassifiedComponents() {
+		return classifiedComponents;
+	}
+	
+	public void classifyComponent(DataModelComponent dmc)
+	{
+		classifiedComponents.add(dmc);
+		dmc.classifiers.add(this);
+	}
+
 }

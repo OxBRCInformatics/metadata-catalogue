@@ -12,4 +12,14 @@ public class Database extends DataModel {
 
 	@Column(name="\"Dialect\"")
 	private String dialect;
+
+	public String getDialect() {
+		return dialect;
+	}
+
+	public void setDialect(String dialect) {
+		this.dialect = dialect;
+	}
+	
+	
 }

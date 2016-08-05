@@ -166,11 +166,6 @@ public class User implements Serializable{
 	public Set<UserGroup> getGroups() {
 		return groups;
 	}
-
-
-	public void setGroups(Set<UserGroup> groups) {
-		this.groups = groups;
-	}
 	
 	public void addGroup(UserGroup group)
 	{

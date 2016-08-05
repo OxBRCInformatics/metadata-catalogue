@@ -16,5 +16,9 @@ public class Annotation extends Sharable {
 	@JoinColumn(name="\"Annotated Component\"", nullable=false)
 	protected DataModelComponent annotatedComponent;
 
+	public DataModelComponent getAnnotatedComponent() {
+		return annotatedComponent;
+	}
+
 	
 }

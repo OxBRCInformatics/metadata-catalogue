@@ -19,6 +19,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -54,7 +56,7 @@ public abstract class CatalogueItem implements Serializable {
 	@Column(name="\"Date/Time Last Updated\"")
 	protected OffsetDateTime lastUpdated;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
 	protected List<Metadata> metadata;
 		
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -63,7 +65,7 @@ public abstract class CatalogueItem implements Serializable {
 
 	public CatalogueItem()
 	{
-		
+		//this.metadata = new ArrayList<Metadata>();
 	}
 	
 	public CatalogueItem(String label, String description, User createdBy)
@@ -115,5 +117,19 @@ public abstract class CatalogueItem implements Serializable {
 	public User getCreatedBy() {
 		return createdBy;
 	}
+	
+	@PrePersist
+	@PreUpdate
+	protected void onUpdate() {
+		lastUpdated = OffsetDateTime.now();
+	}
+	
+	public Metadata addMetadata(String key, String value)
+	{
+		Metadata md = new Metadata(this, key, value);
+		metadata.add(md);
+		return md;
+	}
+
 	
 }
