@@ -63,6 +63,7 @@ public class ApplicationContext implements ServletContextListener
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			props = new Properties();
 		}
 		event.getServletContext().setAttribute("entityManagerProps", props);
@@ -90,6 +91,7 @@ public class ApplicationContext implements ServletContextListener
 		 logger.info("Migrating database...");
 	     
 	     Flyway flyway = new Flyway();
+	     System.err.println("Connection URL: " + props.getProperty("hibernate.connection.url"));
 	     flyway.setDataSource(props.getProperty("hibernate.connection.url"), props.getProperty("hibernate.connection.username"), props.getProperty("hibernate.connection.password"));
 	     //flyway.setBaselineVersionAsString("1_3_1");
 	     flyway.setLocations("ox.softeng.metadatacatalogue");

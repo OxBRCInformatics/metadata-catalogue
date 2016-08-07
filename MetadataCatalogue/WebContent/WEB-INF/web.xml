@@ -7,8 +7,13 @@
 	<listener>
 		<listener-class>ox.softeng.metadatacatalogue.restapi.ApplicationContext</listener-class>
 	</listener>
-	    <servlet>
-        <servlet-name>ox.softeng.modcat.restapi.ApplicationConfig</servlet-name>
-    </servlet>
+	<servlet>
+		<servlet-name>ox.softeng.modcat.restapi.ApplicationConfig</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.test.api.TestApiApplication</param-value>
+		</init-param>
+	</servlet>
 
 </web-app>
