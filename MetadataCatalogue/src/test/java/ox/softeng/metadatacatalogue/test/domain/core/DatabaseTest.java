@@ -1,12 +1,10 @@
 package ox.softeng.metadatacatalogue.test.domain.core;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
-import ox.softeng.metadatacatalogue.api.UserApi;
-import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 
 
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,8 +24,9 @@ public abstract class DatabaseTest {
 	@Before
 	public void Before() throws Exception
 	{
+		ConnectionProvider cp = new ConnectionProvider(null);
 		// Get the Bootstrap user
-		apiCtx = new ApiContext(null, "admin@metadatacatalogue.com", "password");
+		apiCtx = new ApiContext(cp, cp.newConnection(), "admin@metadatacatalogue.com", "password");
 	}
 
 	

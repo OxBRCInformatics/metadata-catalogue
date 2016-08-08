@@ -15,6 +15,7 @@ import org.jose4j.lang.ByteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 
 public class ApplicationContext implements ServletContextListener
@@ -24,13 +25,11 @@ public class ApplicationContext implements ServletContextListener
 
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {
-		System.out.println("Destroying context...");
-		EntityManagerFactory entityManagerFactory = (EntityManagerFactory) event.getServletContext().getAttribute("entityManagerFactory");
-		if(entityManagerFactory != null && entityManagerFactory.isOpen())
-		{
-			entityManagerFactory.close();
-		}
-		event.getServletContext().removeAttribute("entityManagerFactory");
+		logger.info("Destroying context...");
+		ApiContext apiCtx = (ApiContext) event.getServletContext().getAttribute("masterApiContext");
+		apiCtx.close();
+		event.getServletContext().removeAttribute("apiContext");
+		
 	}
 
 
@@ -47,8 +46,6 @@ public class ApplicationContext implements ServletContextListener
 		generateTokenKey(event);
 
 		initialiseDatabaseConnection(event, props);
-		
-
 
 	}
 	
@@ -72,13 +69,13 @@ public class ApplicationContext implements ServletContextListener
 
 	private void initialiseDatabaseConnection(ServletContextEvent event, Properties props)
 	{
-		System.out.println("Intialising database connection...");
+		logger.info("Intialising database connection...");
 		try{
-			ConnectionProvider cp = new ConnectionProvider(props);
-			EntityManagerFactory emf = cp.newConnection();
-			event.getServletContext().setAttribute("entityManagerFactory", emf);
+			ApiContext apiCtx = ApiContext.getMasterApiContext(props);
+			event.getServletContext().setAttribute("masterApiContext", apiCtx);
 		}
 		catch(Exception e){
+			logger.error("Unable to connect to system database!");
 			e.printStackTrace();
 			throw new javax.ws.rs.NotAuthorizedException("Unable to connect to system database", Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 		}
@@ -91,7 +88,6 @@ public class ApplicationContext implements ServletContextListener
 		 logger.info("Migrating database...");
 	     
 	     Flyway flyway = new Flyway();
-	     System.err.println("Connection URL: " + props.getProperty("hibernate.connection.url"));
 	     flyway.setDataSource(props.getProperty("hibernate.connection.url"), props.getProperty("hibernate.connection.username"), props.getProperty("hibernate.connection.password"));
 	     //flyway.setBaselineVersionAsString("1_3_1");
 	     flyway.setLocations("ox.softeng.metadatacatalogue");
@@ -102,7 +98,7 @@ public class ApplicationContext implements ServletContextListener
 	
 	private void generateTokenKey(ServletContextEvent event)
 	{
-		System.out.println("Generating new token key...");
+		logger.info("Generating new token key...");
 		Key key = new AesKey(ByteUtil.randomBytes(16));
 		event.getServletContext().setAttribute("tokenKey", key);
 	}

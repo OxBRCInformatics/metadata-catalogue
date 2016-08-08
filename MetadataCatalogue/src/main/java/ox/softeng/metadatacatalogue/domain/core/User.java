@@ -5,7 +5,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -180,6 +182,16 @@ public class User implements Serializable{
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+	
+	public static String[] getUserRoles()
+	{
+		List<String> ret = new ArrayList<String>();
+		for(UserRole ur : User.UserRole.values())
+		{
+			ret.add(ur.toString());
+		}
+		return ret.toArray(new String[User.UserRole.values().length]);
 	}
 
 }

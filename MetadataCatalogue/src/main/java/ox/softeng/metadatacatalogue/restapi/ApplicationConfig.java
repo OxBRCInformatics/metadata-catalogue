@@ -10,6 +10,7 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
 //import io.swagger.jaxrs.listing.ApiListingResource;
@@ -17,7 +18,7 @@ import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
 
 @ApplicationPath("api")
-@DeclareRoles({"Admin","User", "Unconfirmed"})
+@DeclareRoles({"Administrator","Editor", "Unregistered"})
 public class ApplicationConfig extends Application {
 
     @Override
@@ -28,8 +29,8 @@ public class ApplicationConfig extends Application {
 
         resources.add(RolesAllowedDynamicFeature.class);
         resources.add(TestService.class);
-        /*        resources.add(AuthenticationService.class);
-        
+        resources.add(AuthenticationService.class);
+                /*
         resources.add(ClassifierService.class);
         resources.add(DataClassService.class);
         resources.add(DataElementService.class);
