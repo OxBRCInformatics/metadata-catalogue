@@ -72,7 +72,7 @@ public class UserTest extends DatabaseTest {
 	{
 		User u = null;
 		try {
-			u = UserApi.createUser(apiCtx, "John", "Smith", "john.smith@test.com", "password", User.UserRole.User);
+			u = UserApi.createUser(apiCtx, "John", "Smith", "john.smith@test.com", "password", User.UserRole.UNREGISTERED);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class UserTest extends DatabaseTest {
         assertTrue(u1.getLastName().equals("Smith"));
         u1.getEmailAddress().equals("john.smith@test.com");
         assertTrue(u1.validatePassword("password"));
-        assertTrue(u1.getUserRole() == User.UserRole.User);
+        assertTrue(u1.getUserRole() == User.UserRole.UNREGISTERED);
         return true;
 	}
 	

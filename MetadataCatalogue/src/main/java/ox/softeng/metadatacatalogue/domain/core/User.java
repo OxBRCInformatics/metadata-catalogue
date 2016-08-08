@@ -53,7 +53,7 @@ public class User implements Serializable{
 
 	
 	public enum UserRole { 
-	    User, Editor, Administrator; 
+	    UNREGISTERED, EDITOR, ADMINISTRATOR; 
 	} 
 	@Column(name="\"Role\"")
 	@Enumerated(EnumType.ORDINAL)
