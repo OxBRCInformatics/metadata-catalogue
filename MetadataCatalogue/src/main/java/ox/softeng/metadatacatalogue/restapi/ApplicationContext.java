@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.security.Key;
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.ws.rs.core.Response;
@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
-import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 
 public class ApplicationContext implements ServletContextListener
 {
@@ -28,7 +27,7 @@ public class ApplicationContext implements ServletContextListener
 		logger.info("Destroying context...");
 		ApiContext apiCtx = (ApiContext) event.getServletContext().getAttribute("masterApiContext");
 		apiCtx.close();
-		event.getServletContext().removeAttribute("apiContext");
+		event.getServletContext().removeAttribute("masterApiContext");
 		
 	}
 
@@ -45,7 +44,7 @@ public class ApplicationContext implements ServletContextListener
 		// Generate a new token key
 		generateTokenKey(event);
 
-		initialiseDatabaseConnection(event, props);
+		initialiseDatabaseConnection(event.getServletContext(), props);
 
 	}
 	
@@ -67,12 +66,12 @@ public class ApplicationContext implements ServletContextListener
 		return props;
 	}
 
-	private void initialiseDatabaseConnection(ServletContextEvent event, Properties props)
+	public void initialiseDatabaseConnection(ServletContext context, Properties props)
 	{
 		logger.info("Intialising database connection...");
 		try{
 			ApiContext apiCtx = ApiContext.getMasterApiContext(props);
-			event.getServletContext().setAttribute("masterApiContext", apiCtx);
+			context.setAttribute("masterApiContext", apiCtx);
 		}
 		catch(Exception e){
 			logger.error("Unable to connect to system database!");

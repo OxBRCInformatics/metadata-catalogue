@@ -1,11 +1,13 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+//import io.swagger.annotations.ApiOperation;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 import ox.softeng.metadatacatalogue.restapi.BasicCatalogueService;
@@ -29,4 +31,28 @@ public class TestService  extends BasicCatalogueService{
 		return Response.status(200).entity(output).build();
  
 	}
+	
+	@Path("/testSecured")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Secured(allowUnAuthenticated= false)
+	public Response testSecured() {
+ 
+		String output = "Hello, world!";
+		return Response.status(200).entity(output).build();
+ 
+	}
+
+	@Path("/testRoleSecured")
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	@Secured(allowUnAuthenticated= false)
+	@RolesAllowed({"User"})
+	public Response testRoleSecured() {
+ 
+		String output = "Hello, world!";
+ 		return Response.status(200).entity(output).build();
+ 
+	}
+
 }

@@ -30,7 +30,12 @@ public class ApplicationConfig extends Application {
         resources.add(RolesAllowedDynamicFeature.class);
         resources.add(TestService.class);
         resources.add(AuthenticationService.class);
-                /*
+        // The filter that provides user authentication
+        resources.add(AuthenticationFilter.class);
+        // The filter that ensures a connection to the database
+        resources.add(DBConnectionFilter.class);
+
+        /*
         resources.add(ClassifierService.class);
         resources.add(DataClassService.class);
         resources.add(DataElementService.class);
@@ -42,11 +47,7 @@ public class ApplicationConfig extends Application {
         
         resources.add(HibernateMapperProvider.class);
         
-        // The filter that provides user authentication
-        resources.add(AuthenticationFilter.class);
 
-        // The filter that ensures a connection to the database
-        resources.add(DBConnectionFilter.class);
 
         // The filter that does basic profiling
         resources.add(ProfilingFilter.class);

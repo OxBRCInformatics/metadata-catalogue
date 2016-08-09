@@ -18,22 +18,8 @@ import org.junit.Test;
  *  This is an integration test.  It relies on the API Service running in a container somewhere
  */
 
-public class TestServiceIT {
+public class TestServiceIT extends APITest {
 
-	public static Client client;
-	
-	public static String endpoint = "http://localhost:8082/api";  
-	
-	@BeforeClass
-	public static void Before() {
-		client = ClientBuilder.newClient();
-	}
-	
-	@AfterClass
-	public static void After() {
-		client.close();
-	}
-	
 	@Test
 	public void canCallTestService() throws Exception {
 		WebTarget target = client.target(endpoint);
