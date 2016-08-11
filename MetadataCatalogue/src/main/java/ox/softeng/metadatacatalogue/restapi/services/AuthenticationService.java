@@ -84,8 +84,6 @@ public class AuthenticationService{
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public boolean logout(@Context HttpServletRequest request)
 	{
-		System.err.println("Invalidating session...");
-		System.out.println("logout session id: " + request.getSession().getId());
 		request.getSession().setAttribute("apiContext", null);
 		request.getSession().invalidate();
 		return true;

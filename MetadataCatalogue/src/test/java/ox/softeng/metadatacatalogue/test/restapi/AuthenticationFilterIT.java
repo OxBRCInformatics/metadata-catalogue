@@ -23,8 +23,6 @@ public class AuthenticationFilterIT extends APITest{
 
 	public static Client client;
 
-/*
-
 	@Test
 	public void authenticationFilterNoToken() throws Exception {
 		
@@ -86,7 +84,7 @@ public class AuthenticationFilterIT extends APITest{
 		assertNotNull(testResult);
 		assertTrue("Hello, world!".equals(testResult));
 
-	}*/
+	}
 
 	@Test
 	public void authenticationFilterSucceedLogout() throws Exception {
@@ -112,7 +110,7 @@ public class AuthenticationFilterIT extends APITest{
 		WebTarget resource2 = target.path("/testSecured");
 		Invocation.Builder invocationBuilder2 = resource2.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", sessionCookie);
 		Response response2 = invocationBuilder2.get();
-		System.err.println("response status: " + response2.getStatus());
+		//System.err.println("response status: " + response2.getStatus());
 		assertTrue(401 == response2.getStatus());
 
 		

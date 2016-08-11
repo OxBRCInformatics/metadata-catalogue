@@ -11,7 +11,6 @@ import javax.ws.rs.ext.Provider;
 import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -33,28 +32,21 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 
-		System.err.println("valid: " + webRequest.isRequestedSessionIdValid());
 		ApiContext apiContext = (ApiContext) webRequest.getSession().getAttribute("apiContext");
-		System.out.println("request session id: " + webRequest.getSession().getId());
 		if(apiContext == null)
 		{
-			System.err.println("Null API Context");
 			if (!allowUnAuthenticated())
 			{
-				System.err.println("Aborting!");
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("This user is not able to access this resource").build());
 			}
 			else
 			{
-				System.err.println("Setting empty security context...");
 				requestContext.setSecurityContext(null);
 				//requestContext.setSecurityContext((ApiContext)webRequest.getServletContext().getAttribute("masterApiContext"));
 			}
 		}
 		else
 		{
-			System.err.println("Setting apiContext");
-			System.err.println("emailAddress of Principal: " + apiContext.getUser().getEmailAddress());
 			requestContext.setSecurityContext(apiContext);
 		}
 	}
