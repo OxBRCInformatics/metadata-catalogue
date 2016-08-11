@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataElement")
@@ -29,5 +31,37 @@ public class DataElement extends DataModelComponent {
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
 
+	protected DataElement()
+	{
+		
+	}
+	
+	
+	public DataElement(String label, String description, User createdBy, DataClass parentClass, DataType dt)
+	{
+		super(label, description, createdBy);
+		this.parentDataClass = parentClass;
+		belongsToModel = parentClass.belongsToModel;
+		this.dataType = dt;
+		//dt.forDataElements.add(this);
+		
+	}
+
+	
+	@PreUpdate
+	@PrePersist
+	public void setPath() throws Exception 
+	{
+		if(parentDataClass != null)
+		{
+			path = parentDataClass.getPath() + "/" + parentDataClass.getId();
+		}
+		else
+		{
+			throw new Exception("No parent for this data class: " + this.label);
+		}
+	}
+
+	
 	
 }

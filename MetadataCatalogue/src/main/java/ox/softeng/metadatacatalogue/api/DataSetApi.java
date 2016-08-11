@@ -3,13 +3,10 @@ package ox.softeng.metadatacatalogue.api;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-
 import ox.softeng.metadatacatalogue.db.EMCallable;
-import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
-import ox.softeng.metadatacatalogue.domain.core.Metadata;
 
-public class DataSetApi extends CatalogueItemApi {
+public class DataSetApi extends DataModelApi {
 
 	
 	public static DataSet createDataSet(ApiContext apiCtx, String label, String description, String author, String organization ) throws Exception
@@ -39,9 +36,10 @@ public class DataSetApi extends CatalogueItemApi {
 				 List<DataSet> dss = em.createQuery("select d from ox.softeng.metadatacatalogue.domain.core.DataSet d", DataSet.class).getResultList();
 				 return dss;
 			 }
-		});
-				
+		});	
 	}
+	
+	
 	
 	
 }

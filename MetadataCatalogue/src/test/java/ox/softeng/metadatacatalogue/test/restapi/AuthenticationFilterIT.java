@@ -8,16 +8,14 @@ import javax.ws.rs.client.Client;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 
 import org.junit.Test;
 
-import ox.softeng.metadatacatalogue.restapi.AuthenticationToken;
-
-
+import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
 
 public class AuthenticationFilterIT extends APITest{
 
@@ -25,7 +23,7 @@ public class AuthenticationFilterIT extends APITest{
 
 	public static Client client;
 
-
+/*
 
 	@Test
 	public void authenticationFilterNoToken() throws Exception {
@@ -42,7 +40,7 @@ public class AuthenticationFilterIT extends APITest{
 	public void authenticationFilterMadeUpToken() throws Exception {
 		
 		WebTarget resource = target.path("/testSecured");
-		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, "Bearer " + "123456");
+		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", "123456");
 		Response response = invocationBuilder.get();
 		//System.out.println("response status: " + response.getStatus());
 		assertTrue(401 == response.getStatus());
@@ -53,35 +51,71 @@ public class AuthenticationFilterIT extends APITest{
 	public void authenticationFilterManiuplateToken() throws Exception {
 		Response response = doLogin("admin@metadatacatalogue.com", "password");
 		assertTrue(200 == response.getStatus());
-		AuthenticationToken tokenObject = response.readEntity(AuthenticationToken.class);
-		String token = tokenObject.getToken();
+		User tokenObject = response.readEntity(User.class);
+		//String token = tokenObject.getToken();
+		String emailAddress = tokenObject.getEmailAddress();
+		assertTrue(emailAddress.equalsIgnoreCase("admin@metadatacatalogue.com"));
+		String sessionId = getSessionCookie(response);
+		sessionId += "-";
 		//System.out.println("token received: " + token);
 		
 		WebTarget resource = target.path("/testSecured");
-		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, "Bearer " + token + "1");
+		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", sessionId);
 		Response response2 = invocationBuilder.get();
 		//System.out.println("response status: " + response2.getStatus());
 		assertTrue(401 == response2.getStatus());
 
 	}
-
 	
 	@Test
 	public void authenticationFilterSucceed() throws Exception {
 		Response response = doLogin("admin@metadatacatalogue.com", "password");
 		assertTrue(200 == response.getStatus());
-		AuthenticationToken tokenObject = response.readEntity(AuthenticationToken.class);
-		String token = tokenObject.getToken();
+		UserDetails u = response.readEntity(UserDetails.class);
+		assertTrue(u.getEmailAddress().equals("admin@metadatacatalogue.com"));
+		String sessionId = getSessionCookie(response);
+		//String token = tokenObject.getToken();
 		//System.out.println("token received: " + token);
 		
 		WebTarget resource = target.path("/testSecured");
-		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).header(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", sessionId);
 		response = invocationBuilder.get();
-		//System.out.println("response status: " + response.getStatus());
+		System.out.println("response status: " + response.getStatus());
 		assertTrue(200 == response.getStatus());
 		String testResult = response.readEntity(String.class);
 		assertNotNull(testResult);
 		assertTrue("Hello, world!".equals(testResult));
+
+	}*/
+
+	@Test
+	public void authenticationFilterSucceedLogout() throws Exception {
+		Response response = doLogin("admin@metadatacatalogue.com", "password");
+		assertTrue(200 == response.getStatus());
+		UserDetails u = response.readEntity(UserDetails.class);
+		assertTrue(u.getEmailAddress().equals("admin@metadatacatalogue.com"));
+		String sessionCookie = getSessionCookie(response);
+		//String token = tokenObject.getToken();
+		//System.out.println("token received: " + token);
+		
+		WebTarget resource = target.path("/testSecured");
+		Invocation.Builder invocationBuilder = resource.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", sessionCookie);
+		response = invocationBuilder.get();
+		System.out.println("response status: " + response.getStatus());
+		assertTrue(200 == response.getStatus());
+		String testResult = response.readEntity(String.class);
+		assertNotNull(testResult);
+		assertTrue("Hello, world!".equals(testResult));
+		
+		doLogout(sessionCookie);
+		
+		WebTarget resource2 = target.path("/testSecured");
+		Invocation.Builder invocationBuilder2 = resource2.request(MediaType.TEXT_PLAIN).cookie("JSESSIONID", sessionCookie);
+		Response response2 = invocationBuilder2.get();
+		System.err.println("response status: " + response2.getStatus());
+		assertTrue(401 == response2.getStatus());
+
+		
 
 	}
 

@@ -7,10 +7,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-import ox.softeng.metadatacatalogue.restapi.BasicCatalogueService;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 
 //@Api(value="Test Service")

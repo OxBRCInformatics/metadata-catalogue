@@ -1,6 +1,7 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,9 +23,20 @@ public abstract class DataType extends DataModelComponent {
 
 	
 	@OneToMany(mappedBy="dataType")
-	protected List<DataElement> forDataElements;
+	protected Set<DataElement> forDataElements;
 	
 	@Column(name="\"Type\"")
 	protected String type;
 
+	protected DataType()
+	{
+		
+	}
+	
+	public DataType(String label, String description, User createdBy, DataModel belongsToModel)
+	{
+		super(label, description, createdBy);
+		this.belongsToModel = belongsToModel;
+		this.forDataElements = new HashSet<DataElement>();
+	}
 }

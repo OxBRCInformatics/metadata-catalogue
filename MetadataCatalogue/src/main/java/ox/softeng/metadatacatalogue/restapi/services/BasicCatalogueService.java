@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.restapi;
+package ox.softeng.metadatacatalogue.restapi.services;
 
 import java.util.Properties;
 import java.util.UUID;
@@ -10,6 +10,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.domain.core.User;
 
 public class BasicCatalogueService {
 
@@ -24,7 +26,7 @@ public class BasicCatalogueService {
 	{
 		if(securityContext.getUserPrincipal() != null)
 		{
-			return ((CatalogueSecurityContext.CatalogueSecurityPrincipal) securityContext.getUserPrincipal()).getUserId();
+			return ((User) securityContext.getUserPrincipal()).getId();
 		}
 		else return null;
 	}
@@ -42,6 +44,15 @@ public class BasicCatalogueService {
 			throw new javax.ws.rs.ServerErrorException("Error on getting Entity Manager Properties",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 		}
 		return entityManagerFactory.createEntityManager(props);
+	}
+	
+	protected ApiContext getApiContext()
+	{
+		if(securityContext.getUserPrincipal() != null)
+		{
+			return (ApiContext) securityContext;
+		}
+		else return null;
 	}
 
 }

@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import ox.softeng.metadatacatalogue.restapi.UserCredentials;
+import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 
 
 public class APITest {
@@ -22,6 +22,7 @@ public class APITest {
 
 	public static Client client;
 	public static WebTarget target;
+	
 	
 	@BeforeClass
 	public static void Before() {
@@ -44,10 +45,27 @@ public class APITest {
 		String json = mapper.writeValueAsString(uc);
 		
 		WebTarget target = client.target(endpoint);
-		WebTarget resource = target.path("/authentication");
+		WebTarget resource = target.path("/authentication/login");
 		
 		Response response = resource.request(MediaType.APPLICATION_JSON).post(Entity.entity(json, MediaType.APPLICATION_JSON));
 		return response;
 	}
+	
+	public static Response doLogout(String sessionCookie) throws JsonProcessingException
+	{
+		WebTarget target = client.target(endpoint);
+		WebTarget resource = target.path("/authentication/logout");
+		
+		Response response = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionCookie).post(Entity.entity(null, MediaType.APPLICATION_JSON));
+		return response;
+	}
+
+	public static String getSessionCookie(Response response)
+	{
+		String sessionId = response.getCookies().get("JSESSIONID").getValue();
+		System.out.println("Session ID: " + sessionId);
+		return sessionId;
+	}
+
 	
 }

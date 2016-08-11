@@ -11,39 +11,38 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jose4j.jwe.ContentEncryptionAlgorithmIdentifiers;
-import org.jose4j.jwe.JsonWebEncryption;
-import org.jose4j.jwe.KeyManagementAlgorithmIdentifiers;
-import org.jose4j.lang.JoseException;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.domain.core.User;
-import ox.softeng.metadatacatalogue.restapi.AuthenticationToken;
-import ox.softeng.metadatacatalogue.restapi.CatalogueSecurityContext;
-import ox.softeng.metadatacatalogue.restapi.UserCredentials;
+import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
+import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
 
 
 
 @Path("/authentication")
 public class AuthenticationService{
 
+	@Path("/login")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public AuthenticationToken authenticate(@Context HttpServletRequest request, UserCredentials credentials) 
+	public UserDetails login(@Context HttpServletRequest request, UserCredentials credentials) 
 	{
 		if(credentials == null)
 		{
 			throw new javax.ws.rs.BadRequestException("Username and Password not provided",Response.status(Response.Status.BAD_REQUEST).build());
 		}
-		String username = credentials.getUsername();
-		String password = credentials.getPassword();
+		String username = credentials.getUsername().trim();
+		String password = credentials.getPassword().trim();
 
 		ApiContext apiContext = (ApiContext) request.getServletContext().getAttribute("masterApiContext");
 		if(apiContext==null){
 			throw new javax.ws.rs.ServerErrorException("Entity Manager error",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 		}
+
 
 		Key key = (Key) request.getServletContext().getAttribute("tokenKey");
 		if(key==null)
@@ -51,67 +50,61 @@ public class AuthenticationService{
 			throw new javax.ws.rs.ServerErrorException("Null token error",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 		}
 		//System.out.println("Authentication here...");
-
+		
 		// Authenticate the user using the credentials provided
-		CatalogueSecurityContext mcsc;
+		ApiContext sessionContext;
 		try {
-			mcsc = authenticateUser(apiContext, username, password);
+			sessionContext = authenticateUser(apiContext, username, password);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 			throw new javax.ws.rs.NotAuthorizedException("Exception thrown during authentication", Response.status(Response.Status.UNAUTHORIZED).build());
 		} 
-		if(mcsc != null)
+		if(sessionContext != null)
 		{
-			// Issue a token for the user
-			AuthenticationToken token;
-			try {
-				
-				token = issueToken(mcsc, key);
-				token.setUsername(((CatalogueSecurityContext.CatalogueSecurityPrincipal)mcsc.getUserPrincipal()).getUsername());
-				token.setFirstName(((CatalogueSecurityContext.CatalogueSecurityPrincipal)mcsc.getUserPrincipal()).getFirstName());
-				token.setLastName(((CatalogueSecurityContext.CatalogueSecurityPrincipal)mcsc.getUserPrincipal()).getLastName());
-				token.setRole(((CatalogueSecurityContext.CatalogueSecurityPrincipal)mcsc.getUserPrincipal()).getUserRole());
-			} catch (JoseException e) {
-				e.printStackTrace();
-				throw new javax.ws.rs.ServerErrorException("Error generating authentication token",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
-			}
-
+			System.out.println("login session id: " + request.getSession().getId());
+			request.getSession().setAttribute("apiContext", sessionContext);
 			// Return the token on the response
-			return token;
+			
+			Mapper mapper = new DozerBeanMapper();
+			UserDetails destObject = mapper.map(sessionContext.getUser(), UserDetails.class);
+			        
+			
+			return destObject;
 		}
 		else 
 		{
 			throw new javax.ws.rs.NotAuthorizedException("Invalid username or password", Response.status(Response.Status.UNAUTHORIZED).build());
 		}
 	}
+	
+	
+	@Path("/logout")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public boolean logout(@Context HttpServletRequest request)
+	{
+		System.err.println("Invalidating session...");
+		System.out.println("logout session id: " + request.getSession().getId());
+		request.getSession().setAttribute("apiContext", null);
+		request.getSession().invalidate();
+		return true;
+	}
 
-	private CatalogueSecurityContext authenticateUser(ApiContext apictx, String username, String password) throws Exception
+
+	private ApiContext authenticateUser(ApiContext apiCtx, String username, String password) throws Exception
 	{
 
-		User u = UserApi.getByEmailAddressAndPassword(apictx, username, password);
+		User u = UserApi.getByEmailAddressAndPassword(apiCtx, username, password);
 		if(u == null || !u.getEmailAddress().equalsIgnoreCase(username) || u.getId() == null)
 		{
 			return null;
 		}
-		CatalogueSecurityContext mcsc = new CatalogueSecurityContext(u);
+		ApiContext mcsc = ApiContext.getSessionContext(apiCtx, u);
 
 		return mcsc;
 
 
 	}
 
-	private AuthenticationToken issueToken(CatalogueSecurityContext securityContext, Key key) throws JoseException {
-		// It's up to you (use a random String persisted to the database or a JWT token)
-		// The issued token must be associated to a user
-		JsonWebEncryption jwe = new JsonWebEncryption();
-		jwe.setPayload(securityContext.toJSON().toString());
-		jwe.setAlgorithmHeaderValue(KeyManagementAlgorithmIdentifiers.A128KW);
-		jwe.setEncryptionMethodHeaderParameter(ContentEncryptionAlgorithmIdentifiers.AES_128_CBC_HMAC_SHA_256);
-		jwe.setKey(key);
-		String serializedJwe = jwe.getCompactSerialization();
-
-		AuthenticationToken t = new AuthenticationToken();
-		t.setToken(serializedJwe);
-		return t;
-	}
 }

@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.restapi;
+package ox.softeng.metadatacatalogue.restapi.transport;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -7,16 +7,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import ox.softeng.metadatacatalogue.domain.core.User;
 
-
 @XmlRootElement
 @JsonInclude(Include.NON_EMPTY)
-public class AuthenticationToken {
+public class UserDetails {
 
 	String firstName;
 	String lastName;
-	User.UserRole role;
-	String token;
-	String username;
+	User.UserRole userRole;
+	String emailAddress;
 
 	public String getFirstName() {
 		return firstName;
@@ -26,16 +24,13 @@ public class AuthenticationToken {
 		return lastName;
 	}
 
-	public User.UserRole getRole() {
-		return role;
+	public User.UserRole getUserRole() {
+		return userRole;
 	}
 
-	public String getToken() {
-		return token;
-	}
 
-	public String getUsername() {
-		return username;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
 	public void setFirstName(String firstName) {
@@ -46,16 +41,13 @@ public class AuthenticationToken {
 		this.lastName = lastName;
 	}
 
-	public void setRole(User.UserRole role) {
-		this.role = role;
+	public void setUserRole(User.UserRole userRole) {
+		this.userRole = userRole;
 	}
 	
-	public void setToken(String token) {
-		this.token = token;
-	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmailAddress(String username) {
+		this.emailAddress = username;
 	}
 
 	

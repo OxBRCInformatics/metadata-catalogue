@@ -12,5 +12,18 @@ public class PrimitiveType extends DataType {
 
 	@Column(name="\"Units\"")
 	protected String units;
+	
+	protected PrimitiveType()
+	{
+		
+	}
+	
+	public PrimitiveType(String label, String description, User createdBy, String units, DataModel belongsToModel)
+	{
+		super(label, description, createdBy, belongsToModel);
+		this.type = "PrimitiveType";
+		this.units = units;
+	}
+
 
 }

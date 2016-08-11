@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.restapi;
+package ox.softeng.metadatacatalogue.restapi.filters;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -11,6 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.restapi.ApplicationContext;
 
 public class DBConnectionFilter implements ContainerRequestFilter {
 

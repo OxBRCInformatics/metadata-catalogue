@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -23,9 +23,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
-import javax.persistence.NoResultException;
 import javax.persistence.OneToMany;
-import javax.persistence.Query;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -37,7 +35,7 @@ import org.hibernate.annotations.GenericGenerator;
 		  query="SELECT u FROM ox.softeng.metadatacatalogue.domain.core.User u WHERE UPPER(u.emailAddress) = UPPER(:emailAddress)"
 		)
 
-public class User implements Serializable{
+public class User implements Serializable, Principal{
 
 	private static final long serialVersionUID = 1L;
 
@@ -192,6 +190,12 @@ public class User implements Serializable{
 			ret.add(ur.toString());
 		}
 		return ret.toArray(new String[User.UserRole.values().length]);
+	}
+
+	@Override
+	public String getName() {
+		
+		return emailAddress;
 	}
 
 }

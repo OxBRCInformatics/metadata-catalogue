@@ -24,6 +24,18 @@ public class EnumerationValue extends DataModelComponent {
 	@JoinColumn(name="\"Enumeration Type\"")
 	protected EnumerationType enumerationType;
 	
+	protected EnumerationValue()
+	{
+		
+	}
+	
+	public EnumerationValue(String key, String value, User createdBy, EnumerationType enumerationType)
+	{
+		super("", "", createdBy);
+		this.key = key;
+		this.value = value;
+		this.enumerationType = enumerationType;
+	}
 	
 	
 }

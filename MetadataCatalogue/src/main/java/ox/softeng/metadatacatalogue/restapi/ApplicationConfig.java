@@ -10,6 +10,8 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import ox.softeng.metadatacatalogue.restapi.filters.AuthenticationFilter;
+import ox.softeng.metadatacatalogue.restapi.filters.DBConnectionFilter;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
