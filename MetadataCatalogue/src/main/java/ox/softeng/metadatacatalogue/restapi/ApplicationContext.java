@@ -26,7 +26,10 @@ public class ApplicationContext implements ServletContextListener
 	public void contextDestroyed(ServletContextEvent event) {
 		logger.info("Destroying context...");
 		ApiContext apiCtx = (ApiContext) event.getServletContext().getAttribute("masterApiContext");
-		apiCtx.close();
+		if(apiCtx != null)
+		{
+			apiCtx.close();
+		}
 		event.getServletContext().removeAttribute("masterApiContext");
 		
 	}
