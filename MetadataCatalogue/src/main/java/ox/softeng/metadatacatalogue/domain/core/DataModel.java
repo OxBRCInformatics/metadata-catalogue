@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -50,7 +49,7 @@ public abstract class DataModel extends Finalisable {
 	@Column(name="\"Type\"")
 	private String type;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
@@ -60,16 +59,16 @@ public abstract class DataModel extends Finalisable {
 	private Set<DataModel> importedBy;
 
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentDataModel")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	private List<DataClass> childDataClasses;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "belongsToModel")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "belongsToModel")
 	private Set<DataClass> ownedDataClasses;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
+	@OneToMany(mappedBy = "belongsToModel")
 	private Set<DataElement> ownedDataElements;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
+	@OneToMany(mappedBy = "belongsToModel")
 	private Set<DataType> ownedDataTypes;
 
 	public DataModel()

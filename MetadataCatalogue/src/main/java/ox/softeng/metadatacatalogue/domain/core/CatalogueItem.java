@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
@@ -56,10 +55,10 @@ public abstract class CatalogueItem implements Serializable {
 	@Column(name="\"Date/Time Last Updated\"")
 	protected OffsetDateTime lastUpdated;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
 	protected List<Metadata> metadata;
 		
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;
 

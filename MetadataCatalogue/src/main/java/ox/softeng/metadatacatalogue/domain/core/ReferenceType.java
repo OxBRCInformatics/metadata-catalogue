@@ -1,7 +1,6 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,7 +12,7 @@ public class ReferenceType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="\"Referenced Class\"")
 	protected DataClass referenceClass;
 

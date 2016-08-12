@@ -16,7 +16,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
@@ -69,7 +68,7 @@ public class User implements Serializable, Principal{
 	protected byte[] salt;
 
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany
 	@JoinTable( name="\"User_UserGroup\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"User Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })

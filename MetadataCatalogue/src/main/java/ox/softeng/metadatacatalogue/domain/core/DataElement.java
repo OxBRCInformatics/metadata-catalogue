@@ -3,7 +3,7 @@ package ox.softeng.metadatacatalogue.domain.core;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
@@ -27,7 +27,7 @@ public class DataElement extends DataModelComponent {
 	@Column(name="\"Path\"")
 	protected String path;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
 

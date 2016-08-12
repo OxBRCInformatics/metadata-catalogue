@@ -2,7 +2,6 @@ package ox.softeng.metadatacatalogue.domain.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,7 +19,7 @@ public class EnumerationValue extends DataModelComponent {
 	protected String value;
 
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="\"Enumeration Type\"")
 	protected EnumerationType enumerationType;
 	

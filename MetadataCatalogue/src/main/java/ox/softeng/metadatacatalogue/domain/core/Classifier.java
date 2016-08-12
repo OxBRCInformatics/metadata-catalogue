@@ -3,7 +3,6 @@ package ox.softeng.metadatacatalogue.domain.core;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,7 +15,7 @@ public class Classifier extends Sharable {
 
 	public static final long serialVersionUID = 1L;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="\"ClassifiedComponents\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Classifier Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"DataModelComponent Id\"") })

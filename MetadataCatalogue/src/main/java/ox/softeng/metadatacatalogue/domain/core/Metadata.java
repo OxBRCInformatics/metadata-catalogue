@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,7 +27,7 @@ public class Metadata implements Serializable{
 	@Column(name = "id", unique = true)
 	protected UUID id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="\"Catalogue Item\"", nullable=false)
 	protected CatalogueItem belongsToCatalogueItem;
 	

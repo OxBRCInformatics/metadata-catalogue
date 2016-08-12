@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,7 +14,7 @@ public class EnumerationType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy="enumerationType")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="enumerationType")
 	protected List<EnumerationValue> enumerationValues;
 
 	protected EnumerationType()

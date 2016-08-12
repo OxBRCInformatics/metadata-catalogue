@@ -1,13 +1,12 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -26,25 +25,25 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 	@Column(name="\"Writeable By Everyone\"")
 	protected Boolean writeableByEveryone;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="\"ReadableByUsers\"", schema="\"Core\"",
 		joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 		inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
 	protected Set<User> readableByUsers;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="\"ReadableByGroups\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
 	protected Set<UserGroup> readableByGroups;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="\"WriteableByUsers\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
 	protected Set<User> writeableByUsers;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@JoinTable(name="\"WriteableByGroups\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
