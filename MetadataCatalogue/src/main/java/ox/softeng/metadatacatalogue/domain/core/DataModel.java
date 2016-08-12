@@ -32,7 +32,7 @@ public abstract class DataModel extends Finalisable {
 	@Column(name="\"Type\"")
 	private String type;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
@@ -42,16 +42,16 @@ public abstract class DataModel extends Finalisable {
 	private Set<DataModel> importedBy;
 
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentDataModel")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	private List<DataClass> childDataClasses;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "belongsToModel")
 	private Set<DataClass> ownedDataClasses;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToModel")
 	private Set<DataElement> ownedDataElements;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToModel")
 	private Set<DataType> ownedDataTypes;
 
 	public DataModel()
