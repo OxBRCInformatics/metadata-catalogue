@@ -12,12 +12,30 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModel")
 @Table(schema="\"Core\"", name="\"DataModel\"")
+
+@NamedEntityGraph(
+		name="DataModel",
+		attributeNodes = {
+				@NamedAttributeNode(value = "id"),
+				@NamedAttributeNode(value = "label"),
+				@NamedAttributeNode(value = "description"),
+				@NamedAttributeNode(value = "author"),
+				@NamedAttributeNode(value = "organization"),
+				@NamedAttributeNode(value = "type"),
+				@NamedAttributeNode(value = "childDataClasses")
+		}
+		
+		
+		
+)
 
 public abstract class DataModel extends Finalisable {
 	
@@ -32,7 +50,7 @@ public abstract class DataModel extends Finalisable {
 	@Column(name="\"Type\"")
 	private String type;
 
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
@@ -42,16 +60,16 @@ public abstract class DataModel extends Finalisable {
 	private Set<DataModel> importedBy;
 
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "parentDataModel")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	private List<DataClass> childDataClasses;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "belongsToModel")
 	private Set<DataClass> ownedDataClasses;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
 	private Set<DataElement> ownedDataElements;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "belongsToModel")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "belongsToModel")
 	private Set<DataType> ownedDataTypes;
 
 	public DataModel()

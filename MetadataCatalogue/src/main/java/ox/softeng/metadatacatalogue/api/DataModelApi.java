@@ -1,8 +1,12 @@
 package ox.softeng.metadatacatalogue.api;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
+
 
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
@@ -37,7 +41,11 @@ public class DataModelApi extends CatalogueItemApi {
             @Override
             public DataModel call(EntityManager em) {
             	try{
-            		DataModel dm = em.find(DataModel.class, uuid);
+            		
+            		EntityGraph<?> entityGraph = em.getEntityGraph("DataModel");
+            		Map<String, Object> props = new HashMap<String, Object>();
+            		props.put("javax.persistence.fetchgraph", entityGraph);
+            		DataModel dm = em.find(DataModel.class, uuid, props);
             		return dm;
 				}
 				catch(Exception e)
