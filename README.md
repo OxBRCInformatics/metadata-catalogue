@@ -44,7 +44,7 @@ where ```password``` is the value you chose in step 1.
 Start tomcat, and you should be able to navigate to the test end point at:
 
 ```
-http://localhost:8080/metadatacatalogue/test
+http://localhost:8080/metadatacatalogue/api/test
 ```
 and get a friendly message in return.
 
@@ -52,3 +52,8 @@ and get a friendly message in return.
 
 The database installation scripts include the creation of a default API user to bootstrap further user creation.  The username is ```admin@metadatacatalogue.com``` and the password is ```password```.  
 
+You can test successful login by visiting 
+```
+http://localhost:8080/metadatacatalogue/api/testSecured
+```
+and getting the same friendly message.
