@@ -12,6 +12,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import ox.softeng.metadatacatalogue.restapi.filters.AuthenticationFilter;
 import ox.softeng.metadatacatalogue.restapi.filters.DBConnectionFilter;
+import ox.softeng.metadatacatalogue.restapi.filters.ProfilingListener;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
@@ -25,7 +26,6 @@ public class ApplicationConfig extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-    	System.err.println("Get Classes called!");
     	
         Set<Class<?>> resources = new HashSet<Class<?>>();
 
@@ -37,6 +37,8 @@ public class ApplicationConfig extends Application {
         // The filter that ensures a connection to the database
         resources.add(DBConnectionFilter.class);
 
+        // The listener that does basic profiling
+        resources.add(ProfilingListener.class);
         /*
         resources.add(ClassifierService.class);
         resources.add(DataClassService.class);
