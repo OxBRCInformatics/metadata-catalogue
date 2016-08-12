@@ -58,7 +58,7 @@ public class DataElement extends DataModelComponent {
 		}
 		else
 		{
-			throw new Exception("No parent for this data class: " + this.label);
+			throw new Exception("No parent for this data element: " + this.label);
 		}
 	}
 
