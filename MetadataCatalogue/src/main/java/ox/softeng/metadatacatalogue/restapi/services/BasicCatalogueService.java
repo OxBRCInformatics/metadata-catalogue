@@ -48,11 +48,8 @@ public class BasicCatalogueService {
 	
 	protected ApiContext getApiContext()
 	{
-		if(securityContext.getUserPrincipal() != null)
-		{
-			return (ApiContext) securityContext;
-		}
-		else return null;
+		
+		return (ApiContext) request.getSession().getAttribute("apiContext");
 	}
 
 }
