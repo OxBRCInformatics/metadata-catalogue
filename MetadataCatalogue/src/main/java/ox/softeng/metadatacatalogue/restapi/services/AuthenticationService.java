@@ -11,8 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
 
 import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.api.UserApi;
@@ -23,7 +21,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
 
 
 @Path("/authentication")
-public class AuthenticationService{
+public class AuthenticationService extends BasicCatalogueService{
 
 	@Path("/login")
 	@POST
@@ -61,11 +59,9 @@ public class AuthenticationService{
 		} 
 		if(sessionContext != null)
 		{
-			System.out.println("login session id: " + request.getSession().getId());
 			request.getSession().setAttribute("apiContext", sessionContext);
 			// Return the token on the response
 			
-			Mapper mapper = new DozerBeanMapper();
 			UserDetails destObject = mapper.map(sessionContext.getUser(), UserDetails.class);
 			        
 			

@@ -34,6 +34,10 @@ public class DataSetApi extends DataModelApi {
 			 @Override
 	         public List<DataSet> call(EntityManager em) {
 				 List<DataSet> dss = em.createQuery("select d from ox.softeng.metadatacatalogue.domain.core.DataSet d", DataSet.class).getResultList();
+				 for(DataSet ds : dss)
+				 {
+					 ds.getMetadata().size();
+				 }
 				 return dss;
 			 }
 		});	

@@ -1,14 +1,12 @@
 package ox.softeng.metadatacatalogue.restapi.transport;
 
-import java.util.UUID;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @XmlRootElement
-@JsonInclude(Include.NON_EMPTY)
+@JsonInclude(Include.ALWAYS)
 public class CatalogueItemDTO {
 
 	private String id;
@@ -16,6 +14,8 @@ public class CatalogueItemDTO {
 	private String label;
 	private String description;
 	private String dtype;
+	
+	
 	public String getId() {
 		return id;
 	}

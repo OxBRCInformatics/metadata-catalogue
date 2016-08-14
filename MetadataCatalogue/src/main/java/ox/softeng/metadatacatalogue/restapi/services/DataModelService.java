@@ -1,5 +1,6 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.GET;
@@ -8,8 +9,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
 
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
@@ -26,21 +25,34 @@ public class DataModelService extends BasicCatalogueService{
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public DataModelDTO getDataModel(@PathParam("id") UUID dataModelId) throws Exception{
-		
-		
+	public DataModelDTO getDataModel(@PathParam("id") UUID dataModelId) throws Exception
+	{
 		DataModel dm = DataModelApi.getById(getApiContext(), dataModelId);
-		Mapper mapper = new DozerBeanMapper();
 		DataModelDTO dataModelDTO = mapper.map(dm, DataModelDTO.class);
 		return dataModelDTO;
 		
 	}
-	/*
-	@Path("/{tree}")
+
+	@Path("/all")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public 
+	public List<DataModelDTO> getAllDataModels() throws Exception
+	{
+		List<DataModelDTO> dms = getApiContext().getAll(DataModelDTO.class, DataModel.class);
+		return dms;
+	}
+	
+	
+/*	
+	@Path("/tree")
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public DataModelTreeDTO getDataModelTrees()
+	{
+		DataModelApi.
+	}
 */
 
 

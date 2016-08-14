@@ -4,15 +4,23 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.ws.rs.core.SecurityContext;
+
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 import ox.softeng.metadatacatalogue.db.EMCallable;
+import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.User;
 
 public class ApiContext implements SecurityContext {
@@ -22,6 +30,7 @@ public class ApiContext implements SecurityContext {
 	private ConnectionProvider cp;
 	private EntityManagerFactory emf;
 
+	static Mapper dozerMapper = new DozerBeanMapper();
 
 
 	private User user;
@@ -197,6 +206,34 @@ public class ApiContext implements SecurityContext {
 			}
 		}
 		return false;
+	}
+	
+	public <DTOClass,DomainClass> List<DTOClass> getAll(Class<DTOClass> dtoClass, Class<DomainClass> domainClass) throws Exception
+	{
+
+		return executeQuery(new EMCallable<List<DTOClass>>(){
+            @Override
+            public List<DTOClass> call(EntityManager em) {
+            	try{
+            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res";
+            		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
+            		List<DomainClass> queryResults = query.getResultList();
+            		List<DTOClass> ret = new ArrayList<DTOClass>();
+            		//System.out.println(queryResults.size());
+            		for(DomainClass domainObj : queryResults)
+            		{
+            			DTOClass destObject =  dozerMapper.map(domainObj, dtoClass);
+            			ret.add(destObject);
+            		}
+            		return ret;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
 	}
 
 }

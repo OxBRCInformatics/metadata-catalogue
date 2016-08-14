@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -15,6 +17,17 @@ import javax.persistence.Table;
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataClass")
 @Table(schema="\"Core\"", name="\"DataClass\"")
+
+@NamedEntityGraph(
+		name="DataClass.Stub",
+		attributeNodes = {
+				@NamedAttributeNode(value = "id"),
+				@NamedAttributeNode(value = "label"),
+				@NamedAttributeNode(value = "description"),
+				@NamedAttributeNode(value = "childDataClasses", subgraph = "DataClass.Tree")
+		}
+)
+
 public class DataClass extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;

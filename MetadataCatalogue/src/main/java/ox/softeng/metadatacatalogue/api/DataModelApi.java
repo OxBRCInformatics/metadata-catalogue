@@ -1,18 +1,20 @@
 package ox.softeng.metadatacatalogue.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
-
+import javax.persistence.Query;
 
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
+import ox.softeng.metadatacatalogue.restapi.transport.DataModelDTO;
 
 public class DataModelApi extends CatalogueItemApi {
 
@@ -42,7 +44,7 @@ public class DataModelApi extends CatalogueItemApi {
             public DataModel call(EntityManager em) {
             	try{
             		
-            		EntityGraph<?> entityGraph = em.getEntityGraph("DataModel");
+            		EntityGraph<?> entityGraph = em.getEntityGraph("DataModel.Tree");
             		Map<String, Object> props = new HashMap<String, Object>();
             		props.put("javax.persistence.fetchgraph", entityGraph);
             		DataModel dm = em.find(DataModel.class, uuid, props);
@@ -56,6 +58,26 @@ public class DataModelApi extends CatalogueItemApi {
             }
 		});
 	}
+
+	public static List<DataModelDTO> getAll(ApiContext apiCtx) throws Exception
+	{
+		
+		return apiCtx.executeQuery(new EMCallable<List<DataModelDTO>>(){
+            @Override
+            public List<DataModelDTO> call(EntityManager em) {
+            	try{
+            		return apiCtx.getAll(DataModelDTO.class, DataModel.class);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+
+	
 
 	public static PrimitiveType newPrimitiveType(ApiContext apiCtx, DataModel dm, String label, String description, String units) throws Exception
 	{

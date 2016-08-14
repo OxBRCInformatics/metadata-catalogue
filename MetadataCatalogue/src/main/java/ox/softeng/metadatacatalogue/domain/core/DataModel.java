@@ -19,23 +19,6 @@ import javax.persistence.Table;
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModel")
 @Table(schema="\"Core\"", name="\"DataModel\"")
-
-@NamedEntityGraph(
-		name="DataModel",
-		attributeNodes = {
-				@NamedAttributeNode(value = "id"),
-				@NamedAttributeNode(value = "label"),
-				@NamedAttributeNode(value = "description"),
-				@NamedAttributeNode(value = "author"),
-				@NamedAttributeNode(value = "organization"),
-				@NamedAttributeNode(value = "type"),
-				@NamedAttributeNode(value = "childDataClasses")
-		}
-		
-		
-		
-)
-
 public abstract class DataModel extends Finalisable {
 	
 	private static final long serialVersionUID = 1L;
