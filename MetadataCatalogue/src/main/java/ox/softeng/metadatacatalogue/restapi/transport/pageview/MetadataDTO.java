@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.restapi.transport;
+package ox.softeng.metadatacatalogue.restapi.transport.pageview;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

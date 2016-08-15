@@ -10,11 +10,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import io.swagger.annotations.Api;
-import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
-import ox.softeng.metadatacatalogue.restapi.transport.DataModelDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.DataModelTreeDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.treeview.DataModelTreeDTO;
 
 
 @Api(value = "Data Model")
@@ -28,9 +27,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Secured(allowUnAuthenticated= true)
 	public DataModelDTO getDataModel(@PathParam("id") UUID dataModelId) throws Exception
 	{
-		DataModel dm = DataModelApi.getById(getApiContext(), dataModelId);
-		DataModelDTO dataModelDTO = mapper.map(dm, DataModelDTO.class);
-		return dataModelDTO;
+		return getApiContext().getByIdMap(DataModel.class, DataModelDTO.class, dataModelId);
 		
 	}
 

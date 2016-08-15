@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.restapi.transport;
+package ox.softeng.metadatacatalogue.restapi.transport.pageview;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import ox.softeng.metadatacatalogue.restapi.transport.CatalogueItemLink;
 
 
 @XmlRootElement
@@ -21,15 +23,15 @@ public class DataModelDTO extends CatalogueItemDTO {
 
 	private List<MetadataDTO> metadata;
 	
-	private List<CatalogueItemDTO> ownedDataTypes;
+	private List<CatalogueItemLink> ownedDataTypes;
 	
-	private List<CatalogueItemDTO> childDataClasses;
+	private List<CatalogueItemLink> childDataClasses;
 
-	public List<CatalogueItemDTO> getChildDataClasses() {
+	public List<CatalogueItemLink> getChildDataClasses() {
 		return childDataClasses;
 	}
 
-	public void setChildDataClasses(List<CatalogueItemDTO> childDataClasses) {
+	public void setChildDataClasses(List<CatalogueItemLink> childDataClasses) {
 		this.childDataClasses = childDataClasses;
 	}
 
@@ -57,11 +59,11 @@ public class DataModelDTO extends CatalogueItemDTO {
 		this.type = type;
 	}
 
-	public List<CatalogueItemDTO> getOwnedDataTypes() {
+	public List<CatalogueItemLink> getOwnedDataTypes() {
 		return ownedDataTypes;
 	}
 
-	public void setOwnedDataTypes(List<CatalogueItemDTO> ownedDataTypes) {
+	public void setOwnedDataTypes(List<CatalogueItemLink> ownedDataTypes) {
 		this.ownedDataTypes = ownedDataTypes;
 	}
 

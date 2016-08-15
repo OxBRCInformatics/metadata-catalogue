@@ -14,7 +14,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
-import ox.softeng.metadatacatalogue.restapi.transport.DataModelDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
 
 public class DataModelApi extends CatalogueItemApi {
 
