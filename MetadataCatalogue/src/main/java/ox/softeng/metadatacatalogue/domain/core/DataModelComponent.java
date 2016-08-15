@@ -25,10 +25,10 @@ public class DataModelComponent extends Sharable {
 
 	
 	@OneToMany (mappedBy = "source")
-	protected List<Link> sourceForLinks;
+	protected Set<Link> sourceForLinks;
 
 	@OneToMany (mappedBy = "target")
-	protected List<Link> targetForLinks;
+	protected Set<Link> targetForLinks;
 
 	public DataModelComponent()
 	{
@@ -40,8 +40,8 @@ public class DataModelComponent extends Sharable {
 		super(label, description, createdBy);
 		classifiers = new HashSet<Classifier>();
 		annotations = new ArrayList<Annotation>();
-		sourceForLinks = new ArrayList<Link>();
-		targetForLinks = new ArrayList<Link>();
+		sourceForLinks = new HashSet<Link>();
+		targetForLinks = new HashSet<Link>();
 	}
 	
 
