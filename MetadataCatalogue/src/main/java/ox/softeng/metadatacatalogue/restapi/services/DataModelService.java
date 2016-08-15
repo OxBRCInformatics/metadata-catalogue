@@ -14,6 +14,7 @@ import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.DataModelDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.DataModelTreeDTO;
 
 
 
@@ -44,16 +45,17 @@ public class DataModelService extends BasicCatalogueService{
 	}
 	
 	
-/*	
+
 	@Path("/tree")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public DataModelTreeDTO getDataModelTrees()
+	public List<DataModelTreeDTO> getDataModelTrees() throws Exception
 	{
-		DataModelApi.
+		
+		return getApiContext().getAll(DataModelTreeDTO.class, DataModel.class);
 	}
-*/
+
 
 
 }
