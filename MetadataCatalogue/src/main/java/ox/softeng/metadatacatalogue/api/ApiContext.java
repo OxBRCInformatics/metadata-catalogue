@@ -11,7 +11,6 @@ import java.util.Properties;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.core.SecurityContext;
 
@@ -20,7 +19,6 @@ import org.dozer.Mapper;
 
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 import ox.softeng.metadatacatalogue.db.EMCallable;
-import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.User;
 
 public class ApiContext implements SecurityContext {
