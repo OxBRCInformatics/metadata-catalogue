@@ -10,7 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
-import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.restapi.ApplicationContext;
 
 public class DBConnectionFilter implements ContainerRequestFilter {

@@ -7,8 +7,7 @@ import javax.annotation.Priority;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.ext.Provider;
 
-
-import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 
 import javax.ws.rs.Priorities;

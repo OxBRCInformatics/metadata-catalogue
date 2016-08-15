@@ -15,7 +15,7 @@ import org.jose4j.lang.ByteUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.db.ApiContext;
 
 public class ApplicationContext implements ServletContextListener
 {

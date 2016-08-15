@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 
+import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
@@ -65,7 +66,7 @@ public class DataModelApi extends CatalogueItemApi {
             @Override
             public List<DataModelDTO> call(EntityManager em) {
             	try{
-            		return apiCtx.getAll(DataModelDTO.class, DataModel.class);
+            		return apiCtx.getAllMap(DataModel.class, DataModelDTO.class);
 				}
 				catch(Exception e)
 				{

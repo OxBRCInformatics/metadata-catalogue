@@ -12,8 +12,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import io.swagger.annotations.Api;
-import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.api.UserApi;
+import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.domain.core.User;
 import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;

@@ -40,7 +40,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Secured(allowUnAuthenticated= true)
 	public List<DataModelDTO> getAllDataModels() throws Exception
 	{
-		List<DataModelDTO> dms = getApiContext().getAll(DataModelDTO.class, DataModel.class);
+		List<DataModelDTO> dms = getApiContext().getAllMap(DataModel.class, DataModelDTO.class);
 		return dms;
 	}
 	
@@ -53,7 +53,7 @@ public class DataModelService extends BasicCatalogueService{
 	public List<DataModelTreeDTO> getDataModelTrees() throws Exception
 	{
 		
-		return getApiContext().getAll(DataModelTreeDTO.class, DataModel.class);
+		return getApiContext().getAllMap(DataModel.class, DataModelTreeDTO.class);
 	}
 
 

@@ -1,6 +1,6 @@
 package ox.softeng.metadatacatalogue.test.domain.core;
 
-import ox.softeng.metadatacatalogue.api.ApiContext;
+import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 
 
