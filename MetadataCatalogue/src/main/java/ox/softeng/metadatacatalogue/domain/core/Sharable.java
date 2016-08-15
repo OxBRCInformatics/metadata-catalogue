@@ -86,5 +86,53 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 	{
 		writeableByGroups.add(ug);
 	}
+
+	public Boolean getReadableByEveryone() {
+		return readableByEveryone;
+	}
+
+	public void setReadableByEveryone(Boolean readableByEveryone) {
+		this.readableByEveryone = readableByEveryone;
+	}
+
+	public Boolean getWriteableByEveryone() {
+		return writeableByEveryone;
+	}
+
+	public void setWriteableByEveryone(Boolean writeableByEveryone) {
+		this.writeableByEveryone = writeableByEveryone;
+	}
+
+	public Set<User> getReadableByUsers() {
+		return readableByUsers;
+	}
+
+	public void setReadableByUsers(Set<User> readableByUsers) {
+		this.readableByUsers = readableByUsers;
+	}
+
+	public Set<UserGroup> getReadableByGroups() {
+		return readableByGroups;
+	}
+
+	public void setReadableByGroups(Set<UserGroup> readableByGroups) {
+		this.readableByGroups = readableByGroups;
+	}
+
+	public Set<User> getWriteableByUsers() {
+		return writeableByUsers;
+	}
+
+	public void setWriteableByUsers(Set<User> writeableByUsers) {
+		this.writeableByUsers = writeableByUsers;
+	}
+
+	public Set<UserGroup> getWriteableByGroups() {
+		return writeableByGroups;
+	}
+
+	public void setWriteableByGroups(Set<UserGroup> writeableByGroups) {
+		this.writeableByGroups = writeableByGroups;
+	}
 	
 }
