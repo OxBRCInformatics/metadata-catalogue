@@ -277,5 +277,12 @@
 			<artifactId>dozer</artifactId>
 			<version>5.4.0</version>
 		</dependency>
+
+		<!-- Swagger for REST API documentation -->
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jersey2-jaxrs</artifactId>
+			<version>1.5.0</version>
+		</dependency>
 	</dependencies>
 </project>

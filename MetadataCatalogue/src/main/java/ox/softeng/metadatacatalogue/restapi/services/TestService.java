@@ -7,9 +7,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 
-//@Api(value="Test Service")
+@Api(value="Test Service")
 @Path("/")
 public class TestService  extends BasicCatalogueService{
 	

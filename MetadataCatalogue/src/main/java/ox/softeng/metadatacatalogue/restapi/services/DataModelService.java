@@ -9,7 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-
+import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
@@ -17,7 +17,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.DataModelDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.DataModelTreeDTO;
 
 
-
+@Api(value = "Data Model")
 @Path("/datamodel")
 public class DataModelService extends BasicCatalogueService{
 

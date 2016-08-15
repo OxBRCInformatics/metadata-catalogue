@@ -16,16 +16,28 @@ import ox.softeng.metadatacatalogue.restapi.filters.ProfilingListener;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
-
-//import io.swagger.jaxrs.listing.ApiListingResource;
-//import io.swagger.jaxrs.listing.SwaggerSerializers;
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 
 
 @ApplicationPath("api")
 @DeclareRoles({"Administrator","Editor", "Unregistered"})
 public class ApplicationConfig extends Application {
 
-    
+    public ApplicationConfig()
+    {
+    	// Configure Swagger
+        BeanConfig beanConfig = new BeanConfig();
+        beanConfig.setVersion("1.0.2");
+        beanConfig.setSchemes(new String[]{"http"});
+        beanConfig.setHost("localhost:8080");
+        beanConfig.setBasePath("/metadatacatalogue/api");
+        beanConfig.setResourcePackage("ox.softeng.metadatacatalogue.restapi.services");
+        beanConfig.setScan(true);
+    }
+	
+	
     
     @Override
     public Set<Class<?>> getClasses() {
@@ -75,6 +87,11 @@ public class ApplicationConfig extends Application {
         resources.add(ApiListingResource.class);
         resources.add(SwaggerSerializers.class);
 */
+        
+        // Swagger configuration
+        resources.add(ApiListingResource.class);
+        resources.add(SwaggerSerializers.class);
+
         return resources;
     }
 	

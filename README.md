@@ -53,7 +53,25 @@ and get a friendly message in return.
 The database installation scripts include the creation of a default API user to bootstrap further user creation.  The username is ```admin@metadatacatalogue.com``` and the password is ```password```.  
 
 You can test successful login by visiting 
+
 ```
 http://localhost:8080/metadatacatalogue/api/testSecured
 ```
 and getting the same friendly message.
+
+## Swagger
+
+Swagger is used to document the API.  You can view the human-readable documentation by browsing to:
+
+```
+http://localhost:8080/metadatacatalogue/swagger
+```
+
+*However, the interface is very slow, because some of the datastructures are recursive.  You may just want to view the JSON.*
+
+
+If you want to just view the JSON, then the description of the API is found here:
+
+```
+http://localhost:8080/metadatacatalogue/api/swagger.json
+```

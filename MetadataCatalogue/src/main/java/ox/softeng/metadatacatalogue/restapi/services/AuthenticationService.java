@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
+import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.api.ApiContext;
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.domain.core.User;
@@ -19,8 +19,9 @@ import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
 
 
-
+@Api(value = "Authentication")
 @Path("/authentication")
+
 public class AuthenticationService extends BasicCatalogueService{
 
 	@Path("/login")
