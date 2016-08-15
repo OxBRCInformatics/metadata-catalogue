@@ -15,6 +15,7 @@ import ox.softeng.metadatacatalogue.restapi.filters.DBConnectionFilter;
 import ox.softeng.metadatacatalogue.restapi.filters.ProfilingListener;
 import ox.softeng.metadatacatalogue.restapi.filters.ResponseCorsFilter;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
+import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 import io.swagger.jaxrs.config.BeanConfig;
@@ -67,6 +68,7 @@ public class ApplicationConfig extends Application {
         resources.add(TestService.class);
         
         resources.add(DataModelService.class);
+        resources.add(DataClassService.class);
         
         resources.add(AuthenticationService.class);
 
