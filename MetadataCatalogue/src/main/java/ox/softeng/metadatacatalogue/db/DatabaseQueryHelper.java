@@ -53,8 +53,15 @@ public class DatabaseQueryHelper {
             		//System.out.println(queryResults.size());
             		for(DomainClass domainObj : queryResults)
             		{
-            			DTOClass destObject =  dozerMapper.map(domainObj, dtoClass);
-            			ret.add(destObject);
+                		if(domainObj == null)
+                		{
+                			ret.add(null);
+                		}
+                		else
+                		{
+                			DTOClass destObject =  dozerMapper.map(domainObj, dtoClass);
+                			ret.add(destObject);
+                		}
             		}
             		return ret;
 				}
@@ -92,6 +99,10 @@ public class DatabaseQueryHelper {
             public DTOClass call(EntityManager em) {
             	try{
             		DomainClass result = em.find(domainClass, uuid);
+            		if(result == null)
+            		{
+            			return null;
+            		}
             		DTOClass destObject =  dozerMapper.map(result, dtoClass);
             		return destObject;
 				}
