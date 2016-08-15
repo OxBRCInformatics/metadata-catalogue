@@ -3,10 +3,6 @@ package ox.softeng.metadatacatalogue.restapi.transport.pageview;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class SharableDTO extends CatalogueItemDTO {
 
