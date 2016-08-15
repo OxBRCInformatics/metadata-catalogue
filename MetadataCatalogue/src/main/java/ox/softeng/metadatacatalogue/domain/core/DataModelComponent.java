@@ -43,6 +43,38 @@ public class DataModelComponent extends Sharable {
 		sourceForLinks = new HashSet<Link>();
 		targetForLinks = new HashSet<Link>();
 	}
+
+	public Set<Classifier> getClassifiers() {
+		return classifiers;
+	}
+
+	public void setClassifiers(Set<Classifier> classifiers) {
+		this.classifiers = classifiers;
+	}
+
+	public List<Annotation> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(List<Annotation> annotations) {
+		this.annotations = annotations;
+	}
+
+	public Set<Link> getSourceForLinks() {
+		return sourceForLinks;
+	}
+
+	public void setSourceForLinks(Set<Link> sourceForLinks) {
+		this.sourceForLinks = sourceForLinks;
+	}
+
+	public Set<Link> getTargetForLinks() {
+		return targetForLinks;
+	}
+
+	public void setTargetForLinks(Set<Link> targetForLinks) {
+		this.targetForLinks = targetForLinks;
+	}
 	
 
 }
