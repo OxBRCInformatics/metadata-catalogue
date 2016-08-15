@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import javax.annotation.Priority;
-import javax.annotation.Resource;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;
