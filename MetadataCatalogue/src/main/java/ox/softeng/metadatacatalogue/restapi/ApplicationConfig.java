@@ -13,6 +13,7 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import ox.softeng.metadatacatalogue.restapi.filters.AuthenticationFilter;
 import ox.softeng.metadatacatalogue.restapi.filters.DBConnectionFilter;
 import ox.softeng.metadatacatalogue.restapi.filters.ProfilingListener;
+import ox.softeng.metadatacatalogue.restapi.filters.ResponseCorsFilter;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
@@ -54,7 +55,10 @@ public class ApplicationConfig extends Application {
 
         // The listener that does basic profiling
         resources.add(ProfilingListener.class);
-        
+      
+        // The filter that adds CORS to responses
+        resources.add(ResponseCorsFilter.class);
+
         resources.add(RolesAllowedDynamicFeature.class);
         
 
@@ -80,8 +84,6 @@ public class ApplicationConfig extends Application {
 
 
 
-        // The filter that adds CORS to responses
-        resources.add(ResponseCorsFilter.class);
         
         // Swagger classes
         resources.add(ApiListingResource.class);
