@@ -28,6 +28,22 @@ public class Finalisable extends DataModelComponent {
 		finalised = false;
 	}
 
+	public Boolean getFinalised() {
+		return finalised;
+	}
+
+	public void setFinalised(Boolean finalised) {
+		this.finalised = finalised;
+	}
+
+	public String getReleaseLabel() {
+		return releaseLabel;
+	}
+
+	public void setReleaseLabel(String releaseLabel) {
+		this.releaseLabel = releaseLabel;
+	}
+
 	
 	
 }
