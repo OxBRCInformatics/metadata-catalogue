@@ -21,7 +21,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.treeview.DataModelTreeDTO;
 public class DataModelService extends BasicCatalogueService{
 
 
-	@Path("/{id}")
+	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)

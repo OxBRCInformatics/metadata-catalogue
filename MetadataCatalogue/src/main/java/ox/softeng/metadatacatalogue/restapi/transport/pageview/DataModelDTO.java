@@ -13,7 +13,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.CatalogueItemLink;
 @XmlRootElement
 @JsonInclude(Include.ALWAYS)
 
-public class DataModelDTO extends CatalogueItemDTO {
+public class DataModelDTO extends FinalisableDTO {
 
 	private String author;
 	
