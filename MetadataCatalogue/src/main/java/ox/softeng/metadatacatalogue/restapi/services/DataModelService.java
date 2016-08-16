@@ -3,6 +3,7 @@ package ox.softeng.metadatacatalogue.restapi.services;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -26,7 +27,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public DataModelDTO getDataModel(@PathParam("id") UUID dataModelId) throws Exception
 	{
@@ -37,6 +38,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Path("/all")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public List<DataModelDTO> getAllDataModels() throws Exception
 	{
@@ -49,6 +51,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Path("/tree")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public List<DataModelTreeDTO> getDataModelTrees() throws Exception
 	{
@@ -58,6 +61,7 @@ public class DataModelService extends BasicCatalogueService{
 	@Path("/search")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public List<DataModelDTO> searchDataModel(SearchParamsDTO searchParams) throws Exception
 	{

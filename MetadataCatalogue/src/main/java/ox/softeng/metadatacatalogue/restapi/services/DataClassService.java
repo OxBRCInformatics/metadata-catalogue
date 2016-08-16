@@ -3,6 +3,7 @@ package ox.softeng.metadatacatalogue.restapi.services;
 import java.util.List;
 import java.util.UUID;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -25,6 +26,7 @@ public class DataClassService extends BasicCatalogueService{
 	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public DataClassDTO getDataClass(@PathParam("id") UUID dataClassId) throws Exception
 	{
@@ -35,6 +37,7 @@ public class DataClassService extends BasicCatalogueService{
 	@Path("/search")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
 	public List<DataClassDTO> searchDataClass(SearchParamsDTO searchParams) throws Exception
 	{
