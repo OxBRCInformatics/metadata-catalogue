@@ -11,9 +11,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataClass")
 @Table(schema="\"Core\"", name="\"DataClass\"")
@@ -56,6 +58,9 @@ public class DataClass extends DataModelComponent {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="referenceClass")
 	private List<ReferenceType> targetOfReferenceType;
 
+	@Transient
+	private List<Breadcrumb> breadcrumbs;
+	
 	public DataClass()
 	{
 		
@@ -131,4 +136,42 @@ public class DataClass extends DataModelComponent {
 		}
 	}
 
+	public List<Breadcrumb> getBreadcrumbs() throws Exception
+	{
+		if(breadcrumbs == null)
+		{
+			setBreadcrumbs();
+		}
+		return breadcrumbs;
+	}
+	
+	@PostLoad
+	public void setBreadcrumbs() throws Exception
+	{
+		if(parentDataModel != null)
+		{
+			breadcrumbs = new ArrayList<Breadcrumb>();
+			breadcrumbs.add(new Breadcrumb(
+					parentDataModel.getId(), 
+					parentDataModel.getLabel(), 
+					parentDataModel.getDescription(), 
+					parentDataModel.getDtype() ));
+
+		}
+		else if(parentDataClass != null)
+		{
+			breadcrumbs = new ArrayList<Breadcrumb>();
+			breadcrumbs.addAll(parentDataClass.getBreadcrumbs());
+			breadcrumbs.add(new Breadcrumb(
+					parentDataClass.getId(), 
+					parentDataClass.getLabel(), 
+					parentDataClass.getDescription(), 
+					parentDataClass.getDtype() ));
+		}
+		else
+		{
+			throw new Exception("No parent for this data class: " + this.label);
+		}
+	}
+	
 }

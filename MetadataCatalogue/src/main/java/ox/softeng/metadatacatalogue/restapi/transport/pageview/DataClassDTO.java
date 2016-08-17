@@ -22,6 +22,8 @@ public class DataClassDTO extends DataModelComponentDTO {
 	private CatalogueItemLink parentDataClass;
 	
 	private String path;
+	
+	private List<CatalogueItemLink> breadcrumbs;
 
 	private List<CatalogueItemLink> childDataClasses;
 
@@ -83,5 +85,13 @@ public class DataClassDTO extends DataModelComponentDTO {
 
 	public void setTargetOfReferenceType(List<CatalogueItemLink> targetOfReferenceType) {
 		this.targetOfReferenceType = targetOfReferenceType;
+	}
+
+	public List<CatalogueItemLink> getBreadcrumbs() {
+		return breadcrumbs;
+	}
+
+	public void setBreadcrumbs(List<CatalogueItemLink> breadcrumbs) {
+		this.breadcrumbs = breadcrumbs;
 	}
 }
