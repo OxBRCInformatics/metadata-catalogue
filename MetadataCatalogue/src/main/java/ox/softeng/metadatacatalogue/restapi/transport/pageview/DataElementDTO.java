@@ -13,23 +13,18 @@ import ox.softeng.metadatacatalogue.restapi.transport.CatalogueItemLink;
 @XmlRootElement
 @JsonInclude(Include.ALWAYS)
 
-public class DataClassDTO extends DataModelComponentDTO {
+public class DataElementDTO extends DataModelComponentDTO {
 
 	protected CatalogueItemLink belongsToModel;
 
-	private CatalogueItemLink parentDataModel;
-
 	private CatalogueItemLink parentDataClass;
+	
+	private DataTypeDTO dataType;
 	
 	private String path;
 	
 	private List<CatalogueItemLink> breadcrumbs;
 
-	private List<CatalogueItemLink> childDataClasses;
-
-	private List<DataElementDTO> childDataElements;
-
-	private List<CatalogueItemLink> targetOfReferenceType;
 
 	public CatalogueItemLink getBelongsToModel() {
 		return belongsToModel;
@@ -37,14 +32,6 @@ public class DataClassDTO extends DataModelComponentDTO {
 
 	public void setBelongsToModel(CatalogueItemLink belongsToModel) {
 		this.belongsToModel = belongsToModel;
-	}
-
-	public CatalogueItemLink getParentDataModel() {
-		return parentDataModel;
-	}
-
-	public void setParentDataModel(CatalogueItemLink parentDataModel) {
-		this.parentDataModel = parentDataModel;
 	}
 
 	public CatalogueItemLink getParentDataClass() {
@@ -63,35 +50,19 @@ public class DataClassDTO extends DataModelComponentDTO {
 		this.path = path;
 	}
 
-	public List<CatalogueItemLink> getChildDataClasses() {
-		return childDataClasses;
-	}
-
-	public void setChildDataClasses(List<CatalogueItemLink> childDataClasses) {
-		this.childDataClasses = childDataClasses;
-	}
-
-	public List<DataElementDTO> getChildDataElements() {
-		return childDataElements;
-	}
-
-	public void setChildDataElements(List<DataElementDTO> childDataElements) {
-		this.childDataElements = childDataElements;
-	}
-
-	public List<CatalogueItemLink> getTargetOfReferenceType() {
-		return targetOfReferenceType;
-	}
-
-	public void setTargetOfReferenceType(List<CatalogueItemLink> targetOfReferenceType) {
-		this.targetOfReferenceType = targetOfReferenceType;
-	}
-
 	public List<CatalogueItemLink> getBreadcrumbs() {
 		return breadcrumbs;
 	}
 
 	public void setBreadcrumbs(List<CatalogueItemLink> breadcrumbs) {
 		this.breadcrumbs = breadcrumbs;
+	}
+
+	public DataTypeDTO getDataType() {
+		return dataType;
+	}
+
+	public void setDataType(DataTypeDTO dataType) {
+		this.dataType = dataType;
 	}
 }
