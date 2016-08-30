@@ -14,8 +14,10 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import ox.softeng.metadatacatalogue.domain.core.User;
-import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
 
 public class AuthenticationFilterIT extends APITest{
 
@@ -23,6 +25,8 @@ public class AuthenticationFilterIT extends APITest{
 
 	public static Client client;
 
+	public static ObjectMapper jacksonObjectMapper = new ObjectMapper();
+	
 	@Test
 	public void authenticationFilterNoToken() throws Exception {
 		
@@ -69,7 +73,8 @@ public class AuthenticationFilterIT extends APITest{
 	public void authenticationFilterSucceed() throws Exception {
 		Response response = doLogin("admin@metadatacatalogue.com", "password");
 		assertTrue(200 == response.getStatus());
-		UserDetails u = response.readEntity(UserDetails.class);
+		ObjectNode on = response.readEntity(ObjectNode.class);
+		User u = jacksonObjectMapper.readValue(on.toString(), User.class); 
 		assertTrue(u.getEmailAddress().equals("admin@metadatacatalogue.com"));
 		String sessionId = getSessionCookie(response);
 		//String token = tokenObject.getToken();
@@ -90,7 +95,8 @@ public class AuthenticationFilterIT extends APITest{
 	public void authenticationFilterSucceedLogout() throws Exception {
 		Response response = doLogin("admin@metadatacatalogue.com", "password");
 		assertTrue(200 == response.getStatus());
-		UserDetails u = response.readEntity(UserDetails.class);
+		ObjectNode on = response.readEntity(ObjectNode.class);
+		User u = jacksonObjectMapper.readValue(on.toString(), User.class); 
 		assertTrue(u.getEmailAddress().equals("admin@metadatacatalogue.com"));
 		String sessionCookie = getSessionCookie(response);
 		//String token = tokenObject.getToken();

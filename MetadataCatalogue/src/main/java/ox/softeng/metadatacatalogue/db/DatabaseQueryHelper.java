@@ -1,37 +1,19 @@
 package ox.softeng.metadatacatalogue.db;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.faces.model.DataModel;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-import org.dozer.classmap.MappingFileData;
-import org.dozer.loader.DozerBuilder;
-// import org.modelmapper.ModelMapper;
-import org.dozer.loader.api.BeanMappingBuilder;
-import org.dozer.loader.api.TypeMappingOptions;
-
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
-import ox.softeng.metadatacatalogue.domain.core.DataElement;
-import ox.softeng.metadatacatalogue.domain.core.DataType;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataElementDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataTypeDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.EnumerationTypeDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.PrimitiveTypeDTO;
 import ox.softeng.projector.Projector;
-
-import org.dozer.loader.api.FieldsMappingOptions;
-import org.dozer.loader.api.TypeMappingOptions;
 
 public class DatabaseQueryHelper {
 
@@ -39,9 +21,7 @@ public class DatabaseQueryHelper {
 	protected ConnectionProvider cp;
 	protected EntityManagerFactory emf;
 
-	static Mapper dozerMapper = new DozerBeanMapper();
-	
-	//static ModelMapper modelMapper = new ModelMapper();
+	public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
 
 	public <DomainClass> List<DomainClass> getAll(Class<DomainClass> domainClass) throws Exception
 	{
@@ -63,29 +43,16 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass, DTOClass> List<DTOClass> getAllMap(Class<DomainClass> domainClass, Class<DTOClass> dtoClass) throws Exception
+	public <DomainClass> ArrayNode getAllMap(Class<DomainClass> domainClass, String projectionName) throws Exception
 	{
-		return executeQuery(new EMCallable<List<DTOClass>>(){
+		return executeQuery(new EMCallable<ArrayNode>(){
             @Override
-            public List<DTOClass> call(EntityManager em) {
+            public ArrayNode call(EntityManager em) {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res";
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		List<DomainClass> queryResults = query.getResultList();
-            		List<DTOClass> ret = new ArrayList<DTOClass>();
-            		//System.out.println(queryResults.size());
-            		for(DomainClass domainObj : queryResults)
-            		{
-                		if(domainObj == null)
-                		{
-                			ret.add(null);
-                		}
-                		else
-                		{
-                			DTOClass destObject =  dozerMapper.map(domainObj, dtoClass);
-                			ret.add(destObject);
-                		}
-            		}
+            		ArrayNode ret = Projector.project(queryResults, projectionName);
             		return ret;
 				}
 				catch(Exception e)
@@ -122,11 +89,11 @@ public class DatabaseQueryHelper {
 		});
 	}
 	
-	public <DomainClass extends CatalogueItem, DTOClass> List<DTOClass> searchMap(Class<DomainClass> domainClass, Class<DTOClass> dtoClass, String searchTerm, Integer offset, Integer limit) throws Exception
+	public <DomainClass extends CatalogueItem> ArrayNode searchMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit) throws Exception
 	{
-		return executeQuery(new EMCallable<List<DTOClass>>(){
+		return executeQuery(new EMCallable<ArrayNode>(){
             @Override
-            public List<DTOClass> call(EntityManager em) {
+            public ArrayNode call(EntityManager em) {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
@@ -136,20 +103,7 @@ public class DatabaseQueryHelper {
             		query.setFirstResult(offset);
             		query.setMaxResults(limit);
             		List<DomainClass> queryResults = query.getResultList();
-            		List<DTOClass> ret = new ArrayList<DTOClass>();
-            		//System.out.println(queryResults.size());
-            		for(DomainClass domainObj : queryResults)
-            		{
-                		if(domainObj == null)
-                		{
-                			ret.add(null);
-                		}
-                		else
-                		{
-                			DTOClass destObject =  dozerMapper.map(domainObj, dtoClass);
-                			ret.add(destObject);
-                		}
-            		}
+            		ArrayNode ret = Projector.project(queryResults, projectionName);
             		return ret;
 				}
 				catch(Exception e)

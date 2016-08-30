@@ -47,14 +47,17 @@ public class User implements Serializable, Principal{
 	@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="authentication.login")
 	protected UUID id;
 
 	@Column(name="\"First Name\"")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="authentication.login")
 	protected String firstName;
 	
 	@Column(name="\"Last Name\"")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="authentication.login")
 	protected String lastName;
 
 	
@@ -63,10 +66,12 @@ public class User implements Serializable, Principal{
 	} 
 	@Column(name="\"Role\"")
 	@Enumerated(EnumType.ORDINAL)
+	@Projection(name="authentication.login")
 	protected UserRole userRole;
 	
 	@Column(name="\"Email Address\"", unique=true)
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="authentication.login")
 	protected String emailAddress;
 
 	@Column(name="\"Password\"")

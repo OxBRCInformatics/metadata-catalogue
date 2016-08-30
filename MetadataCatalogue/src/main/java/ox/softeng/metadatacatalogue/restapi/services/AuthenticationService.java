@@ -11,12 +11,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.domain.core.User;
 import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
-import ox.softeng.metadatacatalogue.restapi.transport.UserDetails;
+import ox.softeng.projector.Projector;
 
 
 @Api(value = "Authentication")
@@ -28,7 +30,7 @@ public class AuthenticationService extends BasicCatalogueService{
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public UserDetails login(@Context HttpServletRequest request, UserCredentials credentials) 
+	public JsonNode login(@Context HttpServletRequest request, UserCredentials credentials) 
 	{
 		if(credentials == null)
 		{
@@ -63,10 +65,15 @@ public class AuthenticationService extends BasicCatalogueService{
 			request.getSession().setAttribute("apiContext", sessionContext);
 			// Return the token on the response
 			
-			UserDetails destObject = mapper.map(sessionContext.getUser(), UserDetails.class);
+			try{
+				JsonNode destObject = Projector.project(sessionContext.getUser(), "authentication.login");
+				return destObject;
+			}catch(Exception e)
+			{
+				throw new javax.ws.rs.ServerErrorException("Error in conversion of user token",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
+			}
 			        
 			
-			return destObject;
 		}
 		else 
 		{

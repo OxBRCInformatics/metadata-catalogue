@@ -10,9 +10,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.dozer.DozerBeanMapper;
-import org.dozer.Mapper;
-
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.domain.core.User;
 
@@ -23,7 +20,6 @@ public class BasicCatalogueService {
 	@Context SecurityContext securityContext;
 
 	
-	static Mapper mapper = new DozerBeanMapper();
 
 	
 	protected UUID getUserId()

@@ -1,6 +1,5 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
-import java.util.List;
 import java.util.UUID;
 
 import javax.ws.rs.Consumes;
@@ -12,13 +11,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.treeview.DataModelTreeDTO;
 
 
 @Api(value = "Data Model")
@@ -42,9 +40,9 @@ public class DataModelService extends BasicCatalogueService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public List<DataModelDTO> getAllDataModels() throws Exception
+	public ArrayNode getAllDataModels() throws Exception
 	{
-		List<DataModelDTO> dms = getApiContext().getAllMap(DataModel.class, DataModelDTO.class);
+		ArrayNode dms = getApiContext().getAllMap(DataModel.class, "datamodel.pageview.id");
 		return dms;
 	}
 	
@@ -55,9 +53,9 @@ public class DataModelService extends BasicCatalogueService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public List<DataModelTreeDTO> getDataModelTrees() throws Exception
+	public ArrayNode getDataModelTrees() throws Exception
 	{
-		return getApiContext().getAllMap(DataModel.class, DataModelTreeDTO.class);
+		return getApiContext().getAllMap(DataModel.class, "datamodel.pageview.id");
 	}
 
 	@Path("/search")
@@ -65,11 +63,11 @@ public class DataModelService extends BasicCatalogueService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public List<DataModelDTO> searchDataModel(SearchParamsDTO searchParams) throws Exception
+	public ArrayNode searchDataModel(SearchParamsDTO searchParams) throws Exception
 	{
 		
 		return getApiContext().searchMap(
-				DataModel.class, DataModelDTO.class, 
+				DataModel.class, "datamodel.pageview.id", 
 				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
 	}
 

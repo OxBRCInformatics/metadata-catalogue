@@ -14,7 +14,6 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
-import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
 
 public class DataModelApi extends CatalogueItemApi {
 
@@ -59,14 +58,14 @@ public class DataModelApi extends CatalogueItemApi {
 		});
 	}
 
-	public static List<DataModelDTO> getAll(ApiContext apiCtx) throws Exception
+	public static List<DataModel> getAll(ApiContext apiCtx) throws Exception
 	{
 		
-		return apiCtx.executeQuery(new EMCallable<List<DataModelDTO>>(){
+		return apiCtx.executeQuery(new EMCallable<List<DataModel>>(){
             @Override
-            public List<DataModelDTO> call(EntityManager em) {
+            public List<DataModel> call(EntityManager em) {
             	try{
-            		return apiCtx.getAllMap(DataModel.class, DataModelDTO.class);
+            		return apiCtx.getAll(DataModel.class);
 				}
 				catch(Exception e)
 				{
