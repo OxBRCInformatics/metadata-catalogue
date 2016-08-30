@@ -30,7 +30,8 @@ public class DataClassService extends BasicCatalogueService{
 	@Secured(allowUnAuthenticated= true)
 	public DataClassDTO getDataClass(@PathParam("id") UUID dataClassId) throws Exception
 	{
-		return getApiContext().getByIdMap(DataClass.class, DataClassDTO.class, dataClassId);
+		return null;
+		//return getApiContext().getByIdMap(DataClass.class, DataClassDTO.class, dataClassId);
 		
 	}
 

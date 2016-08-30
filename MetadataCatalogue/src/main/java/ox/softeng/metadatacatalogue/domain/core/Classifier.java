@@ -8,6 +8,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Classifier")
 @Table(schema="\"Core\"", name="\"Classifier\"")
 

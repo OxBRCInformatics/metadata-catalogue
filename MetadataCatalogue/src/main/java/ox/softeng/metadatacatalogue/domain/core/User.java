@@ -27,6 +27,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.User")
 @Table(schema="\"Core\"", name="\"User\"")
 @NamedQuery(
@@ -42,12 +46,15 @@ public class User implements Serializable, Principal{
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
+	@Projection(name="datamodel.pageview.id")
 	protected UUID id;
 
 	@Column(name="\"First Name\"")
+	@Projection(name="datamodel.pageview.id")
 	protected String firstName;
 	
 	@Column(name="\"Last Name\"")
+	@Projection(name="datamodel.pageview.id")
 	protected String lastName;
 
 	
@@ -59,6 +66,7 @@ public class User implements Serializable, Principal{
 	protected UserRole userRole;
 	
 	@Column(name="\"Email Address\"", unique=true)
+	@Projection(name="datamodel.pageview.id")
 	protected String emailAddress;
 
 	@Column(name="\"Password\"")

@@ -11,7 +11,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.CatalogueItemLink;
 @XmlRootElement
 @JsonInclude(Include.ALWAYS)
 
-public class DataTypeDTO extends DataModelComponentDTO {
+public abstract class DataTypeDTO extends DataModelComponentDTO {
 
 	protected CatalogueItemLink belongsToModel;
 	

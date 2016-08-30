@@ -2,6 +2,10 @@ package ox.softeng.metadatacatalogue.domain.core;
 
 import java.util.UUID;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
+
 public class Breadcrumb {
 
 	private UUID id;

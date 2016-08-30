@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.faces.model.DataModel;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -11,8 +12,26 @@ import javax.persistence.TypedQuery;
 
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
+import org.dozer.classmap.MappingFileData;
+import org.dozer.loader.DozerBuilder;
+// import org.modelmapper.ModelMapper;
+import org.dozer.loader.api.BeanMappingBuilder;
+import org.dozer.loader.api.TypeMappingOptions;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
+import ox.softeng.metadatacatalogue.domain.core.DataElement;
+import ox.softeng.metadatacatalogue.domain.core.DataType;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataElementDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataModelDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.DataTypeDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.EnumerationTypeDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.pageview.PrimitiveTypeDTO;
+import ox.softeng.projector.Projector;
+
+import org.dozer.loader.api.FieldsMappingOptions;
+import org.dozer.loader.api.TypeMappingOptions;
 
 public class DatabaseQueryHelper {
 
@@ -21,6 +40,8 @@ public class DatabaseQueryHelper {
 	protected EntityManagerFactory emf;
 
 	static Mapper dozerMapper = new DozerBeanMapper();
+	
+	//static ModelMapper modelMapper = new ModelMapper();
 
 	public <DomainClass> List<DomainClass> getAll(Class<DomainClass> domainClass) throws Exception
 	{
@@ -158,18 +179,18 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass, DTOClass> DTOClass getByIdMap(Class<DomainClass> domainClass, Class<DTOClass> dtoClass, UUID uuid) throws Exception
+	public <DomainClass> JsonNode getByIdMap(Class<DomainClass> domainClass, String projectionName, UUID uuid) throws Exception
 	{
-		return executeQuery(new EMCallable<DTOClass>(){
+		return executeQuery(new EMCallable<JsonNode>(){
             @Override
-            public DTOClass call(EntityManager em) {
+            public JsonNode call(EntityManager em) {
             	try{
             		DomainClass result = em.find(domainClass, uuid);
             		if(result == null)
             		{
             			return null;
             		}
-            		DTOClass destObject =  dozerMapper.map(result, dtoClass);
+            		JsonNode destObject =  Projector.project(result, projectionName);
             		return destObject;
 				}
 				catch(Exception e)

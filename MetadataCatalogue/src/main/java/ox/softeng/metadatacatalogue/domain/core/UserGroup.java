@@ -15,9 +15,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.projector.annotations.Projectable;
 
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.UserGroup")
 @Table(schema="\"Core\"", name="\"UserGroup\"")
+
 public class UserGroup implements Serializable{
 
 	private static final long serialVersionUID = 1L;

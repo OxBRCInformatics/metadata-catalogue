@@ -15,8 +15,12 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataElement")
 @Table(schema="\"Core\"", name="\"DataElement\"")
+
 public class DataElement extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;

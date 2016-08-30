@@ -8,8 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.EnumerationType")
 @Table(schema="\"Core\"", name="\"EnumerationType\"")
+
 public class EnumerationType extends DataType {
 
 	private static final long serialVersionUID = 1L;

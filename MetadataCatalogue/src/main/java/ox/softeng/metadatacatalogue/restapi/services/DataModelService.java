@@ -11,6 +11,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
@@ -29,9 +31,9 @@ public class DataModelService extends BasicCatalogueService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public DataModelDTO getDataModel(@PathParam("id") UUID dataModelId) throws Exception
+	public JsonNode getDataModel(@PathParam("id") UUID dataModelId) throws Exception
 	{
-		return getApiContext().getByIdMap(DataModel.class, DataModelDTO.class, dataModelId);
+		return getApiContext().getByIdMap(DataModel.class, "datamodel.pageview.id", dataModelId);
 		
 	}
 

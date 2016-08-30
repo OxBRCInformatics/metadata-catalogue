@@ -11,23 +11,32 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModelComponent")
 @Table(schema="\"Core\"", name="\"DataModelComponent\"")
+
 public class DataModelComponent extends Sharable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@ManyToMany (mappedBy = "classifiedComponents", cascade=CascadeType.ALL)
+	@Projection(name="datamodel.pageview.id")
 	protected Set<Classifier> classifiers;
 
 	@OneToMany (mappedBy = "annotatedComponent")
+	@Projection(name="datamodel.pageview.id")
 	protected List<Annotation> annotations;
 
 	
 	@OneToMany (mappedBy = "source")
+	@Projection(name="datamodel.pageview.id")
 	protected Set<Link> sourceForLinks;
 
 	@OneToMany (mappedBy = "target")
+	@Projection(name="datamodel.pageview.id")
 	protected Set<Link> targetForLinks;
 
 	public DataModelComponent()

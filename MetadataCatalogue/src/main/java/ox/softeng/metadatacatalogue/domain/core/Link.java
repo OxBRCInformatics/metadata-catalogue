@@ -5,6 +5,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Link")
 @Table(schema="\"Core\"", name="\"Link\"")
 

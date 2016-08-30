@@ -5,6 +5,13 @@
 	<artifactId>MetadataCatalogue</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<repositories>
+		<repository>
+			<id>Jenkins CS Artifactory</id>
+			<url>http://jenkins.cs.ox.ac.uk:8081/artifactory/projector</url>
+		</repository>
+	</repositories>
+	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
@@ -283,6 +290,11 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-jersey2-jaxrs</artifactId>
 			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>Projector</groupId>
+			<artifactId>Projector</artifactId>
+			<version>0.0.1-20160830.080834-1</version>
 		</dependency>
 	</dependencies>
 </project>

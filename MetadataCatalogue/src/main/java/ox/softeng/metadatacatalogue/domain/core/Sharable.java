@@ -12,41 +12,52 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Sharable")
 @Table(schema="\"Core\"", name="\"Sharable\"")
+
 public abstract class Sharable extends CatalogueItem implements Serializable {
 
 	public static final long serialVersionUID = 1L;
 	
 	@Column(name="\"Readable By Everyone\"")
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Boolean readableByEveryone;
-	
+
 	@Column(name="\"Writeable By Everyone\"")
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Boolean writeableByEveryone;
 	
+
 	@ManyToMany
 	@JoinTable(name="\"ReadableByUsers\"", schema="\"Core\"",
 		joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 		inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Set<User> readableByUsers;
 	
 	@ManyToMany
 	@JoinTable(name="\"ReadableByGroups\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Set<UserGroup> readableByGroups;
 	
 	@ManyToMany
 	@JoinTable(name="\"WriteableByUsers\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Set<User> writeableByUsers;
 	
 	@ManyToMany
 	@JoinTable(name="\"WriteableByGroups\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
+	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
 	protected Set<UserGroup> writeableByGroups;
 
 	public Sharable()

@@ -1,12 +1,15 @@
 package ox.softeng.metadatacatalogue.restapi.transport.pageview;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.restapi.transport.CatalogueItemLink;
 
 
@@ -23,7 +26,7 @@ public class DataModelDTO extends FinalisableDTO {
 
 	private List<MetadataDTO> metadata;
 	
-	private List<CatalogueItemLink> ownedDataTypes;
+	private Collection<DataTypeDTO> ownedDataTypes;
 	
 	private List<CatalogueItemLink> childDataClasses;
 
@@ -59,11 +62,11 @@ public class DataModelDTO extends FinalisableDTO {
 		this.type = type;
 	}
 
-	public List<CatalogueItemLink> getOwnedDataTypes() {
+	public Collection<DataTypeDTO> getOwnedDataTypes() {
 		return ownedDataTypes;
 	}
 
-	public void setOwnedDataTypes(List<CatalogueItemLink> ownedDataTypes) {
+	public void setOwnedDataTypes(Collection<DataTypeDTO> ownedDataTypes) {
 		this.ownedDataTypes = ownedDataTypes;
 	}
 

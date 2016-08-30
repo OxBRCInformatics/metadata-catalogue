@@ -17,18 +17,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataClass")
 @Table(schema="\"Core\"", name="\"DataClass\"")
-
-@NamedEntityGraph(
-		name="DataClass.Stub",
-		attributeNodes = {
-				@NamedAttributeNode(value = "id"),
-				@NamedAttributeNode(value = "label"),
-				@NamedAttributeNode(value = "description"),
-				@NamedAttributeNode(value = "childDataClasses", subgraph = "DataClass.Tree")
-		}
-)
 
 public class DataClass extends DataModelComponent {
 

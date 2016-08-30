@@ -4,8 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.PrimitiveType")
 @Table(schema="\"Core\"", name="\"PrimitiveType\"")
+
 public class PrimitiveType extends DataType {
 
 	private static final long serialVersionUID = 1L;

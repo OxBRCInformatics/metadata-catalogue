@@ -5,9 +5,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
 
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Annotation")
 @Table(schema="\"Core\"", name="\"Annotation\"")
+
 public class Annotation extends Sharable {
 
 	public static final long serialVersionUID = 1L;

@@ -14,19 +14,27 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModel")
 @Table(schema="\"Core\"", name="\"DataModel\"")
+
 public abstract class DataModel extends Finalisable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Author\"")
 	private String author;
 	
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Organization\"")
 	private String organization;
 	
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Type\"")
 	private String type;
 
@@ -41,6 +49,7 @@ public abstract class DataModel extends Finalisable {
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
+	@Projection(name="datamodel.pageview.id")
 	private List<DataClass> childDataClasses;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "belongsToModel")
@@ -50,6 +59,7 @@ public abstract class DataModel extends Finalisable {
 	private Set<DataElement> ownedDataElements;
 
 	@OneToMany(mappedBy = "belongsToModel")
+	@Projection(name="datamodel.pageview.id")
 	private Set<DataType> ownedDataTypes;
 
 	public DataModel()

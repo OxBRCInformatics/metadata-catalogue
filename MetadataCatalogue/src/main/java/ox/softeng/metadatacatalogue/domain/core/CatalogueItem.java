@@ -24,40 +24,53 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
+
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.CatalogueItem")
 @DiscriminatorColumn(name = "\"DType\"")
 @Table(schema="\"Core\"", name="\"CatalogueItem\"")
 @Inheritance(strategy=InheritanceType.JOINED)
+
 public abstract class CatalogueItem implements Serializable {
 
 	public static final long serialVersionUID = 1L;
 		
 	@Id
+	@Projection(always=true)
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
 	protected UUID id;
 
 	// The name of the concrete child class
-	@Column(name="\"DType\"", insertable = false, updatable = false) 
+	@Projection(always=true)
+	@Column(name="\"DType\"", insertable = false, updatable = false)
 	private String dtype;
 
 
+	@Projection(always=true)
 	@Column(length=10485760, name="\"Label\"")
 	protected String label;
 	
+	@Projection(always=true)
 	@Column(length=10485760, name="\"Description\"")
 	protected String description;
 	
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Date/Time Created\"")
 	protected OffsetDateTime dateCreated;
 	
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Date/Time Last Updated\"")
 	protected OffsetDateTime lastUpdated;
 	
+	@Projection(name="datamodel.pageview.id")
 	@OneToMany(mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
 	protected List<Metadata> metadata;
 		
+	@Projection(name="datamodel.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;

@@ -13,15 +13,20 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 
+@Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Metadata")
 @Table(schema="\"Core\"", name="\"Metadata\"")
+
 public class Metadata implements Serializable{
 	
 	public static final long serialVersionUID = 1L;
 
 	@Id
+	@Projection(name="datamodel.pageview.id")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
@@ -32,9 +37,11 @@ public class Metadata implements Serializable{
 	protected CatalogueItem belongsToCatalogueItem;
 	
 	@Column(length=10485760, name="\"Key\"")
+	@Projection(name="datamodel.pageview.id")
 	protected String key;
 	
 	@Column(length=10485760, name="\"Value\"")
+	@Projection(name="datamodel.pageview.id")
 	protected String value;
 
 	public Metadata()
