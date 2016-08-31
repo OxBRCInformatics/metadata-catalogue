@@ -98,6 +98,26 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 		writeableByGroups.add(ug);
 	}
 
+	public void removeUserReadable(User u)
+	{
+		readableByUsers.remove(u);
+	}
+
+	public void removeUserWriteable(User u)
+	{
+		writeableByUsers.remove(u);
+	}
+
+	public void removeGroupReadable(UserGroup ug)
+	{
+		readableByGroups.remove(ug);
+	}
+
+	public void removeGroupWriteable(UserGroup ug)
+	{
+		writeableByGroups.remove(ug);
+	}
+
 	public Boolean getReadableByEveryone() {
 		return readableByEveryone;
 	}
