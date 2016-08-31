@@ -7,7 +7,9 @@ import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationValue;
 
-public class EnumerationTypeApi extends CatalogueItemApi {
+public class EnumerationTypeApi extends DataTypeApi {
+
+ 	protected EnumerationTypeApi() { } // Private constructor as it makes no sense to instantiate this!
 
 	public static EnumerationValue newEnumerationValue(ApiContext apiCtx, EnumerationType et, String key, String value) throws Exception
 	{

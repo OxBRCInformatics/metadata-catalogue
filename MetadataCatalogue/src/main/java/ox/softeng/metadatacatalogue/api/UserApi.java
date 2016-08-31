@@ -14,6 +14,8 @@ import ox.softeng.metadatacatalogue.domain.core.User.UserRole;
 
 public final class UserApi extends CatalogueApi {
 
+ 	protected UserApi() { } // Private constructor as it makes no sense to instantiate this!
+
 	
 	public static User createUser(ApiContext apiCtx, String firstName, String lastName, String emailAddress, String password, UserRole role ) throws Exception
 	{

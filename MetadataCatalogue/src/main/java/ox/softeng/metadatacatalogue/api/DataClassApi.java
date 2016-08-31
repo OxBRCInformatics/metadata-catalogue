@@ -8,7 +8,9 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataElement;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
 
-public class DataClassApi extends CatalogueItemApi {
+public class DataClassApi extends DataModelComponentApi {
+
+ 	protected DataClassApi() { } // Private constructor as it makes no sense to instantiate this!
 
 	public static DataClass newChildDataClass(ApiContext apiCtx, DataClass dc, String label, String description) throws Exception
 	{

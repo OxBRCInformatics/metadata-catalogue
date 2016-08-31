@@ -15,8 +15,10 @@ import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 
-public class DataModelApi extends CatalogueItemApi {
+public class DataModelApi extends FinalisableApi {
 
+	protected DataModelApi() {} // Private constructor as it makes no sense to instantiate this!
+	
 	public static DataClass newDataClass(ApiContext apiCtx, DataModel dm, String label, String description) throws Exception
 	{
 		return apiCtx.executeTransaction(new EMCallable<DataClass>(){

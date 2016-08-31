@@ -10,6 +10,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataSet;
 
 public class DataSetApi extends DataModelApi {
 
+	protected DataSetApi() { } // Private constructor as it makes no sense to instantiate this!
 	
 	public static DataSet createDataSet(ApiContext apiCtx, String label, String description, String author, String organization ) throws Exception
 	{
