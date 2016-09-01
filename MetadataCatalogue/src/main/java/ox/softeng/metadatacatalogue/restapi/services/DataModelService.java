@@ -15,15 +15,18 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
+import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.restapi.Secured;
+import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 
 @Api(value = "Data Model")
 @Path("/datamodel")
-public class DataModelService extends BasicCatalogueService{
+public class DataModelService extends CatalogueItemService{
 
-
+	public static Class<?> type = DataModel.class;
+	
 	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

@@ -155,6 +155,25 @@ public class DatabaseQueryHelper {
             }
 		});
 	}
+	
+	public JsonNode project(Object obj, String projectionName) throws Exception
+	{
+		return executeQuery(new EMCallable<JsonNode>(){
+            @Override
+            public JsonNode call(EntityManager em) {
+            	try{
+            		Object o = em.merge(obj);
+            		JsonNode destObject =  Projector.project(o, projectionName);
+            		return destObject;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
 
 	
 	public <T> T executeTransaction(EMCallable<T> doInTransaction) throws Exception {

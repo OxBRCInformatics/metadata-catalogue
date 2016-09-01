@@ -1,17 +1,18 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
-import java.util.Properties;
+import java.util.ArrayList;
 import java.util.UUID;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import ox.softeng.metadatacatalogue.db.ApiContext;
+import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 public class BasicCatalogueService {
 
@@ -19,7 +20,7 @@ public class BasicCatalogueService {
 	@Context HttpServletRequest request;
 	@Context SecurityContext securityContext;
 
-	
+	public static Class<?> type = CatalogueItem.class;
 
 	
 	protected UUID getUserId()
@@ -30,26 +31,31 @@ public class BasicCatalogueService {
 		}
 		else return null;
 	}
-
-	protected EntityManager getNewEntityManager()
-	{
-		EntityManagerFactory entityManagerFactory = (EntityManagerFactory) request.getServletContext().getAttribute("entityManagerFactory");
-		if(entityManagerFactory==null){
-			System.err.println("No entity manager factory!");
-			throw new javax.ws.rs.ServerErrorException("Error on getting Entity Manager Factory",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
-		}
-		Properties props = (Properties) request.getServletContext().getAttribute("entityManagerProps");
-		if(props==null){
-			System.err.println("No entity manager properties!");
-			throw new javax.ws.rs.ServerErrorException("Error on getting Entity Manager Properties",Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
-		}
-		return entityManagerFactory.createEntityManager(props);
-	}
 	
 	protected ApiContext getApiContext()
 	{
 		
 		return (ApiContext) request.getSession().getAttribute("apiContext");
+	}
+
+	ResponseDTO createSuccessfulResponse(JsonNode obj, String type)
+	{
+		ResponseDTO response = new ResponseDTO();
+		response.setSuccess(true);
+		response.setErrorMessages(new ArrayList<String>());
+		response.setReturnObject(obj);
+		response.setReturnObjectType(type);
+		return response;
+	}
+
+	ResponseDTO createSuccessfulResponse(Object obj, String projectionName) throws Exception
+	{
+		ResponseDTO response = new ResponseDTO();
+		response.setSuccess(true);
+		response.setErrorMessages(new ArrayList<String>());
+		response.setReturnObject(getApiContext().project(obj, projectionName));
+		response.setReturnObjectType(obj.getClass().getName());
+		return response;
 	}
 
 }

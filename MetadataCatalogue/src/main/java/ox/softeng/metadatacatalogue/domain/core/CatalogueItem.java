@@ -139,7 +139,7 @@ public abstract class CatalogueItem implements Serializable {
 	public Metadata addMetadata(String key, String value)
 	{
 		Metadata md = new Metadata(this, key, value);
-		metadata.add(md);
+		//metadata.add(md);
 		return md;
 	}
 

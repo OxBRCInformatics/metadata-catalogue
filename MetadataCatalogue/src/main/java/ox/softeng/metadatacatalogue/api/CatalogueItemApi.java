@@ -13,15 +13,17 @@ public class CatalogueItemApi extends CatalogueApi{
 
 	protected CatalogueItemApi() {} // Private constructor as it makes no sense to instantiate this!
 
-	public static CatalogueItem addMetadata(ApiContext apiCtx, CatalogueItem catalogueItem, String key, String value) throws Exception
+	public static Metadata addMetadata(ApiContext apiCtx, CatalogueItem catalogueItem, String key, String value) throws Exception
 	{
-		return apiCtx.executeTransaction(new EMCallable<CatalogueItem>(){
+		return apiCtx.executeTransaction(new EMCallable<Metadata>(){
             @Override
-            public CatalogueItem call(EntityManager em) {
+            public Metadata call(EntityManager em) {
             	try{
-            		Metadata md = catalogueItem.addMetadata(key, value);
-					em.merge(md);
-					return catalogueItem;
+            		//CatalogueItem ci = em.find(CatalogueItem.class, catalogueItem.getId());
+            		CatalogueItem ci = em.merge(catalogueItem);
+            		Metadata md = ci.addMetadata(key, value);
+					md = em.merge(md);
+					return md;
 				}
 				catch(Exception e)
 				{
