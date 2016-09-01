@@ -29,8 +29,6 @@ public abstract class CatalogueItemService extends BasicCatalogueService {
 	{
 		CatalogueItem catalogueItem = getApiContext().getById(type, dataModelId);
 
-		System.out.println("catalogueItem dtype: " + catalogueItem.getDtype());
-		System.out.println("catalogueItem class: " + catalogueItem.getClass().getName());
 		Metadata md = CatalogueItemApi.addMetadata(getApiContext(), catalogueItem, metadataParam.getKey(), metadataParam.getValue());
 
 		return this.createSuccessfulResponse(md, "metadata.basic");
