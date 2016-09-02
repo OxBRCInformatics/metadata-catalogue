@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataElement")
@@ -29,6 +30,7 @@ public class DataElement extends DataModelComponent {
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
+	@Projection(name="dataclass.pageview.id")
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="\"DataType\"")
 	protected DataType dataType;

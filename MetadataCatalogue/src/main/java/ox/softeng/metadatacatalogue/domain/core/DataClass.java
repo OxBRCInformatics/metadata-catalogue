@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataClass")
@@ -25,31 +26,39 @@ public class DataClass extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="dataclass.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
+	@Projection(name="dataclass.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Model\"")
 	private DataModel parentDataModel;
 
+	@Projection(name="dataclass.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
-	
+
+	@Projection(name="dataclass.pageview.id")
 	@Column(name="\"Path\"")
 	private String path;
 
+	@Projection(name="dataclass.pageview.id")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataClass> childDataClasses;
 
+	@Projection(name="dataclass.pageview.id")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataElement> childDataElements;
 
+	@Projection(name="dataclass.pageview.id")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="referenceClass")
 	private List<ReferenceType> targetOfReferenceType;
 
 	@Transient
+	@Projection(name="dataclass.pageview.id")
 	private List<Breadcrumb> breadcrumbs;
 	
 	public DataClass()

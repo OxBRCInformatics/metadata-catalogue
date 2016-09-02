@@ -24,19 +24,23 @@ public class DataModelComponent extends Sharable {
 
 	@ManyToMany (mappedBy = "classifiedComponents", cascade=CascadeType.ALL)
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
 	protected Set<Classifier> classifiers;
 
 	@OneToMany (mappedBy = "annotatedComponent")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
 	protected List<Annotation> annotations;
 
 	
 	@OneToMany (mappedBy = "source")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
 	protected Set<Link> sourceForLinks;
 
 	@OneToMany (mappedBy = "target")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
 	protected Set<Link> targetForLinks;
 
 	public DataModelComponent()

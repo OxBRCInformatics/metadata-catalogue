@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import io.swagger.annotations.Api;
@@ -28,9 +29,10 @@ public class DataClassService extends DataModelComponentService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public ArrayNode getDataClass(@PathParam("id") UUID dataClassId) throws Exception
+	public JsonNode getDataClass(@PathParam("id") UUID dataClassId) throws Exception
 	{
-		return null;
+		
+		return getApiContext().getByIdMap(DataClass.class, "dataclass.pageview.id", dataClassId);
 		//return getApiContext().getByIdMap(DataClass.class, DataClassDTO.class, dataClassId);
 		
 	}

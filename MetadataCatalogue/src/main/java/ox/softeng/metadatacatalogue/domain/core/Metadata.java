@@ -27,6 +27,7 @@ public class Metadata implements Serializable{
 
 	@Id
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
 	@Projection(name="metadata.basic")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
@@ -39,11 +40,13 @@ public class Metadata implements Serializable{
 	
 	@Column(length=10485760, name="\"Key\"")
 	@Projection(name="metadata.basic")
+	@Projection(name="dataclass.pageview.id")
 	@Projection(name="datamodel.pageview.id")
 	protected String key;
 	
 	@Column(length=10485760, name="\"Value\"")
 	@Projection(name="metadata.basic")
+	@Projection(name="dataclass.pageview.id")
 	@Projection(name="datamodel.pageview.id")
 	protected String value;
 
