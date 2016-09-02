@@ -13,6 +13,8 @@ import org.junit.BeforeClass;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ox.softeng.metadatacatalogue.db.ApiContext;
+import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 
 
@@ -23,11 +25,18 @@ public class APITest {
 	public static Client client;
 	public static WebTarget target;
 	
+	static ApiContext apiCtx;
+	
+	static ObjectMapper objectMapper = new ObjectMapper();
 	
 	@BeforeClass
-	public static void Before() {
+	public static void Before() throws Exception {
 		client = ClientBuilder.newClient();
 		target = client.target(endpoint);
+
+		ConnectionProvider cp = new ConnectionProvider(null);
+		// Get the Bootstrap user
+		apiCtx = new ApiContext(cp, cp.newConnection(), "admin@metadatacatalogue.com", "password");
 	}
 	
 	@AfterClass
@@ -36,13 +45,19 @@ public class APITest {
 	}
 
 	
+	public static Response doLogin() throws JsonProcessingException
+	{
+		return doLogin("admin@metadatacatalogue.com", "password");
+	}
+
+	
 	public static Response doLogin(String username, String password) throws JsonProcessingException
 	{
 		UserCredentials uc = new UserCredentials();
 		uc.setUsername(username);
 		uc.setPassword(password);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(uc);
+		
+		String json = objectMapper.writeValueAsString(uc);
 		
 		WebTarget target = client.target(endpoint);
 		WebTarget resource = target.path("/authentication/login");

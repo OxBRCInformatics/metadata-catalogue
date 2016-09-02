@@ -40,45 +40,13 @@ public class DataModelApi extends FinalisableApi {
 
 	public static DataModel getById(ApiContext apiCtx, UUID uuid) throws Exception
 	{
-		return apiCtx.executeQuery(new EMCallable<DataModel>(){
-            @Override
-            public DataModel call(EntityManager em) {
-            	try{
-            		
-            		EntityGraph<?> entityGraph = em.getEntityGraph("DataModel.Tree");
-            		Map<String, Object> props = new HashMap<String, Object>();
-            		props.put("javax.persistence.fetchgraph", entityGraph);
-            		DataModel dm = em.find(DataModel.class, uuid, props);
-            		return dm;
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-					return null;
-				}
-            }
-		});
+		return apiCtx.getById(DataModel.class, uuid);
 	}
 
 	public static List<DataModel> getAll(ApiContext apiCtx) throws Exception
 	{
-		
-		return apiCtx.executeQuery(new EMCallable<List<DataModel>>(){
-            @Override
-            public List<DataModel> call(EntityManager em) {
-            	try{
-            		return apiCtx.getAll(DataModel.class);
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-					return null;
-				}
-            }
-		});
+		return apiCtx.getAll(DataModel.class);
 	}
-
-	
 
 	public static PrimitiveType newPrimitiveType(ApiContext apiCtx, DataModel dm, String label, String description, String units) throws Exception
 	{
