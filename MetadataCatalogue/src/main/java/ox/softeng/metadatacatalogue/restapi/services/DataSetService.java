@@ -22,7 +22,7 @@ public class DataSetService extends DataModelService {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Secured(allowUnAuthenticated=true)
+	@Secured(allowUnAuthenticated=false)
 	public ResponseDTO createDataSet(DataSet ds) throws Exception
 	{		
 		DataSet ret = DataSetApi.createDataSet( getApiContext(), ds.getLabel(), ds.getDescription(), ds.getAuthor(), ds.getOrganization());
