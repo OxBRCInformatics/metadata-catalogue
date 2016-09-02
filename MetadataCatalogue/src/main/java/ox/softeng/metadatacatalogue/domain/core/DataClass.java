@@ -31,12 +31,10 @@ public class DataClass extends DataModelComponent {
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
-	@Projection(name="dataclass.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Model\"")
 	private DataModel parentDataModel;
 
-	@Projection(name="dataclass.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
