@@ -19,7 +19,7 @@ import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 @Api(value = "Data Element")
 @Path("/dataelement")
-public class DataElementService extends BasicCatalogueService{
+public class DataElementService extends DataModelComponentService{
 
 
 	@Path("/pageView/{id}")

@@ -10,7 +10,6 @@ import javax.ws.rs.core.SecurityContext;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
-import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.User;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
@@ -20,7 +19,7 @@ public class BasicCatalogueService {
 	@Context HttpServletRequest request;
 	@Context SecurityContext securityContext;
 
-	public static Class<?> type = CatalogueItem.class;
+	public static Class<?> type;
 
 	
 	protected UUID getUserId()
