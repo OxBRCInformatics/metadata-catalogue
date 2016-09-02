@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.domain.core.User;
@@ -21,7 +20,6 @@ import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 import ox.softeng.projector.Projector;
 
 
-@Api(value = "Authentication")
 @Path("/authentication")
 
 public class AuthenticationService extends BasicCatalogueService{

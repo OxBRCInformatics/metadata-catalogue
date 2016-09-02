@@ -13,13 +13,11 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 
-@Api(value = "Data Model")
 @Path("/datamodel")
 public class DataModelService extends FinalisableService{
 
@@ -72,6 +70,10 @@ public class DataModelService extends FinalisableService{
 				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
 	}
 
+
+	
+	
+	
 
 
 }

@@ -13,13 +13,11 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
-import io.swagger.annotations.Api;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 
-@Api(value = "Data Class")
 @Path("/dataclass")
 public class DataClassService extends DataModelComponentService{
 

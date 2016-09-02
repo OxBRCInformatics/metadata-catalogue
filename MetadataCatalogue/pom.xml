@@ -278,12 +278,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Swagger for REST API documentation -->
-		<dependency>
-			<groupId>io.swagger</groupId>
-			<artifactId>swagger-jersey2-jaxrs</artifactId>
-			<version>1.5.0</version>
-		</dependency>
 		<!-- This should really be included in the Projector dependency ? -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
