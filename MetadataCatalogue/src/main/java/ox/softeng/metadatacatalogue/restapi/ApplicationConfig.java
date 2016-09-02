@@ -17,6 +17,7 @@ import ox.softeng.metadatacatalogue.restapi.filters.ResponseCorsFilter;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
+import ox.softeng.metadatacatalogue.restapi.services.DataSetService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
 
@@ -57,10 +58,11 @@ public class ApplicationConfig extends Application {
         
         resources.add(TestService.class);
         
+        resources.add(AuthenticationService.class);
+        resources.add(DataSetService.class);
         resources.add(DataModelService.class);
         resources.add(DataClassService.class);
         
-        resources.add(AuthenticationService.class);
 
         /*
         resources.add(ClassifierService.class);
