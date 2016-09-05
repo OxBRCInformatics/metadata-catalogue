@@ -17,10 +17,12 @@ public class EnumerationValue extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="datatype.pageview.id")
 	@Projection(name="dataelement.pageview.id")
 	@Column(length=10485760, name="\"Key\"")
 	protected String key;
 
+	@Projection(name="datatype.pageview.id")
 	@Projection(name="dataelement.pageview.id")
 	@Column(length=10485760, name="\"Value\"")
 	protected String value;

@@ -16,6 +16,7 @@ public class ReferenceType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="datatype.pageview.id")
 	@Projection(name="dataelement.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Referenced Class\"")

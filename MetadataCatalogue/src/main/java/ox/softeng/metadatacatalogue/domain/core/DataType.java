@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataType")
@@ -20,11 +21,12 @@ public abstract class DataType extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="datatype.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
-	
+	@Projection(name="datatype.pageview.id")
 	@OneToMany(mappedBy="dataType")
 	protected Set<DataElement> forDataElements;
 	
@@ -42,5 +44,29 @@ public abstract class DataType extends DataModelComponent {
 		super(label, description, createdBy);
 		this.belongsToModel = belongsToModel;
 		this.forDataElements = new HashSet<DataElement>();
+	}
+
+	public DataModel getBelongsToModel() {
+		return belongsToModel;
+	}
+
+	public void setBelongsToModel(DataModel belongsToModel) {
+		this.belongsToModel = belongsToModel;
+	}
+
+	public Set<DataElement> getForDataElements() {
+		return forDataElements;
+	}
+
+	public void setForDataElements(Set<DataElement> forDataElements) {
+		this.forDataElements = forDataElements;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

@@ -19,6 +19,7 @@ import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataElementService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
 import ox.softeng.metadatacatalogue.restapi.services.DataSetService;
+import ox.softeng.metadatacatalogue.restapi.services.DataTypeService;
 import ox.softeng.metadatacatalogue.restapi.services.TestService;
 
 
@@ -65,6 +66,8 @@ public class ApplicationConfig extends Application {
         resources.add(DataClassService.class);
         
         resources.add(DataElementService.class);
+        
+        resources.add(DataTypeService.class);
         
 
         /*
