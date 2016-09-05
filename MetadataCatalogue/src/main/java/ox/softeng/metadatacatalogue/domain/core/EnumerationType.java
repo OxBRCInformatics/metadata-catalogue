@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.EnumerationType")
@@ -18,6 +19,7 @@ public class EnumerationType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="dataelement.pageview.id")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="enumerationType")
 	protected List<EnumerationValue> enumerationValues;
 
@@ -37,6 +39,14 @@ public class EnumerationType extends DataType {
 	{
 		EnumerationValue ev = new EnumerationValue(key, value, createdBy, this);
 		return ev;
+	}
+
+	public List<EnumerationValue> getEnumerationValues() {
+		return enumerationValues;
+	}
+
+	public void setEnumerationValues(List<EnumerationValue> enumerationValues) {
+		this.enumerationValues = enumerationValues;
 	}
 	
 	

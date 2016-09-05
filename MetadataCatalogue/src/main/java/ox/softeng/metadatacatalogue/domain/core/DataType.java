@@ -28,6 +28,7 @@ public abstract class DataType extends DataModelComponent {
 	@OneToMany(mappedBy="dataType")
 	protected Set<DataElement> forDataElements;
 	
+
 	@Column(name="\"Type\"")
 	protected String type;
 

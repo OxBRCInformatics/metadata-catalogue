@@ -3,15 +3,22 @@ package ox.softeng.metadatacatalogue.domain.core;
 import java.util.UUID;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 
 public class Breadcrumb {
 
+	@Projection(always=true)
 	private UUID id;
 	
+	@Projection(always=true)
 	private String label;
+
+	@Projection(always=true)
 	private String description;
+
+	@Projection(always=true)
 	private String dtype;
 	
 	public Breadcrumb(UUID id, String label, String description, String dtype)

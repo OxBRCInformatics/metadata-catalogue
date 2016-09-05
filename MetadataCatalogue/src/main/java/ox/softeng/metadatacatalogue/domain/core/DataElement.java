@@ -26,22 +26,27 @@ public class DataElement extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="dataelement.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
+	@Projection(name="dataelement.pageview.id")
 	@Projection(name="dataclass.pageview.id")
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="\"DataType\"")
 	protected DataType dataType;
 	
+	@Projection(name="dataelement.pageview.id")
 	@Column(name="\"Path\"")
 	protected String path;
 	
+	@Projection(name="dataelement.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
 
+	@Projection(name="dataelement.pageview.id")
 	@Transient
 	private List<Breadcrumb> breadcrumbs;
 

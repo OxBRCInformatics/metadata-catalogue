@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.domain.core.DataElement;
@@ -20,15 +21,17 @@ import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 public class DataElementService extends DataModelComponentService{
 
 
+
 	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated= true)
-	public ArrayNode getDataElement(@PathParam("id") UUID dataElementId) throws Exception
+	public JsonNode getDataElement(@PathParam("id") UUID dataElementId) throws Exception
 	{
-		//return getApiContext().getByIdMap(DataElement.class, DataElementDTO.class, dataElementId);
-		return null;
+		
+		return getApiContext().getByIdMap(DataElement.class, "dataelement.pageview.id", dataElementId);
+		
 	}
 
 	@Path("/search")

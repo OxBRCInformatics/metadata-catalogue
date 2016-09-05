@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.PrimitiveType")
@@ -14,6 +15,7 @@ public class PrimitiveType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="dataelement.pageview.id")
 	@Column(name="\"Units\"")
 	protected String units;
 	
@@ -26,6 +28,14 @@ public class PrimitiveType extends DataType {
 	{
 		super(label, description, createdBy, belongsToModel);
 		this.type = "PrimitiveType";
+		this.units = units;
+	}
+
+	public String getUnits() {
+		return units;
+	}
+
+	public void setUnits(String units) {
 		this.units = units;
 	}
 

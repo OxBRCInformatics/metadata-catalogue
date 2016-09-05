@@ -6,6 +6,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.ReferenceType")
@@ -15,6 +16,7 @@ public class ReferenceType extends DataType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="dataelement.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Referenced Class\"")
 	protected DataClass referenceClass;
