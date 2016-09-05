@@ -44,6 +44,7 @@ public class DataClass extends DataModelComponent {
 	private String path;
 
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="datamodel.treeview")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataClass> childDataClasses;
 

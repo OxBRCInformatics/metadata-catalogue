@@ -50,6 +50,7 @@ public abstract class DataModel extends Finalisable {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.treeview")
 	private List<DataClass> childDataClasses;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "belongsToModel")

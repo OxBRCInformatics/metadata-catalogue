@@ -54,7 +54,7 @@ public class DataModelService extends FinalisableService{
 	@Secured(allowUnAuthenticated= true)
 	public ArrayNode getDataModelTrees() throws Exception
 	{
-		return getApiContext().getAllMap(DataModel.class, "datamodel.pageview.id");
+		return getApiContext().getAllMap(DataModel.class, "datamodel.treeview");
 	}
 
 	@Path("/search")
