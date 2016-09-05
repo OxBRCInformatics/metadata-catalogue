@@ -5,6 +5,7 @@ import java.security.Key;
 import javax.ws.rs.core.Context;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -88,6 +89,30 @@ public class AuthenticationService extends BasicCatalogueService{
 	{
 		request.getSession().setAttribute("apiContext", null);
 		request.getSession().invalidate();
+		return true;
+	}
+
+	@Path("/isValidSession")
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public boolean isValidSession(@Context HttpServletRequest request)
+	{
+		if(request.getSession() == null)
+		{
+			System.err.println("Null session");
+			return false;
+		}
+		if(request.getSession().isNew())
+		{
+			System.err.println("New session");
+			return false;
+		}
+		if(request.getSession().getAttribute("apiContext") == null)
+		{
+			System.err.println("Null Api Context");
+			return false;
+		}
 		return true;
 	}
 
