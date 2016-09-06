@@ -49,7 +49,7 @@ public abstract class DataModel extends Finalisable {
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
-	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.pageview.id", recurseProjection="datamodel.pageview.dataclass")
 	@Projection(name="datamodel.treeview")
 	private List<DataClass> childDataClasses;
 
@@ -60,7 +60,7 @@ public abstract class DataModel extends Finalisable {
 	private Set<DataElement> ownedDataElements;
 
 	@OneToMany(mappedBy = "belongsToModel")
-	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.pageview.id", recurseProjection="datamodel.pageview.dataelement")
 	private Set<DataType> ownedDataTypes;
 
 	public DataModel()

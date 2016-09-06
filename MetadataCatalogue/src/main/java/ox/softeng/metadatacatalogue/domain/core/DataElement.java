@@ -32,7 +32,7 @@ public class DataElement extends DataModelComponent {
 	protected DataModel belongsToModel;
 
 	@Projection(name="dataelement.pageview.id")
-	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataclass.pageview.dataelement")
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="\"DataType\"")
 	protected DataType dataType;

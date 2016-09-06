@@ -35,7 +35,7 @@ public class DataClass extends DataModelComponent {
 	@JoinColumn(name="\"Parent Model\"")
 	private DataModel parentDataModel;
 
-	@Projection(name="dataclass.pageview.id", recurseProjection="dataclass.pageview.subclass")
+	
 	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
@@ -49,11 +49,11 @@ public class DataClass extends DataModelComponent {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataClass> childDataClasses;
 
-	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataclass.pageview.id", recurseProjection="dataclass.pageview.dataelement")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataElement> childDataElements;
 
-	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataclass.pageview.referenceType")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="referenceClass")
 	private List<ReferenceType> targetOfReferenceType;
 

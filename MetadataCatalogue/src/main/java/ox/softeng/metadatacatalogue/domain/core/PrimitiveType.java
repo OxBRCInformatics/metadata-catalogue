@@ -17,6 +17,8 @@ public class PrimitiveType extends DataType {
 
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="dataelement.pageview.id")
+	@Projection(name="dataclass.pageview.dataelement")
+	@Projection(name="datamodel.pageview.dataelement")
 	@Column(name="\"Units\"")
 	protected String units;
 	
