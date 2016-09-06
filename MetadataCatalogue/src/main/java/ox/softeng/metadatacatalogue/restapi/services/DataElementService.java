@@ -26,7 +26,7 @@ public class DataElementService extends DataModelComponentService{
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Secured(allowUnAuthenticated= true)
+	@Secured(allowUnAuthenticated=false)
 	public JsonNode getDataElement(@PathParam("id") UUID dataElementId) throws Exception
 	{
 		

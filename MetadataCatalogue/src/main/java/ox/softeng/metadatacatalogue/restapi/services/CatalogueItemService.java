@@ -24,7 +24,7 @@ public abstract class CatalogueItemService extends BasicCatalogueService {
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Secured(allowUnAuthenticated= true)
+	@Secured(allowUnAuthenticated=false)
 	public ResponseDTO addMetadata(@PathParam("id") UUID dataModelId, Metadata metadataParam) throws Exception
 	{
 		CatalogueItem catalogueItem = getApiContext().getById(type, dataModelId);
