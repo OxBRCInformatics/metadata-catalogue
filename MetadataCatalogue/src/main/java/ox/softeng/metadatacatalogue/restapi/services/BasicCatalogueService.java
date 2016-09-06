@@ -19,6 +19,9 @@ public class BasicCatalogueService {
 	@Context HttpServletRequest request;
 	@Context SecurityContext securityContext;
 
+	@Context
+    HttpServletRequest webRequest;
+
 	public static Class<?> type;
 
 	
@@ -33,8 +36,15 @@ public class BasicCatalogueService {
 	
 	protected ApiContext getApiContext()
 	{
+		ApiContext apiCtx = (ApiContext) request.getSession().getAttribute("apiContext");
+		if(apiCtx != null)
+		{
+			return apiCtx;
+		}
+		else {
+			return (ApiContext) webRequest.getServletContext().getAttribute("masterApiContext");
+		}
 		
-		return (ApiContext) request.getSession().getAttribute("apiContext");
 	}
 
 	ResponseDTO createSuccessfulResponse(JsonNode obj, String type)

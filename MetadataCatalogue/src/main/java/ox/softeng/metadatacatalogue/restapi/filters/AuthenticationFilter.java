@@ -40,8 +40,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 			}
 			else
 			{
-				requestContext.setSecurityContext(apiContext);
-				//requestContext.setSecurityContext((ApiContext)webRequest.getServletContext().getAttribute("masterApiContext"));
+				requestContext.setSecurityContext((ApiContext)webRequest.getServletContext().getAttribute("masterApiContext"));
 			}
 		}
 		else
