@@ -32,7 +32,7 @@ public class DataSetTest extends DatabaseTest {
 		assertTrue(ds.getAuthor().equals("James Welch"));
 		assertTrue(ds.getOrganization().equals("My Org"));
 		assertTrue(ds.getType().equals("DataSet"));
-		assertTrue(ds.getDtype().equals("ox.softeng.metadatacatalogue.domain.core.DataSet"));
+		assertTrue(ds.getDtype().equals("DataSet"));
 		
 	}
 
@@ -50,7 +50,7 @@ public class DataSetTest extends DatabaseTest {
 		assertTrue(ds.getAuthor().equals("James Welch"));
 		assertTrue(ds.getOrganization().equals("My Org"));
 		assertTrue(ds.getType().equals("DataSet"));
-		assertTrue(ds.getDtype().equals("ox.softeng.metadatacatalogue.domain.core.DataSet"));
+		assertTrue(ds.getDtype().equals("DataSet"));
 
 		DataSetApi.editDetails(apiCtx, ds, "Label 2", "Description 2");
 		dss = DataSetApi.getAllDataSets(apiCtx);
@@ -62,7 +62,7 @@ public class DataSetTest extends DatabaseTest {
 		assertTrue(ds.getAuthor().equals("James Welch"));
 		assertTrue(ds.getOrganization().equals("My Org"));
 		assertTrue(ds.getType().equals("DataSet"));
-		assertTrue(ds.getDtype().equals("ox.softeng.metadatacatalogue.domain.core.DataSet"));
+		assertTrue(ds.getDtype().equals("DataSet"));
 		
 		
 	}

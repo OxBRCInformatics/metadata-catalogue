@@ -115,6 +115,10 @@ public abstract class CatalogueItem implements Serializable {
 	}
 
 	public String getDtype() {
+		if(dtype == null)
+		{
+			return null;
+		}
 		return dtype.substring(dtype.lastIndexOf(".") + 1);
 	}
 
