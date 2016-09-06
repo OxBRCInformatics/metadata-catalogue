@@ -25,10 +25,16 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 	
 	@Column(name="\"Readable By Everyone\"")
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Boolean readableByEveryone;
 
 	@Column(name="\"Writeable By Everyone\"")
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Boolean writeableByEveryone;
 	
 
@@ -37,6 +43,9 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 		joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 		inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Set<User> readableByUsers;
 	
 	@ManyToMany
@@ -44,6 +53,9 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Set<UserGroup> readableByGroups;
 	
 	@ManyToMany
@@ -51,6 +63,9 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"User Id\"") })
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Set<User> writeableByUsers;
 	
 	@ManyToMany
@@ -58,6 +73,9 @@ public abstract class Sharable extends CatalogueItem implements Serializable {
 			joinColumns = { @JoinColumn (name="\"Sharable Id\"") },
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
 	@Projection(name="datamodel.pageview.id", classes={DataModel.class})
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected Set<UserGroup> writeableByGroups;
 
 	public Sharable()

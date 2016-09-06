@@ -26,7 +26,7 @@ public class DataClass extends DataModelComponent {
 
 	private static final long serialVersionUID = 1L;
 
-	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataclass.pageview.id", recurseProjection="dataclass.pageview.datamodel")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
