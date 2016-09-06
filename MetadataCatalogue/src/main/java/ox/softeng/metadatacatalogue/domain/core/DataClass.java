@@ -170,7 +170,8 @@ public class DataClass extends DataModelComponent {
 		}
 		else
 		{
-			throw new Exception("No parent for this data class: " + this.label);
+			//return null;
+			//throw new Exception("No parent for this data class: " + this.label);
 		}
 	}
 	
