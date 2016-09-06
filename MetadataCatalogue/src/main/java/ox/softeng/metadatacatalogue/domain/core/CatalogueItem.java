@@ -115,7 +115,7 @@ public abstract class CatalogueItem implements Serializable {
 	}
 
 	public String getDtype() {
-		return dtype.token;
+		return dtype.substring(dtype.lastIndexOf(".") + 1);
 	}
 
 	public OffsetDateTime getDateCreated() {
