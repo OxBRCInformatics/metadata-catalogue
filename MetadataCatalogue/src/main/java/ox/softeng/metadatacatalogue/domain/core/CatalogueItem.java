@@ -60,21 +60,29 @@ public abstract class CatalogueItem implements Serializable {
 	
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datatype.pageview.id")
 	@Column(name="\"Date/Time Created\"")
 	protected OffsetDateTime dateCreated;
 	
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datatype.pageview.id")
 	@Column(name="\"Date/Time Last Updated\"")
 	protected OffsetDateTime lastUpdated;
 	
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datatype.pageview.id")
 	@OneToMany(mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
 	protected List<Metadata> metadata;
 		
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datatype.pageview.id")
 	@ManyToOne
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;
