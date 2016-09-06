@@ -48,16 +48,25 @@ public class User implements Serializable, Principal{
 	@Column(name = "id", unique = true)
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected UUID id;
 
 	@Column(name="\"First Name\"")
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected String firstName;
 	
 	@Column(name="\"Last Name\"")
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected String lastName;
 
 	
@@ -72,6 +81,9 @@ public class User implements Serializable, Principal{
 	@Column(name="\"Email Address\"", unique=true)
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected String emailAddress;
 
 	@Column(name="\"Password\"")

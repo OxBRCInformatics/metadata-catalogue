@@ -16,6 +16,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import ox.softeng.metadatacatalogue.domain.core.User;
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.UserGroup")
@@ -29,9 +30,17 @@ public class UserGroup implements Serializable{
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
+	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected UUID id;
 	
 	@Column(name="\"Name\"")
+	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.datamodel")
+	@Projection(name="dataelement.pageview.datamodel")
+	@Projection(name="datatype.pageview.datamodel")
 	protected String groupName;
 	
 	@ManyToMany (mappedBy = "groups")
