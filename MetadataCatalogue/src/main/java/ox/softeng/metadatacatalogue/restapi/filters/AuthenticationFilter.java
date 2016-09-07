@@ -36,7 +36,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 		{
 			if (!allowUnAuthenticated())
 			{
-				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("This user is not able to access this resource").build());
+				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 			}
 			else
 			{
