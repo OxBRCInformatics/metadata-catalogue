@@ -7,8 +7,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +24,11 @@ import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
 import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 
-
-public class APITest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/context/simple_applicationContext.xml" })
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class, 
+                         FlywayTestExecutionListener.class })
+public abstract class APITest {
 
 	public static String endpoint = "http://localhost:8082/api";  
 
@@ -30,15 +40,20 @@ public class APITest {
 	static ObjectMapper objectMapper = new ObjectMapper();
 	
 	@BeforeClass
-	public static void Before() throws Exception {
+	public static void BeforeClass() throws Exception {
 		client = ClientBuilder.newClient();
 		target = client.target(endpoint);
+
+	}
+
+	@Before
+	public void Before() throws Exception {
 
 		ConnectionProvider cp = new ConnectionProvider(null);
 		// Get the Bootstrap user
 		apiCtx = new ApiContext(cp, cp.newConnection(), "admin@metadatacatalogue.com", "password");
 	}
-	
+
 	@AfterClass
 	public static void After() {
 		client.close();

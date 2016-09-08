@@ -10,13 +10,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.DataClassApi;
-import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
-import ox.softeng.metadatacatalogue.domain.core.DataModel;
+import ox.softeng.metadatacatalogue.domain.core.DataElement;
+import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
@@ -64,8 +66,32 @@ public class DataClassService extends DataModelComponentService{
 		DataClass ret = DataClassApi.newChildDataClass(getApiContext(), parentDC, dc.getLabel(), dc.getDescription());
 		return createSuccessfulResponse(ret, "dataclass.pageview.id");
 	}
-	
-	
+
+	@Path("/newChildDataElement/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO newChildDataElement(@PathParam("id") UUID dataClassId, NewDataElementDTO dc) throws Exception
+	{		
+		DataClass parentDC = getApiContext().getById(DataClass.class, dataClassId);
+		DataType dataType = getApiContext().getById(DataType.class, dc.dataType.id);
+		
+		DataElement ret = DataClassApi.newChildDataElement(getApiContext(), parentDC, dc.label, dc.description, dataType);
+		return createSuccessfulResponse(ret, "dataelement.pageview.id");
+	}
+
+	@JsonAutoDetect(creatorVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY)
+	public static class NewDataElementDTO {
+		public String label;
+		public String description;
+		public DataTypeDTO dataType;
+		public static class DataTypeDTO
+		{
+			public UUID id;
+		}
+		
+	}
 
 
 }

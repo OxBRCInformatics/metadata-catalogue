@@ -18,7 +18,10 @@ import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
+import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.domain.core.Metadata;
+import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
+import ox.softeng.metadatacatalogue.restapi.services.DataClassService.NewDataElementDTO.DataTypeDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 public class DataClassServiceIT extends APITest {
@@ -72,6 +75,56 @@ public class DataClassServiceIT extends APITest {
 	
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
+	public void addChildElement() throws Exception {
+		
+		Response response = doLogin();
+		String sessionId = getSessionCookie(response);
+		
+		
+		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
+		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
+		DataType dt = DataModelApi.newPrimitiveType(apiCtx, ds, "String data type", "data type description", "");
+		System.err.println(dc.getId());
+		
+		String path = "/dataclass/newChildDataElement/" + dc.getId();
+		WebTarget resource = target.path(path);
+		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
+		
+		DataClassService.NewDataElementDTO de = new DataClassService.NewDataElementDTO();
+		de.label = "my test element";
+		de.description = "my test element description";
+		de.dataType = new DataTypeDTO();
+		de.dataType.id = dt.getId();
+		String json = objectMapper.writeValueAsString(de);
+		System.err.println(json);
+		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		assertTrue(response.getStatus()==200);
+		
+		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
+		assertTrue(respObj.isSuccess());
+		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
+		assertTrue(respObj.getReturnObjectType().contains("DataElement"));
+		JsonNode jn1 = respObj.getReturnObject();
+		String label1 = jn1.get("label").asText();
+		String description1 = jn1.get("description").asText();
+		assertTrue(label1.equalsIgnoreCase("my test element"));
+		assertTrue(description1.equalsIgnoreCase("my test element description"));
+		String newId = jn1.get("id").asText();
+		assertTrue(newId != null && !newId.equals(""));
+		
+		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", dc.getId());
+		ArrayNode an = (ArrayNode) jn.get("childDataElements");
+		
+		assertTrue(an.size() == 1);
+		String key = an.get(0).get("label").asText();
+		String value = an.get(0).get("description").asText();
+		assertTrue(key.equalsIgnoreCase("my test element"));
+		assertTrue(value.equalsIgnoreCase("my test element description"));
+
+	}
+
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
 	public void addChildClass() throws Exception {
 		
 		Response response = doLogin();
@@ -92,6 +145,8 @@ public class DataClassServiceIT extends APITest {
 		String json = objectMapper.writeValueAsString(newDC);
 		System.err.println(json);
 		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		System.err.println(response);
+		System.err.println(response.getStatus());
 		assertTrue(response.getStatus()==200);
 		
 		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
@@ -116,6 +171,5 @@ public class DataClassServiceIT extends APITest {
 		assertTrue(value.equalsIgnoreCase("my test class description"));
 
 	}
-
 	
 }
