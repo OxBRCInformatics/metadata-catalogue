@@ -20,6 +20,7 @@ import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
+import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
@@ -89,6 +90,19 @@ public class DataModelService extends FinalisableService{
 
 		DataClass ret = DataModelApi.newDataClass(getApiContext(), dm, dc.getLabel(), dc.getDescription());
 		return createSuccessfulResponse(ret, "dataclass.pageview.id");
+	}
+	
+	@Path("/newPrimitiveDataType/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO newPrimitiveDataType(@PathParam("id") UUID dataModelId, PrimitiveType pt) throws Exception
+	{		
+		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
+
+		PrimitiveType ret = DataModelApi.newPrimitiveType(getApiContext(), dm, pt.getLabel(), pt.getDescription(), pt.getUnits());
+		return createSuccessfulResponse(ret, "datatype.pageview.id");
 	}
 	
 	

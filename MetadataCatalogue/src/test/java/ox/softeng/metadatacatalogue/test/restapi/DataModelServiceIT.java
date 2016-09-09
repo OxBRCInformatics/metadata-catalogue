@@ -20,6 +20,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.Metadata;
+import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 public class DataModelServiceIT extends APITest {
@@ -115,5 +116,52 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(description.equalsIgnoreCase("my test class description"));
 
 	}
-	
+
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
+	public void newPrimitiveDataType() throws Exception {
+		
+		Response response = doLogin();
+		String sessionId = getSessionCookie(response);
+		
+		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
+		System.err.println(ds.getId());
+		
+		String path = "/datamodel/newPrimitiveDataType/" + ds.getId();
+		WebTarget resource = target.path(path);
+		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
+
+		PrimitiveType pt = new PrimitiveType();
+		pt.setLabel("my test pt");
+		pt.setDescription("test pt description");
+		pt.setUnits("units");
+
+		String json = objectMapper.writeValueAsString(pt);
+		System.err.println(json);
+		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+		assertTrue(response.getStatus()==200);
+		
+		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
+		assertTrue(respObj.isSuccess());
+		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
+		assertTrue(respObj.getReturnObjectType().contains("PrimitiveType"));
+		JsonNode jn1 = respObj.getReturnObject();
+		String label1 = jn1.get("label").asText();
+		String description1 = jn1.get("description").asText();
+		assertTrue(label1.equalsIgnoreCase("my test pt"));
+		assertTrue(description1.equalsIgnoreCase("test pt description"));
+		String newId = jn1.get("id").asText();
+		assertTrue(newId != null && !newId.equals(""));
+		
+		JsonNode jn = apiCtx.getByIdMap(DataModel.class, "datamodel.pageview.id", ds.getId());
+		ArrayNode an = (ArrayNode) jn.get("ownedDataTypes");
+		
+		assertTrue(an.size() == 1);
+		String label = an.get(0).get("label").asText();
+		String description = an.get(0).get("description").asText();
+		assertTrue(label.equalsIgnoreCase("my test pt"));
+		assertTrue(description.equalsIgnoreCase("test pt description"));
+
+	}
+
 }

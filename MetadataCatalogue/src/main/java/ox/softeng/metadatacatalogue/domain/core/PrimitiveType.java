@@ -22,7 +22,7 @@ public class PrimitiveType extends DataType {
 	@Column(name="\"Units\"")
 	protected String units;
 	
-	protected PrimitiveType()
+	public PrimitiveType()
 	{
 		
 	}
