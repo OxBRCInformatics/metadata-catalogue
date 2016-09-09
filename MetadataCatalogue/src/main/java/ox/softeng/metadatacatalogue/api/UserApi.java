@@ -36,6 +36,15 @@ public final class UserApi extends CatalogueApi {
 		});
 	}
 
+	public static User findOrCreateUser(ApiContext apiCtx, String firstName, String lastName, String emailAddress, String password, UserRole role ) throws Exception
+	{
+		User existingUser = getByEmailAddress(apiCtx, emailAddress);
+		if(existingUser != null)
+		{
+			return existingUser;
+		}
+		return createUser(apiCtx, firstName, lastName, emailAddress, password, role);
+	}
 	
 	public static User getByEmailAddress(ApiContext apiCtx, String emailAddress) throws Exception
 	{
