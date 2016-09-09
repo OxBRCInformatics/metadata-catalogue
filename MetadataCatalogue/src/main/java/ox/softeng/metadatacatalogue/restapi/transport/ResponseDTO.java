@@ -34,7 +34,12 @@ public class ResponseDTO {
 	}
 
 	public String getReturnObjectType() {
-		return returnObjectType;
+		if(returnObjectType == null)
+		{
+			return null;
+		}
+		return returnObjectType.substring(returnObjectType.lastIndexOf(".") + 1);
+
 	}
 
 	public void setReturnObjectType(String returnObjectType) {
