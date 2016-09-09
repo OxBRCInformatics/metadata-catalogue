@@ -20,8 +20,8 @@ public class MetadataApi extends CatalogueApi{
             	try{
             		md.setKey(key);
             		md.setValue(value);
-					em.merge(md);
-					return md;
+					Metadata newMD = em.merge(md);
+					return newMD;
 				}
 				catch(Exception e)
 				{

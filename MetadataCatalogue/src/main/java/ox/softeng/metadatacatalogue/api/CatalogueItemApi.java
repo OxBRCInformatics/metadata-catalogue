@@ -61,8 +61,8 @@ public class CatalogueItemApi extends CatalogueApi{
             	try{
             		catalogueItem.setLabel(label);
             		catalogueItem.setDescription(description);
-            		em.merge(catalogueItem);
-					return catalogueItem;
+            		CatalogueItem retCI = em.merge(catalogueItem);
+					return retCI;
 				}
 				catch(Exception e)
 				{

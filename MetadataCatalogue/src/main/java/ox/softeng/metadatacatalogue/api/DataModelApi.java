@@ -27,7 +27,7 @@ public class DataModelApi extends FinalisableApi {
             public DataClass call(EntityManager em) {
             	try{
             		DataClass dc = new DataClass(label, description, apiCtx.getUser(), dm);
-					em.persist(dc);
+					dc = em.merge(dc);
 					return dc;
 				}
 				catch(Exception e)
@@ -56,7 +56,7 @@ public class DataModelApi extends FinalisableApi {
             public PrimitiveType call(EntityManager em) {
             	try{
             		PrimitiveType pt = new PrimitiveType(label, description, apiCtx.getUser(), units, dm);
-            		em.persist(pt);
+            		pt = em.merge(pt);
 					return pt;
 				}
 				catch(Exception e)
@@ -75,7 +75,7 @@ public class DataModelApi extends FinalisableApi {
             public ReferenceType call(EntityManager em) {
             	try{
             		ReferenceType rt = new ReferenceType(label, description, apiCtx.getUser(), referenceClass, dm);
-            		em.persist(rt);
+            		rt = em.merge(rt);
 					return rt;
 				}
 				catch(Exception e)
