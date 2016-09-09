@@ -90,6 +90,7 @@ public class DataModelService extends FinalisableService{
 		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
 
 		DataClass ret = DataModelApi.newDataClass(getApiContext(), dm, dc.getLabel(), dc.getDescription());
+		ret = (DataClass) maybeAddMetadata(ret, dc);
 		return createSuccessfulResponse(ret, "dataclass.pageview.id");
 	}
 	
@@ -103,6 +104,7 @@ public class DataModelService extends FinalisableService{
 		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
 
 		PrimitiveType ret = DataModelApi.newPrimitiveType(getApiContext(), dm, pt.getLabel(), pt.getDescription(), pt.getUnits());
+		ret = (PrimitiveType) maybeAddMetadata(ret, pt);		
 		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 
@@ -116,6 +118,7 @@ public class DataModelService extends FinalisableService{
 		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
 		DataClass referenceClass = getApiContext().getById(DataClass.class, rt.getReferenceClass().getId());
 		ReferenceType ret = DataModelApi.newReferenceType(getApiContext(), dm, rt.getLabel(), rt.getDescription(), referenceClass);
+		ret = (ReferenceType) maybeAddMetadata(ret, rt);
 		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 

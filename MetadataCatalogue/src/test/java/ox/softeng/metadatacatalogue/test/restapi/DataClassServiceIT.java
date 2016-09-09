@@ -91,8 +91,8 @@ public class DataClassServiceIT extends APITest {
 		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
 		
 		DataClassService.NewDataElementDTO de = new DataClassService.NewDataElementDTO();
-		de.label = "my test element";
-		de.description = "my test element description";
+		de.setLabel("my test element");
+		de.setDescription("my test element description");
 		de.dataType = new DataTypeDTO();
 		de.dataType.id = dt.getId();
 		String json = objectMapper.writeValueAsString(de);

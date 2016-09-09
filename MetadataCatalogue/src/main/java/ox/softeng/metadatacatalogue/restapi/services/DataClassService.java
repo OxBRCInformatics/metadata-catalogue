@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.DataClassApi;
+import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataElement;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
@@ -64,6 +65,7 @@ public class DataClassService extends DataModelComponentService{
 		DataClass parentDC = getApiContext().getById(DataClass.class, dataClassId);
 
 		DataClass ret = DataClassApi.newChildDataClass(getApiContext(), parentDC, dc.getLabel(), dc.getDescription());
+		ret = (DataClass) maybeAddMetadata(ret, dc);
 		return createSuccessfulResponse(ret, "dataclass.pageview.id");
 	}
 
@@ -72,19 +74,19 @@ public class DataClassService extends DataModelComponentService{
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated=false)
-	public ResponseDTO newChildDataElement(@PathParam("id") UUID dataClassId, NewDataElementDTO dc) throws Exception
+	public ResponseDTO newChildDataElement(@PathParam("id") UUID dataClassId, NewDataElementDTO de) throws Exception
 	{		
 		DataClass parentDC = getApiContext().getById(DataClass.class, dataClassId);
-		DataType dataType = getApiContext().getById(DataType.class, dc.dataType.id);
+		DataType dataType = getApiContext().getById(DataType.class, de.dataType.id);
 		
-		DataElement ret = DataClassApi.newChildDataElement(getApiContext(), parentDC, dc.label, dc.description, dataType);
+		DataElement ret = DataClassApi.newChildDataElement(getApiContext(), parentDC, de.getLabel(), de.getDescription(), dataType);
+		ret = (DataElement) maybeAddMetadata(ret, de);
 		return createSuccessfulResponse(ret, "dataelement.pageview.id");
 	}
 
 	@JsonAutoDetect(creatorVisibility = Visibility.NONE, fieldVisibility = Visibility.ANY)
-	public static class NewDataElementDTO {
-		public String label;
-		public String description;
+	public static class NewDataElementDTO extends CatalogueItem {
+		private static final long serialVersionUID = 1L;
 		public DataTypeDTO dataType;
 		public static class DataTypeDTO
 		{

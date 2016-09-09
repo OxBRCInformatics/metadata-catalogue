@@ -26,6 +26,7 @@ public class DataSetService extends DataModelService {
 	public ResponseDTO createDataSet(DataSet ds) throws Exception
 	{		
 		DataSet ret = DataSetApi.createDataSet( getApiContext(), ds.getLabel(), ds.getDescription(), ds.getAuthor(), ds.getOrganization());
+		ret = (DataSet) maybeAddMetadata(ret, ds);
 		return createSuccessfulResponse(ret, "datamodel.pageview.id");
 	}
 		

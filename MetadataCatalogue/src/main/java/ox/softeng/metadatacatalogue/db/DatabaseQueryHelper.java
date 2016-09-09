@@ -231,5 +231,26 @@ public class DatabaseQueryHelper {
 	public EntityManagerFactory getEmf() {
 		return emf;
 	}
+	
+	public <T> T refresh(T o) throws Exception
+	{
+		return executeQuery(new EMCallable<T>(){
+			@Override
+			public T call(EntityManager em) {
+				try{
+					T managedO = em.merge(o);
+					em.refresh(managedO);
+					return (T) managedO;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
+	}
+
+
 
 }

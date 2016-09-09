@@ -9,7 +9,11 @@ import javax.ws.rs.core.SecurityContext;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ox.softeng.metadatacatalogue.api.CatalogueItemApi;
+import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.db.ApiContext;
+import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
+import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.domain.core.User;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
@@ -65,6 +69,23 @@ public class BasicCatalogueService {
 		response.setReturnObject(getApiContext().project(obj, projectionName));
 		response.setReturnObjectType(obj.getClass().getName());
 		return response;
+	}
+	
+	CatalogueItem maybeAddMetadata(CatalogueItem newObject, CatalogueItem param) throws Exception
+	{
+		if(param.getMetadata() == null)
+		{
+			return newObject;
+		}
+		else
+		{
+			for(Metadata md : param.getMetadata())
+			{
+				CatalogueItemApi.addMetadata(getApiContext(), newObject, md.getKey(), md.getValue());
+			}
+			newObject = getApiContext().refresh(newObject);
+			return newObject;
+		}
 	}
 
 }
