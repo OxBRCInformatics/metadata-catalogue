@@ -23,6 +23,7 @@ public class EnumerationType extends DataType {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="dataclass.pageview.dataelement")
 	@Projection(name="datamodel.pageview.dataelement")
+	@Projection(name="datatype.creation")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="enumerationType")
 	protected List<EnumerationValue> enumerationValues;
 

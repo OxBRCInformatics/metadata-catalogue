@@ -103,7 +103,7 @@ public class DataModelService extends FinalisableService{
 		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
 
 		PrimitiveType ret = DataModelApi.newPrimitiveType(getApiContext(), dm, pt.getLabel(), pt.getDescription(), pt.getUnits());
-		return createSuccessfulResponse(ret, "datatype.pageview.id");
+		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 
 	@Path("/newReferenceDataType/{id}")
@@ -116,7 +116,7 @@ public class DataModelService extends FinalisableService{
 		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
 		DataClass referenceClass = getApiContext().getById(DataClass.class, rt.getReferenceClass().getId());
 		ReferenceType ret = DataModelApi.newReferenceType(getApiContext(), dm, rt.getLabel(), rt.getDescription(), referenceClass);
-		return createSuccessfulResponse(ret, "datatype.pageview.id");
+		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 
 	

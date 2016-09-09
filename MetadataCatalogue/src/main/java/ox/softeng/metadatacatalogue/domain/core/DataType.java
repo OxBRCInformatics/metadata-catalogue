@@ -22,6 +22,7 @@ public abstract class DataType extends DataModelComponent {
 	private static final long serialVersionUID = 1L;
 
 	@Projection(name="datatype.pageview.id", recurseProjection="datatype.pageview.datamodel")
+	@Projection(name="datatype.creation")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
