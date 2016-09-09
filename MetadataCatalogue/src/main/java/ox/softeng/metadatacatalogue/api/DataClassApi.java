@@ -19,7 +19,8 @@ public class DataClassApi extends DataModelComponentApi {
             public DataClass call(EntityManager em) {
             	try{
             		DataClass childDC = new DataClass(label, description, apiCtx.getUser(), dc);
-					em.persist(childDC);
+					childDC = em.merge(childDC);
+					//System.out.println("class id : " + childDC.getId());
 					return childDC;
 				}
 				catch(Exception e)
@@ -38,7 +39,8 @@ public class DataClassApi extends DataModelComponentApi {
             public DataElement call(EntityManager em) {
             	try{
             		DataElement childDE = new DataElement(label, description, apiCtx.getUser(), dc, dt);
-					em.merge(childDE);
+					childDE = em.merge(childDE);
+					//System.out.println("element id : " + childDE.getId());
 					return childDE;
 				}
 				catch(Exception e)
