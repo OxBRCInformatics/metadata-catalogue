@@ -13,13 +13,18 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import ox.softeng.metadatacatalogue.api.CatalogueItemApi;
 import ox.softeng.metadatacatalogue.api.DataClassApi;
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
+import ox.softeng.metadatacatalogue.api.EnumerationTypeApi;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
+import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
+import ox.softeng.metadatacatalogue.domain.core.EnumerationValue;
+import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
@@ -119,6 +124,28 @@ public class DataModelService extends FinalisableService{
 		DataClass referenceClass = getApiContext().getById(DataClass.class, rt.getReferenceClass().getId());
 		ReferenceType ret = DataModelApi.newReferenceType(getApiContext(), dm, rt.getLabel(), rt.getDescription(), referenceClass);
 		ret = (ReferenceType) maybeAddMetadata(ret, rt);
+		return createSuccessfulResponse(ret, "datatype.creation");
+	}
+
+	@Path("/newEnumerationDataType/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO newEnumerationDataType(@PathParam("id") UUID dataModelId, EnumerationType et) throws Exception
+	{		
+		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
+		EnumerationType ret = DataModelApi.newEnumerationType(getApiContext(), dm, et.getLabel(), et.getDescription());
+		if(et.getEnumerationValues() != null)
+		{
+			for(EnumerationValue ev : et.getEnumerationValues())
+			{
+				EnumerationTypeApi.newEnumerationValue(getApiContext(), ret, ev.getKey(), ev.getValue());
+			}
+			ret = getApiContext().refresh(ret);
+		}
+
+		ret = (EnumerationType) maybeAddMetadata(ret, et);
 		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 

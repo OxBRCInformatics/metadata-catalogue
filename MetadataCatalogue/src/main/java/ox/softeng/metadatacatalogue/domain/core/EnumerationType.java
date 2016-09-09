@@ -27,7 +27,7 @@ public class EnumerationType extends DataType {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="enumerationType")
 	protected List<EnumerationValue> enumerationValues;
 
-	protected EnumerationType()
+	public EnumerationType()
 	{
 		
 	}
