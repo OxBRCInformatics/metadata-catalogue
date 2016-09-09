@@ -31,5 +31,17 @@ public class ReferenceType extends DataType {
 	public void setReferenceClass(DataClass referenceClass) {
 		this.referenceClass = referenceClass;
 	}
+	
+	public ReferenceType()
+	{
+		
+	}
 
+	public ReferenceType(String label, String description, User createdBy, DataClass referenceClass, DataModel belongsToModel)
+	{
+		super(label, description, createdBy, belongsToModel);
+		this.type = "ReferenceType";
+		this.referenceClass = referenceClass;
+	}
+	
 }

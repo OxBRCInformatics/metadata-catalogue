@@ -21,6 +21,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
+import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
@@ -104,7 +105,20 @@ public class DataModelService extends FinalisableService{
 		PrimitiveType ret = DataModelApi.newPrimitiveType(getApiContext(), dm, pt.getLabel(), pt.getDescription(), pt.getUnits());
 		return createSuccessfulResponse(ret, "datatype.pageview.id");
 	}
-	
+
+	@Path("/newReferenceDataType/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO newReferenceDataType(@PathParam("id") UUID dataModelId, ReferenceType rt) throws Exception
+	{		
+		DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
+		DataClass referenceClass = getApiContext().getById(DataClass.class, rt.getReferenceClass().getId());
+		ReferenceType ret = DataModelApi.newReferenceType(getApiContext(), dm, rt.getLabel(), rt.getDescription(), referenceClass);
+		return createSuccessfulResponse(ret, "datatype.pageview.id");
+	}
+
 	
 
 

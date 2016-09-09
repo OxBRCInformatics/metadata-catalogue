@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
@@ -21,6 +23,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
+import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 public class DataModelServiceIT extends APITest {
@@ -161,6 +164,55 @@ public class DataModelServiceIT extends APITest {
 		String description = an.get(0).get("description").asText();
 		assertTrue(label.equalsIgnoreCase("my test pt"));
 		assertTrue(description.equalsIgnoreCase("test pt description"));
+	}
+
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
+	public void newReferenceDataType() throws Exception {
+		
+		Response response = doLogin();
+		String sessionId = getSessionCookie(response);
+		
+		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
+		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
+		System.err.println(ds.getId());
+		
+		String path = "/datamodel/newReferenceDataType/" + ds.getId();
+		WebTarget resource = target.path(path);
+		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
+
+		ObjectNode newRefType = objectMapper.createObjectNode();
+		newRefType.put("label", "my test rt");
+		newRefType.put("description", "test rt description");
+		ObjectNode referenceClassON = objectMapper.createObjectNode();
+		referenceClassON.put("id", dc.getId().toString());
+		newRefType.set("referenceClass", referenceClassON);
+		
+		String json = objectMapper.writeValueAsString(newRefType);
+		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+
+		assertTrue(response.getStatus()==200);
+		
+		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
+		assertTrue(respObj.isSuccess());
+		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
+		assertTrue(respObj.getReturnObjectType().contains("ReferenceType"));
+		JsonNode jn1 = respObj.getReturnObject();
+		String label1 = jn1.get("label").asText();
+		String description1 = jn1.get("description").asText();
+		assertTrue(label1.equalsIgnoreCase("my test rt"));
+		assertTrue(description1.equalsIgnoreCase("test rt description"));
+		String newId = jn1.get("id").asText();
+		assertTrue(newId != null && !newId.equals(""));
+		
+		JsonNode jn = apiCtx.getByIdMap(DataModel.class, "datamodel.pageview.id", ds.getId());
+		ArrayNode an = (ArrayNode) jn.get("ownedDataTypes");
+		
+		assertTrue(an.size() == 1);
+		String label = an.get(0).get("label").asText();
+		String description = an.get(0).get("description").asText();
+		assertTrue(label.equalsIgnoreCase("my test rt"));
+		assertTrue(description.equalsIgnoreCase("test rt description"));
 
 	}
 

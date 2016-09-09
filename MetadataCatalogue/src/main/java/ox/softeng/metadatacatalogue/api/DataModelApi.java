@@ -14,6 +14,7 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
+import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 
 public class DataModelApi extends FinalisableApi {
 
@@ -66,7 +67,27 @@ public class DataModelApi extends FinalisableApi {
             }
 		});
 	}
+	
+	public static ReferenceType newReferenceType(ApiContext apiCtx, DataModel dm, String label, String description, DataClass referenceClass) throws Exception
+	{
+		return apiCtx.executeTransaction(new EMCallable<ReferenceType>(){
+            @Override
+            public ReferenceType call(EntityManager em) {
+            	try{
+            		ReferenceType rt = new ReferenceType(label, description, apiCtx.getUser(), referenceClass, dm);
+            		em.persist(rt);
+					return rt;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
 
+	
 	public static EnumerationType newEnumerationType(ApiContext apiCtx, DataModel dm, String label, String description) throws Exception
 	{
 		return apiCtx.executeTransaction(new EMCallable<EnumerationType>(){
