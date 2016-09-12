@@ -17,9 +17,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import ox.softeng.metadatacatalogue.domain.serializers.DataModelDeserializer;
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
 
@@ -27,8 +25,6 @@ import ox.softeng.projector.annotations.Projection;
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModel")
 @Table(schema="\"Core\"", name="\"DataModel\"")
-
-//@JsonDeserialize(using = DataModelDeserializer.class)
 
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
