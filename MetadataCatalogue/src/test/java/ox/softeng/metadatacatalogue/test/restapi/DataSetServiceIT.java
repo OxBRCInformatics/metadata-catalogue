@@ -7,10 +7,26 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ox.softeng.metadatacatalogue.api.DataSetApi;
+import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 
-public class DataSetServiceIT extends APITest {
+public class DataSetServiceIT extends DataModelServiceIT {
 
+	protected DataModel getDataModel() throws Exception
+	{
+		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
+		return ds;
+	}
+	
+	protected String getServicePath()
+	{
+		return "/dataset";
+	}
+	static Class<? extends DataModel> subType = DataSet.class;
+
+	
+	
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
 	public void createDataSet() throws Exception {

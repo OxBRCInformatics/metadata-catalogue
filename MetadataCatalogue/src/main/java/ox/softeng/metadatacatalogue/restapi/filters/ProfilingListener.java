@@ -40,7 +40,8 @@ public class ProfilingListener implements ApplicationEventListener {
                 case RESOURCE_METHOD_FINISHED:
                     long methodExecution = System.currentTimeMillis() - methodStartTime;
                     final String methodName = requestEvent.getUriInfo().getMatchedResourceMethod().getInvocable().getHandlingMethod().getName();
-                    logger.info("Method '" + methodName + "' executed. Processing time: " + methodExecution + " ms");
+                    final String servicePath = requestEvent.getUriInfo().getPath();
+                    logger.info("Service path '" + servicePath + "' called: method '" + methodName + "' executed. Processing time: " + methodExecution + " ms");
                     break;
 			default:
 				break;
