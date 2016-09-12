@@ -3,8 +3,6 @@ package ox.softeng.metadatacatalogue.test.restapi;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -18,10 +16,9 @@ public class AuthenticationServiceIT extends APITest{
 
 	
 	@Test
-	public void canSucceedAuthenticate() throws Exception {
-		Response resp = doLogin("admin@metadatacatalogue.com", "password");
-		assertTrue(resp.getStatus()==200);
-		// Need to check that we get a token, and the username is the same
+	public void canSucceedAuthenticate() throws Exception 
+	{
+		doSuccessfulLogin("admin@metadatacatalogue.com", "password");
 	}
 
 	
@@ -34,22 +31,16 @@ public class AuthenticationServiceIT extends APITest{
 	@Test
 	public void isValidSession() throws Exception {
 		assertFalse(isValidSession(""));
-		Response resp = doLogin("admin@metadatacatalogue.com", "password");
-		assertTrue(resp.getStatus()==200);
-		String sessionCookie = getSessionCookie(resp);
-		assertTrue(isValidSession(sessionCookie));
-		doLogout(sessionCookie);
-		assertFalse(isValidSession(sessionCookie));
+		LoginResponse lr = doSuccessfulLogin("admin@metadatacatalogue.com", "password");
+		assertTrue(isValidSession(lr.cookie));
+		doLogout(lr.cookie);
+		assertFalse(isValidSession(lr.cookie));
 	}
 
 	
 	private boolean isValidSession(String sessionCookie)
 	{
-		WebTarget target = client.target(endpoint);
-		WebTarget resource = target.path("/authentication/isValidSession");
-		
-		Response response = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionCookie).get();
-		assertTrue(response.getStatus()==200);
+		Response response = assertResponseStatus("/authentication/isValidSession", MediaType.APPLICATION_JSON, sessionCookie, 200);
 		return response.readEntity(Boolean.class);
 
 	}

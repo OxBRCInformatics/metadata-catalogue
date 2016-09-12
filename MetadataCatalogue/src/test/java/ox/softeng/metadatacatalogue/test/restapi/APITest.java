@@ -1,8 +1,14 @@
 package ox.softeng.metadatacatalogue.test.restapi;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -22,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
+import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,7 +45,7 @@ public abstract class APITest {
 	
 	static ApiContext apiCtx;
 	
-	static ObjectMapper objectMapper = new ObjectMapper();
+	static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 	
 	@BeforeClass
 	public static void BeforeClass() throws Exception {
@@ -60,9 +68,9 @@ public abstract class APITest {
 	}
 
 	
-	public static Response doLogin() throws JsonProcessingException
+	public static LoginResponse doLogin() throws JsonProcessingException
 	{
-		return doLogin("admin@metadatacatalogue.com", "password");
+		return doSuccessfulLogin("admin@metadatacatalogue.com", "password");
 	}
 
 	
@@ -81,6 +89,21 @@ public abstract class APITest {
 		return response;
 	}
 	
+	protected static class LoginResponse {
+		protected User user;
+		protected String cookie;
+	}
+	
+	public static LoginResponse doSuccessfulLogin(String username, String password) throws JsonProcessingException
+	{
+		Response response = doLogin(username, password);
+		assertTrue(200 == response.getStatus());
+		LoginResponse lr = new LoginResponse();
+		lr.user = response.readEntity(User.class);
+		lr.cookie = getSessionCookie(response);
+		return lr;
+	}
+	
 	public static Response doLogout(String sessionCookie) throws JsonProcessingException
 	{
 		WebTarget target = client.target(endpoint);
@@ -95,6 +118,46 @@ public abstract class APITest {
 		String sessionId = response.getCookies().get("JSESSIONID").getValue();
 		System.out.println("Session ID: " + sessionId);
 		return sessionId;
+	}
+	
+	public Response assertResponseStatus(String path, String mediaType, String sessionId, int expectedResponseStatus)
+	{
+		WebTarget resource = target.path(path);
+		Invocation.Builder invocationBuilder = resource.request(mediaType).cookie("JSESSIONID", sessionId);
+		Response response = invocationBuilder.get();
+		//System.out.println("response status: " + response2.getStatus());
+		assertTrue(expectedResponseStatus == response.getStatus());
+		return response;
+	}
+
+	public <T> T assertSuccessfulPost(String path, String sessionId, Object body, Class<T> clazz) throws IOException
+	{
+		WebTarget resource = target.path(path);
+		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
+		String json;
+		try {
+			json = objectMapper.writeValueAsString(body);
+			Response response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
+			assertTrue(200 == response.getStatus());
+			ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
+
+			assertTrue(response.getStatus()==200);
+			assertTrue(respObj.isSuccess());
+			assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
+			assertTrue(respObj.getReturnObjectType().contains(clazz.getSimpleName()));
+			
+			System.err.println(respObj.getReturnObject());
+			T retObj = objectMapper.treeToValue(respObj.getReturnObject(), clazz);
+			
+			return retObj;
+		} 
+		catch (JsonProcessingException e) 
+		{
+			e.printStackTrace();
+			fail();
+			return null;
+		}
+		
 	}
 
 	

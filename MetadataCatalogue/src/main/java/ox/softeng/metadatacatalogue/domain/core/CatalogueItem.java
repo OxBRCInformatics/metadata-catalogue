@@ -104,6 +104,8 @@ public abstract class CatalogueItem implements Serializable {
 		this.lastUpdated = OffsetDateTime.now();
 		this.metadata = new ArrayList<Metadata>();
 		this.createdBy = createdBy;
+		
+		this.dtype = this.getClass().getName();
 	}
 
 	public String getLabel() {
@@ -124,6 +126,11 @@ public abstract class CatalogueItem implements Serializable {
 
 	public UUID getId() {
 		return id;
+	}
+	
+	public void setId(UUID id)
+	{
+		this.id = id;
 	}
 
 	public String getDtype() {

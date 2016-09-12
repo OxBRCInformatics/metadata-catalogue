@@ -12,7 +12,6 @@ import org.junit.Test;
 
 import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
-import ox.softeng.metadatacatalogue.domain.core.Metadata;
 
 public class DataClassTest extends DatabaseTest {
 
@@ -22,7 +21,7 @@ public class DataClassTest extends DatabaseTest {
 	public void createDataClassTest() throws Exception
 	{
 		DataSet ds = createDataSet();
-
+		assertTrue(ds.getLabel().equalsIgnoreCase("Label"));
 
 		List<DataSet> dss = DataSetApi.getAllDataSets(apiCtx);
 		assertTrue(dss!= null && dss.size() == 1);

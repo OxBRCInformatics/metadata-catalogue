@@ -21,6 +21,11 @@ public class Breadcrumb {
 	@Projection(always=true)
 	private String dtype;
 	
+	public Breadcrumb()
+	{
+		
+	}
+	
 	public Breadcrumb(UUID id, String label, String description, String dtype)
 	{
 		this.id = id;

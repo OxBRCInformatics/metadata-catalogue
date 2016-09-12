@@ -2,27 +2,22 @@ package ox.softeng.metadatacatalogue.test.restapi;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import java.util.List;
 
 import org.flywaydb.test.annotation.FlywayTest;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
+import ox.softeng.metadatacatalogue.domain.core.DataElement;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService.NewDataElementDTO.DataTypeDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 public class DataClassServiceIT extends APITest {
 
@@ -30,146 +25,94 @@ public class DataClassServiceIT extends APITest {
 	@Test
 	public void addMetadata() throws Exception {
 		
-		Response response = doLogin();
-		String sessionId = getSessionCookie(response);
-		
+		LoginResponse lr = doLogin();
 		
 		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
 		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
-		System.err.println(dc.getId());
-		
-		String path = "/dataclass/addMetadata/" + dc.getId();
-		WebTarget resource = target.path(path);
-		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
-		
 		Metadata md = new Metadata();
 		md.setKey("key1");
 		md.setValue("value1");
-		String json = objectMapper.writeValueAsString(md);
-		System.err.println(json);
-		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
-		assertTrue(response.getStatus()==200);
 		
-		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
-		assertTrue(respObj.isSuccess());
-		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
-		assertTrue(respObj.getReturnObjectType().contains("Metadata"));
-		JsonNode jn1 = respObj.getReturnObject();
-		String key1 = jn1.get("key").asText();
-		String value1 = jn1.get("value").asText();
-		assertTrue(key1.equalsIgnoreCase("key1"));
-		assertTrue(value1.equalsIgnoreCase("value1"));
-		String newId = jn1.get("id").asText();
-		assertTrue(newId != null && !newId.equals(""));
+		String path = "/dataclass/addMetadata/" + dc.getId();
+		
+		Metadata mdReturned = assertSuccessfulPost(path, lr.cookie, md, Metadata.class);
+		
+		assertTrue(mdReturned.getId() != null);
+		assertTrue(mdReturned.getKey().equalsIgnoreCase("key1"));
+		assertTrue(mdReturned.getValue().equalsIgnoreCase("value1"));
 		
 		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", dc.getId());
-		ArrayNode an = (ArrayNode) jn.get("metadata");
 		
-		assertTrue(an.size() == 1);
-		String key = an.get(0).get("key").asText();
-		String value = an.get(0).get("value").asText();
-		assertTrue(key.equalsIgnoreCase("key1"));
-		assertTrue(value.equalsIgnoreCase("value1"));
-
+		DataClass newDC = objectMapper.treeToValue(jn,  DataClass.class);
+		
+		List<Metadata> mds = newDC.getMetadata();
+		assertTrue(mds.size() == 1);
+		assertTrue(mds.get(0).getKey().equalsIgnoreCase("key1"));
+		assertTrue(mds.get(0).getValue().equalsIgnoreCase("value1"));
 	}
 	
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
 	public void addChildElement() throws Exception {
 		
-		Response response = doLogin();
-		String sessionId = getSessionCookie(response);
-		
+		LoginResponse lr = doLogin();
 		
 		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
 		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
 		DataType dt = DataModelApi.newPrimitiveType(apiCtx, ds, "String data type", "data type description", "");
-		System.err.println(dc.getId());
-		
+
 		String path = "/dataclass/newChildDataElement/" + dc.getId();
-		WebTarget resource = target.path(path);
-		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
 		
 		DataClassService.NewDataElementDTO de = new DataClassService.NewDataElementDTO();
 		de.setLabel("my test element");
 		de.setDescription("my test element description");
 		de.dataType = new DataTypeDTO();
 		de.dataType.id = dt.getId();
-		String json = objectMapper.writeValueAsString(de);
-		System.err.println(json);
-		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
-		assertTrue(response.getStatus()==200);
 		
-		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
-		assertTrue(respObj.isSuccess());
-		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
-		assertTrue(respObj.getReturnObjectType().contains("DataElement"));
-		JsonNode jn1 = respObj.getReturnObject();
-		String label1 = jn1.get("label").asText();
-		String description1 = jn1.get("description").asText();
-		assertTrue(label1.equalsIgnoreCase("my test element"));
-		assertTrue(description1.equalsIgnoreCase("my test element description"));
-		String newId = jn1.get("id").asText();
-		assertTrue(newId != null && !newId.equals(""));
+		DataElement deReturned = assertSuccessfulPost(path, lr.cookie, de, DataElement.class);
+		
+		assertTrue(deReturned.getLabel().equalsIgnoreCase("my test element"));
+		assertTrue(deReturned.getDescription().equalsIgnoreCase("my test element description"));
+		assertTrue(deReturned.getId() != null);
 		
 		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", dc.getId());
-		ArrayNode an = (ArrayNode) jn.get("childDataElements");
+		DataClass newDC = objectMapper.treeToValue(jn,  DataClass.class);
+		List<DataElement> des = newDC.getChildDataElements();
 		
-		assertTrue(an.size() == 1);
-		String key = an.get(0).get("label").asText();
-		String value = an.get(0).get("description").asText();
-		assertTrue(key.equalsIgnoreCase("my test element"));
-		assertTrue(value.equalsIgnoreCase("my test element description"));
-
+		assertTrue(des.size() == 1);
+		assertTrue(des.get(0).getLabel().equalsIgnoreCase("my test element"));
+		assertTrue(des.get(0).getDescription().equalsIgnoreCase("my test element description"));
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
-	public void addChildClass() throws Exception {
+	public void newChildClass() throws Exception {
 		
-		Response response = doLogin();
-		String sessionId = getSessionCookie(response);
-		
+		LoginResponse lr = doLogin();
 		
 		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
-		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
-		System.err.println(dc.getId());
-		
-		String path = "/dataclass/newChildDataClass/" + dc.getId();
-		WebTarget resource = target.path(path);
-		Invocation.Builder invocationBuilder = resource.request(MediaType.APPLICATION_JSON).cookie("JSESSIONID", sessionId);
-		
+		DataClass oldDC = DataSetApi.newDataClass(apiCtx, ds, "my parent class", "my parent class description");
+
 		DataClass newDC = new DataClass();
 		newDC.setLabel("my test class");
 		newDC.setDescription("my test class description");
-		String json = objectMapper.writeValueAsString(newDC);
-		System.err.println(json);
-		response = invocationBuilder.post(Entity.entity(json, MediaType.APPLICATION_JSON));
-		System.err.println(response);
-		System.err.println(response.getStatus());
-		assertTrue(response.getStatus()==200);
 		
-		ResponseDTO respObj = (ResponseDTO) response.readEntity(ResponseDTO.class);
-		assertTrue(respObj.isSuccess());
-		assertTrue(respObj.getErrorMessages() == null || respObj.getErrorMessages().size() == 0);
-		assertTrue(respObj.getReturnObjectType().contains("DataClass"));
-		JsonNode jn1 = respObj.getReturnObject();
-		String label1 = jn1.get("label").asText();
-		String description1 = jn1.get("description").asText();
-		assertTrue(label1.equalsIgnoreCase("my test class"));
-		assertTrue(description1.equalsIgnoreCase("my test class description"));
-		String newId = jn1.get("id").asText();
-		assertTrue(newId != null && !newId.equals(""));
+		String path = "/dataclass/newChildDataClass/" + oldDC.getId();
 		
-		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", dc.getId());
-		ArrayNode an = (ArrayNode) jn.get("childDataClasses");
+		DataClass dcReturned = assertSuccessfulPost(path, lr.cookie, newDC, DataClass.class);
 		
-		assertTrue(an.size() == 1);
-		String key = an.get(0).get("label").asText();
-		String value = an.get(0).get("description").asText();
-		assertTrue(key.equalsIgnoreCase("my test class"));
-		assertTrue(value.equalsIgnoreCase("my test class description"));
+		assertTrue(dcReturned.getId() != null);
+		assertTrue(dcReturned.getLabel().equalsIgnoreCase("my test class"));
+		assertTrue(dcReturned.getDescription().equalsIgnoreCase("my test class description"));
+		
+		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", oldDC.getId());
+		oldDC = objectMapper.treeToValue(jn, DataClass.class);
+		
+		List<DataClass> childDataClasses = oldDC.getChildDataClasses();
 
+		assertTrue(childDataClasses.size() == 1);
+		assertTrue(childDataClasses.get(0).getLabel().equalsIgnoreCase("my test class"));
+		assertTrue(childDataClasses.get(0).getDescription().equalsIgnoreCase("my test class description"));
 	}
 	
 }

@@ -1,11 +1,8 @@
 package ox.softeng.metadatacatalogue.api;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;

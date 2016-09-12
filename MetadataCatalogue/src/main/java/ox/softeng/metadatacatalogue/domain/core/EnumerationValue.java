@@ -30,7 +30,7 @@ public class EnumerationValue extends DataModelComponent {
 	@JoinColumn(name="\"Enumeration Type\"")
 	protected EnumerationType enumerationType;
 	
-	protected EnumerationValue()
+	public EnumerationValue()
 	{
 		
 	}

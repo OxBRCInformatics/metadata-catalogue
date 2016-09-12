@@ -14,6 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import ox.softeng.metadatacatalogue.domain.serializers.DataModelDeserializer;
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
 
@@ -22,32 +28,49 @@ import ox.softeng.projector.annotations.Projection;
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataModel")
 @Table(schema="\"Core\"", name="\"DataModel\"")
 
+//@JsonDeserialize(using = DataModelDeserializer.class)
+
+@JsonTypeInfo(
+		use = JsonTypeInfo.Id.NAME,
+		include = JsonTypeInfo.As.PROPERTY,
+		property = "dtype",
+		visible = true)
+@JsonSubTypes({
+	@Type(value = DataSet.class, name = "DataSet"),
+	@Type(value = Database.class, name = "Database"),
+	@Type(value = DataStandard.class, name = "DataStandard"),
+	@Type(value = Form.class, name = "Form"),
+	@Type(value = Message.class, name = "Message"),
+	@Type(value = Report.class, name = "Report"),
+	@Type(value = Workflow.class, name = "Workflow")
+})
+
 public abstract class DataModel extends Finalisable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Author\"")
 	private String author;
-	
+
 	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Organization\"")
 	private String organization;
-	
+
 	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Type\"")
 	private String type;
 
 	@ManyToMany
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
-			joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
-			inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
+	joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
+	inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
 	private Set<DataModel> importsFrom;
 
 	@ManyToMany (mappedBy = "importsFrom")
 	private Set<DataModel> importedBy;
 
-	
+
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	@Projection(name="datamodel.pageview.id", recurseProjection="datamodel.pageview.dataclass")
 	@Projection(name="datamodel.treeview")
@@ -65,9 +88,9 @@ public abstract class DataModel extends Finalisable {
 
 	public DataModel()
 	{
-		
+
 	}
-	
+
 	public DataModel(String label, String description, User createdBy, String author, String organization, String type)
 	{
 		super(label, description, createdBy);
@@ -126,6 +149,6 @@ public abstract class DataModel extends Finalisable {
 	public Set<DataType> getOwnedDataTypes() {
 		return ownedDataTypes;
 	}
-	
-	
+
+
 }

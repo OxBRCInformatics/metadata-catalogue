@@ -10,12 +10,27 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.DataType")
 @Table(schema="\"Core\"", name="\"DataType\"")
+
+@JsonTypeInfo(
+	    use = JsonTypeInfo.Id.NAME,
+	    include = JsonTypeInfo.As.PROPERTY,
+	    property = "dtype",
+	    visible = true)
+	@JsonSubTypes({
+	    @Type(value = PrimitiveType.class, name = "PrimitiveType"),
+	    @Type(value = ReferenceType.class, name = "ReferenceType"),
+	    @Type(value = EnumerationType.class, name="EnumerationType")})
+
 
 public abstract class DataType extends DataModelComponent {
 
