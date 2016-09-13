@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Database")
@@ -14,6 +15,7 @@ public class Database extends DataModel {
 
 	private static final long serialVersionUID = 1L;
 
+	@Projection(name="datamodel.pageview.id")
 	@Column(name="\"Dialect\"")
 	private String dialect;
 
@@ -25,5 +27,16 @@ public class Database extends DataModel {
 		this.dialect = dialect;
 	}
 	
+	public Database()
+	{
+		
+	}
+
+	public Database(String label, String description, User createdBy, String author, String dialect, String organization)
+	{
+		super(label, description, createdBy, author, organization, "DataSet");
+		this.dialect = dialect;
+	}
+
 	
 }
