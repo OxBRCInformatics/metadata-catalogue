@@ -25,9 +25,9 @@ public abstract class CatalogueItemService extends BasicCatalogueService {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Secured(allowUnAuthenticated=false)
-	public ResponseDTO addMetadata(@PathParam("id") UUID dataModelId, Metadata metadataParam) throws Exception
+	public ResponseDTO addMetadata(@PathParam("id") UUID catalogueItemId, Metadata metadataParam) throws Exception
 	{
-		CatalogueItem catalogueItem = getApiContext().getById(type, dataModelId);
+		CatalogueItem catalogueItem = getApiContext().getById(type, catalogueItemId);
 
 		Metadata md = CatalogueItemApi.addMetadata(getApiContext(), catalogueItem, metadataParam.getKey(), metadataParam.getValue());
 
@@ -35,4 +35,6 @@ public abstract class CatalogueItemService extends BasicCatalogueService {
 		
 	}
 		
+			
+	
 }

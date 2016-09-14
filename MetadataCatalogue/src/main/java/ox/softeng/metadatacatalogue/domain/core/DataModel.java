@@ -59,8 +59,8 @@ public abstract class DataModel extends Finalisable {
 
 	@ManyToMany
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
-	joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
-	inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
+		joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
+		inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
 	private Set<DataModel> importsFrom;
 
 	@ManyToMany (mappedBy = "importsFrom")

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import ox.softeng.metadatacatalogue.api.DatabaseApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
-import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.Database;
 
 public class DatabaseServiceIT extends DataModelServiceIT {
