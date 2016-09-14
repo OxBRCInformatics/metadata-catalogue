@@ -12,8 +12,10 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ox.softeng.metadatacatalogue.api.ClassifierApi;
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
+import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
@@ -69,6 +71,37 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(mds.get(0).getKey().equalsIgnoreCase("key1"));
 		assertTrue(mds.get(0).getValue().equalsIgnoreCase("value1"));
 
+	}
+	
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
+	public void addClassifier() throws Exception {
+		
+		LoginResponse lr = doLogin();
+		DataModel ds = getDataModel();
+		
+		
+		Classifier cl = ClassifierApi.createClassifier(apiCtx, "my new classifier", "new classifier label");
+
+		Classifier clParam = new Classifier();
+		clParam.setId(cl.getId());
+		
+		String path = getServicePath() + "/addClassifier/" + ds.getId();
+		
+		Classifier clReturned = assertSuccessfulPost(path, lr.cookie, clParam, Classifier.class);
+		
+		assertTrue(clReturned.getId() != null);
+		assertTrue(clReturned.getLabel().equalsIgnoreCase("my new classifier"));
+		assertTrue(clReturned.getDescription().equalsIgnoreCase("new classifier label"));
+		
+		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
+		
+		DataModel dm = objectMapper.treeToValue(jn,  getSubType());
+		
+		Set<Classifier> cls = dm.getClassifiers();
+		assertTrue(cls.size() == 1);
+		assertTrue(((Classifier)(cls.toArray())[0]).getLabel().equalsIgnoreCase("my new classifier"));
+		assertTrue(((Classifier)(cls.toArray())[0]).getDescription().equalsIgnoreCase("new classifier label"));
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)

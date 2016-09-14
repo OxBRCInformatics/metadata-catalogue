@@ -42,7 +42,13 @@ public class Classifier extends Sharable {
 	public void classifyComponent(DataModelComponent dmc)
 	{
 		classifiedComponents.add(dmc);
-		dmc.classifiers.add(this);
+		//dmc.classifiers.add(this);
+	}
+
+	public void unclassifyComponent(DataModelComponent dmc)
+	{
+		classifiedComponents.remove(dmc);
+		//dmc.classifiers.add(this);
 	}
 
 	public void setClassifiedComponents(List<DataModelComponent> classifiedComponents) {
