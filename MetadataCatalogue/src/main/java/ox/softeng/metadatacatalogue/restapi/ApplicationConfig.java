@@ -8,6 +8,7 @@ import javax.annotation.security.DeclareRoles;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import ox.softeng.metadatacatalogue.restapi.filters.AuthenticationFilter;
@@ -15,6 +16,7 @@ import ox.softeng.metadatacatalogue.restapi.filters.DBConnectionFilter;
 import ox.softeng.metadatacatalogue.restapi.filters.ProfilingListener;
 import ox.softeng.metadatacatalogue.restapi.filters.ResponseCorsFilter;
 import ox.softeng.metadatacatalogue.restapi.services.AuthenticationService;
+import ox.softeng.metadatacatalogue.restapi.services.ClassifierService;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataElementService;
 import ox.softeng.metadatacatalogue.restapi.services.DataModelService;
@@ -54,6 +56,8 @@ public class ApplicationConfig extends Application {
         // The filter that adds CORS to responses
         resources.add(ResponseCorsFilter.class);
 
+        resources.add(MultiPartFeature.class);
+        
         resources.add(RolesAllowedDynamicFeature.class);
         
 
@@ -66,6 +70,7 @@ public class ApplicationConfig extends Application {
         resources.add(DatabaseService.class);
         resources.add(DataModelService.class);
         resources.add(DataClassService.class);
+        resources.add(ClassifierService.class);
         
         resources.add(DataElementService.class);
         
