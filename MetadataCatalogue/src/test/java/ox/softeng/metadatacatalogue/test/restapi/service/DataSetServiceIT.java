@@ -53,7 +53,7 @@ public class DataSetServiceIT<ObjectType> extends DataModelServiceIT<DataSet> {
 		DataSet dm = objectMapper.treeToValue(jn, DataSet.class);
 		
 		assertTrue(dm.getLabel().equalsIgnoreCase("Dataset 1"));
-
+		doLogout(lr.cookie);
 	}
 
 	

@@ -41,7 +41,7 @@ public class UserGroupServiceIT extends APITest<UserGroup> {
 		UserGroup ugReturned = assertSuccessfulPost("/usergroup/create", lr.cookie, newUserGroup, UserGroup.class);
 
 		assertTrue(ugReturned.getGroupName().equalsIgnoreCase("Test UserGroup"));
-
+		doLogout(lr.cookie);
 	}
 	
 }

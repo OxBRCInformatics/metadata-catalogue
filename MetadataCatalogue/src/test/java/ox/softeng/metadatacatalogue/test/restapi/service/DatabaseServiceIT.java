@@ -54,6 +54,7 @@ public class DatabaseServiceIT extends DataModelServiceIT<Database> {
 		Database dm = objectMapper.treeToValue(jn, Database.class);
 		
 		assertTrue(dm.getLabel().equalsIgnoreCase("Database 1"));
+		doLogout(lr.cookie);
 
 	}
 

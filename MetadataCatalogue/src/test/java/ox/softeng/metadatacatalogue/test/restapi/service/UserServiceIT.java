@@ -52,7 +52,7 @@ public class UserServiceIT extends APITest<User> {
 
 		assertTrue(uReturned.getFirstName().equalsIgnoreCase("Test User First Name"));
 		assertTrue(uReturned.getLastName().equalsIgnoreCase("Test User Last Name"));
-
+		doLogout(lr.cookie);
 	}
 	
 }

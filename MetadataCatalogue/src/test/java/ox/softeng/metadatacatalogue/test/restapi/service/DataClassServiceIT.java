@@ -73,6 +73,7 @@ public class DataClassServiceIT <ObjectType> extends DataModelComponentServiceIT
 		assertTrue(des.size() == 1);
 		assertTrue(des.get(0).getLabel().equalsIgnoreCase("my test element"));
 		assertTrue(des.get(0).getDescription().equalsIgnoreCase("my test element description"));
+		doLogout(lr.cookie);
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
@@ -104,6 +105,7 @@ public class DataClassServiceIT <ObjectType> extends DataModelComponentServiceIT
 		assertTrue(childDataClasses.size() == 1);
 		assertTrue(childDataClasses.get(0).getLabel().equalsIgnoreCase("my test class"));
 		assertTrue(childDataClasses.get(0).getDescription().equalsIgnoreCase("my test class description"));
+		doLogout(lr.cookie);
 	}
 	
 }

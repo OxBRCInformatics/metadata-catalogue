@@ -71,7 +71,7 @@ public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataMod
 		assertTrue(childDataClasses.size() == 1);
 		assertTrue(childDataClasses.get(0).getLabel().equalsIgnoreCase("my test class"));
 		assertTrue(childDataClasses.get(0).getDescription().equalsIgnoreCase("my test class description"));
-
+		doLogout(lr.cookie);
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
@@ -101,6 +101,7 @@ public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataMod
 		assertTrue(dts.size() == 1);
 		assertTrue(((DataType)(dts.toArray())[0]).getLabel().equalsIgnoreCase("my test pt"));
 		assertTrue(((DataType)(dts.toArray())[0]).getDescription().equalsIgnoreCase("test pt description"));
+		doLogout(lr.cookie);
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
@@ -134,7 +135,7 @@ public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataMod
 		assertTrue(dts.size() == 1);
 		assertTrue(((DataType)(dts.toArray())[0]).getLabel().equalsIgnoreCase("my test rt"));
 		assertTrue(((DataType)(dts.toArray())[0]).getDescription().equalsIgnoreCase("test rt description"));
-
+		doLogout(lr.cookie);
 	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
@@ -170,6 +171,7 @@ public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataMod
 		assertTrue(newDS.getOwnedDataTypes().size() == 1);
 		assertTrue(((DataType)(dts.toArray())[0]).getLabel().equalsIgnoreCase("my test et"));
 		assertTrue(((DataType)(dts.toArray())[0]).getDescription().equalsIgnoreCase("test et description"));
+		doLogout(lr.cookie);
 	}
 
 }

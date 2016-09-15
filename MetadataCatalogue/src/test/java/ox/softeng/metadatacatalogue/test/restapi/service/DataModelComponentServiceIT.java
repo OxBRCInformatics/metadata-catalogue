@@ -63,6 +63,7 @@ public class DataModelComponentServiceIT <ObjectType> extends SharableServiceIT<
 		assertTrue(cls.size() == 1);
 		assertTrue(((Classifier)(cls.toArray())[0]).getLabel().equalsIgnoreCase("my new classifier"));
 		assertTrue(((Classifier)(cls.toArray())[0]).getDescription().equalsIgnoreCase("new classifier label"));
+		doLogout(lr.cookie);
 	}
 
 }

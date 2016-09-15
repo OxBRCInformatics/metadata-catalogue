@@ -16,10 +16,10 @@
 
                 <property name="hibernate.connection.provider_class" value="org.hibernate.c3p0.internal.C3P0ConnectionProvider"/>
         
-                <property name="hibernate.c3p0.max_size" value="1000" />
+                <property name="hibernate.c3p0.max_size" value="100" />
                 <property name="hibernate.c3p0.min_size" value="0" />
                 <property name="hibernate.c3p0.acquire_increment" value="1" />
-                <property name="hibernate.c3p0.acquireRetryAttempts" value="0" />
+                <property name="hibernate.c3p0.acquireRetryAttempts" value="5" />
                 <property name="hibernate.c3p0.idle_test_period" value="300" />
                 <property name="hibernate.c3p0.max_statements" value="0" />
                 <property name="hibernate.c3p0.timeout" value="100" />

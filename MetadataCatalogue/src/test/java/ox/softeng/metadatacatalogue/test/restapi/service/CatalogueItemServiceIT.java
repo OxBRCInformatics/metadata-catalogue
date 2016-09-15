@@ -63,6 +63,7 @@ public class CatalogueItemServiceIT <ObjectType> extends APITest<CatalogueItem> 
 		assertTrue(mds.size() == 1);
 		assertTrue(mds.get(0).getKey().equalsIgnoreCase("key1"));
 		assertTrue(mds.get(0).getValue().equalsIgnoreCase("value1"));
+		doLogout(lr.cookie);
 
 	}
 	

@@ -47,7 +47,7 @@ public class MetadataServiceIT extends APITest<Metadata> {
 
 		assertTrue(mdReturned.getKey().equalsIgnoreCase("new key"));
 		assertTrue(mdReturned.getValue().equalsIgnoreCase("new value"));
-
+		doLogout(lr.cookie);
 	}
 
 	

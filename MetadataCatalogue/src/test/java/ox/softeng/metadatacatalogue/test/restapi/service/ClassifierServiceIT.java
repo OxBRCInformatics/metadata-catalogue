@@ -51,6 +51,7 @@ public class ClassifierServiceIT<ObjectType> extends SharableServiceIT<Classifie
 		Classifier cl2 = objectMapper.treeToValue(jn, Classifier.class);
 		
 		assertTrue(cl2.getLabel().equalsIgnoreCase("my new classifier"));
+		doLogout(lr.cookie);
 
 	}
 
