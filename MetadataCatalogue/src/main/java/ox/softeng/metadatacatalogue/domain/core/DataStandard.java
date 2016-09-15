@@ -12,4 +12,15 @@ import ox.softeng.projector.annotations.Projectable;
 public class DataStandard extends DataModel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public DataStandard() 
+	{
+		
+	}
+	
+	public DataStandard(String label, String description, User createdBy, String author, String organization)
+	{
+		super(label, description, createdBy, author, organization, "DataStandard");
+	}
+
 }

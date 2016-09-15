@@ -1,5 +1,6 @@
 package ox.softeng.metadatacatalogue.api;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -104,6 +105,26 @@ public class DataModelApi extends FinalisableApi {
 		});
 	}
 
+
+	public static DataModel importDataModel(ApiContext apiCtx, InputStream is) throws Exception
+	{
+		return apiCtx.executeTransaction(new EMCallable<DataModel>(){
+            @Override
+            public DataModel call(EntityManager em) {
+            	try{
+            		DataModel dm = apiCtx.createObjectFromInputStream(is, DataModel.class);
+            		dm = em.merge(dm);
+            		return dm;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+
+	}
 
 	
 }

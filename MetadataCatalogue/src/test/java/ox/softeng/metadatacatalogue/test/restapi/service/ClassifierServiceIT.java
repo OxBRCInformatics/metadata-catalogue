@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertTrue;
 
@@ -7,11 +7,29 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import ox.softeng.metadatacatalogue.api.ClassifierApi;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 
-public class ClassifierServiceIT extends APITest {
+public class ClassifierServiceIT<ObjectType> extends SharableServiceIT<Classifier> {
 
 	
+	@Override
+	protected Classifier getInstance() throws Exception
+	{
+		return ClassifierApi.createClassifier(apiCtx, "My Test Classifier", "My test classifier description");
+	}
+	
+	@Override
+	protected String getServicePath()
+	{
+		return "/classifier";
+	}
+
+	@Override
+	protected Class<? extends Classifier> getClazz()
+	{
+		return Classifier.class;
+	}
 	
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test

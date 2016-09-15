@@ -12,4 +12,15 @@ import ox.softeng.projector.annotations.Projectable;
 public class Report extends DataModel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public Report() 
+	{
+		
+	}
+	
+	public Report(String label, String description, User createdBy, String author, String organization)
+	{
+		super(label, description, createdBy, author, organization, "Report");
+	}
+
 }

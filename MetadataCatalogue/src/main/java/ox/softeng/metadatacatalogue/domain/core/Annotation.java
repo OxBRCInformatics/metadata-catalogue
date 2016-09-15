@@ -22,6 +22,17 @@ public class Annotation extends Sharable {
 	public DataModelComponent getAnnotatedComponent() {
 		return annotatedComponent;
 	}
+	
+	public Annotation()
+	{
+		
+	}
+
+	public Annotation(String label, String description, User createdBy, DataModelComponent dmc)
+	{
+		super(label, description, createdBy);
+		annotatedComponent = dmc;
+	}
 
 	
 }

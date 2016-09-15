@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,11 +8,13 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
+import ox.softeng.metadatacatalogue.test.restapi.APITest;
+
 /***
  *  This is an integration test.  It relies on the API Service running in a container somewhere
  */
 
-public class AuthenticationServiceIT extends APITest{
+public class AuthenticationServiceIT extends APITest<Object>{
 
 	
 	@Test
@@ -43,6 +45,26 @@ public class AuthenticationServiceIT extends APITest{
 		Response response = assertResponseStatus("/authentication/isValidSession", MediaType.APPLICATION_JSON, sessionCookie, 200);
 		return response.readEntity(Boolean.class);
 
+	}
+
+
+	/* These methods are not really needed for this service - we'll give some default implementations */
+	
+	@Override
+	protected Object getInstance() throws Exception {
+		return null;
+	}
+
+
+	@Override
+	protected String getServicePath() {
+		return "/authentication";
+	}
+
+
+	@Override
+	protected Class<? extends Object> getClazz() {
+		return Object.class;
 	}
 	
 }

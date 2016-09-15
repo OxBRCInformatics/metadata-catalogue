@@ -3,18 +3,23 @@ package ox.softeng.metadatacatalogue.db;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.SecurityContext;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.domain.core.User;
 
 public class ApiContext extends DatabaseQueryHelper implements SecurityContext {
 
-
+	private static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
 
 	private User user;
@@ -138,6 +143,11 @@ public class ApiContext extends DatabaseQueryHelper implements SecurityContext {
 	}
 	
 
+	public <T> T createObjectFromInputStream(InputStream is, Class<T> clazz) throws JsonParseException, JsonMappingException, IOException
+	{
+  		return objectMapper.readValue(is, clazz);
+		
+	}
 	
 
 }

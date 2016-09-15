@@ -1,5 +1,7 @@
 package ox.softeng.metadatacatalogue.api;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
@@ -28,5 +30,20 @@ public class DatabaseApi extends DataModelApi{
 				}
             }
 		});
+	}
+	
+	public static List<Database> getAllDatabases(ApiContext apiCtx) throws Exception
+	{
+		return apiCtx.executeQuery(new EMCallable<List<Database>>(){
+			 @Override
+	         public List<Database> call(EntityManager em) {
+				 List<Database> dbs = em.createQuery("select d from ox.softeng.metadatacatalogue.domain.core.Database d", Database.class).getResultList();
+				 for(Database db : dbs)
+				 {
+					 db.getMetadata().size();
+				 }
+				 return dbs;
+			 }
+		});	
 	}
 }

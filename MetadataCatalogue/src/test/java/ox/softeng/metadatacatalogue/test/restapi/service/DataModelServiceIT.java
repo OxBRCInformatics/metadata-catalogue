@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertTrue;
 
@@ -12,97 +12,37 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import ox.softeng.metadatacatalogue.api.ClassifierApi;
 import ox.softeng.metadatacatalogue.api.DataModelApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
-import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
-import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationValue;
-import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 
-public class DataModelServiceIT extends APITest {
+public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataModel> {
 
-	protected DataModel getDataModel() throws Exception
+
+	@Override
+	protected DataModel getInstance() throws Exception
 	{
-		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
-		return ds;
+		return DataSetApi.createDataSet(apiCtx, "My test DataModel", "DataModel description", "Test Author", "Test Organization");
 	}
 	
+	@Override
 	protected String getServicePath()
 	{
 		return "/datamodel";
 	}
 
-	static Class<? extends DataModel> getSubType() {
+	@Override
+	protected Class<? extends DataModel> getClazz()
+	{
 		return DataModel.class;
 	}
-	
-	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
-	@Test
-	public void addMetadata() throws Exception {
-		
-		LoginResponse lr = doLogin();
-		DataModel ds = getDataModel();
-		
-		Metadata md = new Metadata();
-		md.setKey("key1");
-		md.setValue("value1");
-		
-		String path = getServicePath() + "/addMetadata/" + ds.getId();
-		
-		Metadata mdReturned = assertSuccessfulPost(path, lr.cookie, md, Metadata.class);
-		
-		assertTrue(mdReturned.getId() != null);
-		assertTrue(mdReturned.getKey().equalsIgnoreCase("key1"));
-		assertTrue(mdReturned.getValue().equalsIgnoreCase("value1"));
-		
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
-		
-		DataModel dm = objectMapper.treeToValue(jn,  getSubType());
-		
-		List<Metadata> mds = dm.getMetadata();
-		assertTrue(mds.size() == 1);
-		assertTrue(mds.get(0).getKey().equalsIgnoreCase("key1"));
-		assertTrue(mds.get(0).getValue().equalsIgnoreCase("value1"));
 
-	}
-	
-	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
-	@Test
-	public void addClassifier() throws Exception {
-		
-		LoginResponse lr = doLogin();
-		DataModel ds = getDataModel();
-		
-		
-		Classifier cl = ClassifierApi.createClassifier(apiCtx, "my new classifier", "new classifier label");
-
-		Classifier clParam = new Classifier();
-		clParam.setId(cl.getId());
-		
-		String path = getServicePath() + "/addClassifier/" + ds.getId();
-		
-		Classifier clReturned = assertSuccessfulPost(path, lr.cookie, clParam, Classifier.class);
-		
-		assertTrue(clReturned.getId() != null);
-		assertTrue(clReturned.getLabel().equalsIgnoreCase("my new classifier"));
-		assertTrue(clReturned.getDescription().equalsIgnoreCase("new classifier label"));
-		
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
-		
-		DataModel dm = objectMapper.treeToValue(jn,  getSubType());
-		
-		Set<Classifier> cls = dm.getClassifiers();
-		assertTrue(cls.size() == 1);
-		assertTrue(((Classifier)(cls.toArray())[0]).getLabel().equalsIgnoreCase("my new classifier"));
-		assertTrue(((Classifier)(cls.toArray())[0]).getDescription().equalsIgnoreCase("new classifier label"));
-	}
 
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
@@ -110,7 +50,7 @@ public class DataModelServiceIT extends APITest {
 		
 		LoginResponse lr = doLogin();
 		
-		DataModel ds = getDataModel();
+		DataModel ds = getInstance();
 		DataClass dc = new DataClass();
 		dc.setLabel("my test class");
 		dc.setDescription("my test class description");
@@ -123,8 +63,8 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(dcReturned.getLabel().equalsIgnoreCase("my test class"));
 		assertTrue(dcReturned.getDescription().equalsIgnoreCase("my test class description"));
 		
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
-		DataModel newDM = objectMapper.treeToValue(jn, getSubType());
+		JsonNode jn = apiCtx.getByIdMap(getClazz(), "datamodel.pageview.id", ds.getId());
+		DataModel newDM = objectMapper.treeToValue(jn, getClazz());
 		
 		List<DataClass> childDataClasses = newDM.getChildDataClasses();
 
@@ -140,7 +80,7 @@ public class DataModelServiceIT extends APITest {
 		
 		LoginResponse lr = doLogin();
 		
-		DataModel dm = getDataModel();
+		DataModel dm = getInstance();
 
 		PrimitiveType pt = new PrimitiveType();
 		pt.setLabel("my test pt");
@@ -154,8 +94,8 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(ptReturned.getDescription().equalsIgnoreCase("test pt description"));
 		assertTrue(ptReturned.getId() != null);
 		
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", dm.getId());
-		DataModel newDS = objectMapper.treeToValue(jn, getSubType());
+		JsonNode jn = apiCtx.getByIdMap(getClazz(), "datamodel.pageview.id", dm.getId());
+		DataModel newDS = objectMapper.treeToValue(jn, getClazz());
 		Set<DataType> dts = newDS.getOwnedDataTypes();
 		
 		assertTrue(dts.size() == 1);
@@ -169,7 +109,7 @@ public class DataModelServiceIT extends APITest {
 		
 		LoginResponse lr = doLogin();
 		
-		DataModel ds = getDataModel();
+		DataModel ds = getInstance();
 		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
 		ReferenceType newRefType = new ReferenceType();
 		newRefType.setLabel("my test rt");
@@ -186,9 +126,9 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(rtReturned.getReferenceClass() != null);
 		assertTrue(rtReturned.getReferenceClass().getId().equals(dc.getId()));
 
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
+		JsonNode jn = apiCtx.getByIdMap(getClazz(), "datamodel.pageview.id", ds.getId());
 		
-		DataModel newDS = objectMapper.treeToValue(jn, getSubType());
+		DataModel newDS = objectMapper.treeToValue(jn, getClazz());
 		Set<DataType> dts = newDS.getOwnedDataTypes();
 		
 		assertTrue(dts.size() == 1);
@@ -203,7 +143,7 @@ public class DataModelServiceIT extends APITest {
 		
 		LoginResponse lr = doLogin();
 		
-		DataModel ds = getDataModel();
+		DataModel ds = getInstance();
 		
 		String path = getServicePath() + "/newEnumerationDataType/" + ds.getId();
 		
@@ -224,8 +164,8 @@ public class DataModelServiceIT extends APITest {
 		assertTrue(etReturned.getDescription().equalsIgnoreCase("test et description"));
 		assertTrue(etReturned.getId() != null);
 		
-		JsonNode jn = apiCtx.getByIdMap(getSubType(), "datamodel.pageview.id", ds.getId());
-		DataModel newDS = objectMapper.treeToValue(jn, getSubType());
+		JsonNode jn = apiCtx.getByIdMap(getClazz(), "datamodel.pageview.id", ds.getId());
+		DataModel newDS = objectMapper.treeToValue(jn, getClazz());
 		Set<DataType> dts = newDS.getOwnedDataTypes();
 		assertTrue(newDS.getOwnedDataTypes().size() == 1);
 		assertTrue(((DataType)(dts.toArray())[0]).getLabel().equalsIgnoreCase("my test et"));

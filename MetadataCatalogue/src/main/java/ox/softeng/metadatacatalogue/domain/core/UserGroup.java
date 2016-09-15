@@ -34,6 +34,7 @@ public class UserGroup implements Serializable{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="usergroup.id")
 	protected UUID id;
 	
 	@Column(name="\"Name\"")
@@ -41,9 +42,11 @@ public class UserGroup implements Serializable{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="usergroup.id")
 	protected String groupName;
 	
 	@ManyToMany (mappedBy = "groups")
+	@Projection(name="usergroup.id")
 	protected Set<User> groupMembers;
 	
 	public UserGroup()
@@ -69,6 +72,18 @@ public class UserGroup implements Serializable{
 
 	public boolean removeGroupMember(User e) {
 		return groupMembers.remove(e);
+	}
+
+	public UUID getId() {
+		return id;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public void setGroupMembers(Set<User> groupMembers) {
+		this.groupMembers = groupMembers;
 	}
 
 	

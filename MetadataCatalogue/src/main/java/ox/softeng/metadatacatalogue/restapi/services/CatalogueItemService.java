@@ -16,7 +16,8 @@ import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
-public abstract class CatalogueItemService extends BasicCatalogueService {
+@Path("/catalogueitem")
+public class CatalogueItemService extends BasicCatalogueService {
 	
 	public static Class<? extends CatalogueItem> type = CatalogueItem.class;
 	

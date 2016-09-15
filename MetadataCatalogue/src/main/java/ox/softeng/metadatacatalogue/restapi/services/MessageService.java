@@ -1,10 +1,14 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
 import ox.softeng.metadatacatalogue.domain.core.Message;
+
+import javax.ws.rs.Path;
+
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 
 
-public abstract class MessageService extends DataModelService {
+@Path("/message")
+public class MessageService extends DataModelService {
 	
 	public static Class<? extends CatalogueItem> type = Message.class;
 	

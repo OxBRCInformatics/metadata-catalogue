@@ -27,6 +27,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
 
@@ -51,6 +53,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="user.id")
 	protected UUID id;
 
 	@Column(name="\"First Name\"")
@@ -59,6 +62,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="user.id")
 	protected String firstName;
 	
 	@Column(name="\"Last Name\"")
@@ -67,6 +71,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="user.id")
 	protected String lastName;
 
 	
@@ -76,6 +81,7 @@ public class User implements Serializable, Principal{
 	@Column(name="\"Role\"")
 	@Enumerated(EnumType.ORDINAL)
 	@Projection(name="authentication.login")
+	@Projection(name="user.id")
 	protected UserRole userRole;
 	
 	@Column(name="\"Email Address\"", unique=true)
@@ -84,6 +90,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataclass.pageview.datamodel")
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
+	@Projection(name="user.id")
 	protected String emailAddress;
 
 	@Column(name="\"Password\"")
@@ -103,9 +110,11 @@ public class User implements Serializable, Principal{
 	protected Set<CatalogueItem> createdItems;
 
 	
-	public User()
+	public User() throws NoSuchAlgorithmException
 	{
 		groups = new HashSet<UserGroup>();
+		salt = generateSalt();
+
 	}
 	
 	public User(String firstName, String lastName, String emailAddress, String password, UserRole role) 
@@ -216,10 +225,23 @@ public class User implements Serializable, Principal{
 		return ret.toArray(new String[User.UserRole.values().length]);
 	}
 
+	@JsonIgnore
 	@Override
 	public String getName() {
 		
 		return emailAddress;
+	}
+
+	public byte[] getPassword() {
+		return password;
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
+	}
+
+	public void setGroups(Set<UserGroup> groups) {
+		this.groups = groups;
 	}
 
 }

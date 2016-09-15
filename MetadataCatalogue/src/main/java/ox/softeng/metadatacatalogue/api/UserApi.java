@@ -24,7 +24,7 @@ public final class UserApi extends CatalogueApi {
             public User call(EntityManager em) {
             	try{
             		User u = new User(firstName, lastName, emailAddress, password, role);
-					em.persist(u);
+					u = em.merge(u);
 					return u;
 				}
 				catch(Exception e)

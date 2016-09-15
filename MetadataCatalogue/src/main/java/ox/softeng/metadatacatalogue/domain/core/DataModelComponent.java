@@ -101,5 +101,11 @@ public class DataModelComponent extends Sharable {
 		this.targetForLinks = targetForLinks;
 	}
 	
+	public void addAnnotation(Annotation ann)
+	{
+		this.annotations.add(ann);
+	}
 
+	
+	
 }

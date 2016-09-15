@@ -19,7 +19,7 @@ import ox.softeng.projector.annotations.Projection;
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Sharable")
 @Table(schema="\"Core\"", name="\"Sharable\"")
 
-public abstract class Sharable extends CatalogueItem implements Serializable {
+public class Sharable extends CatalogueItem implements Serializable {
 
 	public static final long serialVersionUID = 1L;
 	

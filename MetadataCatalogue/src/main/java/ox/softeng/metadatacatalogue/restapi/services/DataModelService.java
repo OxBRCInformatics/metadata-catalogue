@@ -1,6 +1,12 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -8,7 +14,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
+
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -143,6 +155,43 @@ public class DataModelService extends FinalisableService{
 
 		ret = (EnumerationType) maybeAddMetadata(ret, et);
 		return createSuccessfulResponse(ret, "datatype.creation");
+	}
+
+	@Path("/export/{id}")
+	@GET
+	@Produces({"application/mc"})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public Response exportModel(@PathParam("id") UUID dataModelId) throws Exception
+	{
+	    StreamingOutput stream = new StreamingOutput() {
+	        public void write(OutputStream output) throws IOException, WebApplicationException {
+	            try {
+	            	JsonNode jn = getApiContext().getByIdMap(DataModel.class, "datamodel.export", dataModelId);
+	            	output.write(jn.toString().getBytes());
+	            	
+	            	//output.flush();
+	            } catch (Exception e) {
+	                throw new WebApplicationException(e);
+	            }
+	        }
+	    };
+	    
+	    return Response.ok(stream).header("content-disposition","attachment; filename = dataModelExport.json").build();
+	}
+
+	@POST
+	@Path("/import")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response importModel(
+		@FormDataParam("file") InputStream uploadedInputStream,
+		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
+	{
+
+		DataModelApi.importDataModel(getApiContext(), uploadedInputStream);
+		
+		return Response.status(200).build();
+
 	}
 
 	

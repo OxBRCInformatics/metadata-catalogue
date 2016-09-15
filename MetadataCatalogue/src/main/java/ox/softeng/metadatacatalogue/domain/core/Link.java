@@ -23,4 +23,16 @@ public class Link extends Sharable {
 	@JoinColumn(name="\"Target\"", nullable=false)
 	protected DataModelComponent target;
 
+	public Link()
+	{
+		
+	}
+	
+	public Link(String label, String description, User createdBy, DataModelComponent source, DataModelComponent target)
+	{
+		super(label, description, createdBy);
+		this.source = source;
+		this.target = target;
+	}
+	
 }

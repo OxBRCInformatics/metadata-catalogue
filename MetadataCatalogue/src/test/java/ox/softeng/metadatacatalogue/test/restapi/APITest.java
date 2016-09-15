@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
@@ -36,16 +37,16 @@ import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
 @ContextConfiguration(locations = {"/context/simple_applicationContext.xml" })
 @TestExecutionListeners({DependencyInjectionTestExecutionListener.class, 
                          FlywayTestExecutionListener.class })
-public abstract class APITest {
+public abstract class APITest<ObjectType> {
 
 	public static String endpoint = "http://localhost:8082/api";  
 
 	public static Client client;
 	public static WebTarget target;
 	
-	static ApiContext apiCtx;
+	public static ApiContext apiCtx;
 	
-	static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+	public static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	
 	@BeforeClass
 	public static void BeforeClass() throws Exception {
@@ -89,9 +90,9 @@ public abstract class APITest {
 		return response;
 	}
 	
-	protected static class LoginResponse {
-		protected User user;
-		protected String cookie;
+	public static class LoginResponse {
+		public User user;
+		public String cookie;
 	}
 	
 	public static LoginResponse doSuccessfulLogin(String username, String password) throws JsonProcessingException
@@ -160,5 +161,12 @@ public abstract class APITest {
 		
 	}
 
+	
+	protected abstract ObjectType getInstance() throws Exception;
+	
+	protected abstract String getServicePath();
+
+	protected abstract Class<? extends ObjectType> getClazz();
+	
 	
 }

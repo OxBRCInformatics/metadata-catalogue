@@ -33,7 +33,7 @@ import ox.softeng.projector.annotations.Projection;
 @Table(schema="\"Core\"", name="\"CatalogueItem\"")
 @Inheritance(strategy=InheritanceType.JOINED)
 
-public abstract class CatalogueItem implements Serializable {
+public class CatalogueItem implements Serializable {
 
 	public static final long serialVersionUID = 1L;
 		

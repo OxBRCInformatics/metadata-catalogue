@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertTrue;
 
@@ -11,20 +11,26 @@ import ox.softeng.metadatacatalogue.api.DatabaseApi;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.domain.core.Database;
 
-public class DatabaseServiceIT extends DataModelServiceIT {
+public class DatabaseServiceIT extends DataModelServiceIT<Database> {
 
-	protected DataModel getDataModel() throws Exception
+	@Override
+	protected DataModel getInstance() throws Exception
 	{
-		Database ds = DatabaseApi.createDatabase(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization", "mysql");
-		return ds;
+		return DatabaseApi.createDatabase(apiCtx, "My test DataSet", "DataSet description", "Test Author", "Test Organization", "mysql");
 	}
 	
+	@Override
 	protected String getServicePath()
 	{
 		return "/database";
 	}
-	static Class<? extends DataModel> subType = Database.class;
 
+	@Override
+	protected Class<? extends Database> getClazz()
+	{
+		return Database.class;
+	}
+	
 	
 	
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)

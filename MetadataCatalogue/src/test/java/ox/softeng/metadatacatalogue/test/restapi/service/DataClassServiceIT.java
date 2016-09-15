@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertTrue;
 
@@ -15,42 +15,32 @@ import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataElement;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
-import ox.softeng.metadatacatalogue.domain.core.Metadata;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService;
 import ox.softeng.metadatacatalogue.restapi.services.DataClassService.NewDataElementDTO.DataTypeDTO;
 
-public class DataClassServiceIT extends APITest {
+public class DataClassServiceIT <ObjectType> extends DataModelComponentServiceIT<DataClass> {
 
-	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
-	@Test
-	public void addMetadata() throws Exception {
-		
-		LoginResponse lr = doLogin();
-		
-		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
+	@Override
+	protected DataClass getInstance() throws Exception
+	{
+		DataSet ds = DataSetApi.createDataSet(apiCtx, "My test DataSet", "DataSet description", "Test Author", "Test Organization");
 		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
-		Metadata md = new Metadata();
-		md.setKey("key1");
-		md.setValue("value1");
-		
-		String path = "/dataclass/addMetadata/" + dc.getId();
-		
-		Metadata mdReturned = assertSuccessfulPost(path, lr.cookie, md, Metadata.class);
-		
-		assertTrue(mdReturned.getId() != null);
-		assertTrue(mdReturned.getKey().equalsIgnoreCase("key1"));
-		assertTrue(mdReturned.getValue().equalsIgnoreCase("value1"));
-		
-		JsonNode jn = apiCtx.getByIdMap(DataClass.class, "dataclass.pageview.id", dc.getId());
-		
-		DataClass newDC = objectMapper.treeToValue(jn,  DataClass.class);
-		
-		List<Metadata> mds = newDC.getMetadata();
-		assertTrue(mds.size() == 1);
-		assertTrue(mds.get(0).getKey().equalsIgnoreCase("key1"));
-		assertTrue(mds.get(0).getValue().equalsIgnoreCase("value1"));
+		return dc;
 	}
 	
+	@Override
+	protected String getServicePath()
+	{
+		return "/dataclass";
+	}
+
+	@Override
+	protected Class<? extends DataClass> getClazz()
+	{
+		return DataClass.class;
+	}
+
+		
 	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
 	@Test
 	public void addChildElement() throws Exception {
@@ -59,6 +49,7 @@ public class DataClassServiceIT extends APITest {
 		
 		DataSet ds = DataSetApi.createDataSet(apiCtx, "Test Dataset", "This is just a test dataset", "Author", "Organization");
 		DataClass dc = DataModelApi.newDataClass(apiCtx, ds, "class1", "class1desc");
+
 		DataType dt = DataModelApi.newPrimitiveType(apiCtx, ds, "String data type", "data type description", "");
 
 		String path = "/dataclass/newChildDataElement/" + dc.getId();

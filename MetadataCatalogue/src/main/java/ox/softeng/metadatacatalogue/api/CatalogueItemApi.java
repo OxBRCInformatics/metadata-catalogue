@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
-import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.Metadata;
 
 public class CatalogueItemApi extends CatalogueApi{

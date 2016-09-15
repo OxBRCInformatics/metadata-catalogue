@@ -12,4 +12,14 @@ import ox.softeng.projector.annotations.Projectable;
 public class Workflow extends DataModel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public Workflow() 
+	{
+		
+	}
+	
+	public Workflow(String label, String description, User createdBy, String author, String organization)
+	{
+		super(label, description, createdBy, author, organization, "Workflow");
+	}
 }

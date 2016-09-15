@@ -17,8 +17,8 @@ import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
-
-public abstract class DataModelComponentService extends SharableService {
+@Path("/datamodelcomponent")
+public class DataModelComponentService extends SharableService {
 	
 	public static Class<? extends CatalogueItem> type = DataModelComponent.class;
 	

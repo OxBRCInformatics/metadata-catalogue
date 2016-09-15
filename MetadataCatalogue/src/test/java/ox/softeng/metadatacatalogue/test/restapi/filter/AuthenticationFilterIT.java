@@ -1,4 +1,4 @@
-package ox.softeng.metadatacatalogue.test.restapi;
+package ox.softeng.metadatacatalogue.test.restapi.filter;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,7 +8,10 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Test;
 
-public class AuthenticationFilterIT extends APITest{
+import ox.softeng.metadatacatalogue.test.restapi.APITest;
+import ox.softeng.metadatacatalogue.test.restapi.APITest.LoginResponse;
+
+public class AuthenticationFilterIT extends APITest<Object>{
 	
 	@Test
 	public void authenticationFilterNoToken() throws Exception 
@@ -65,4 +68,21 @@ public class AuthenticationFilterIT extends APITest{
 		
 	}
 
+	/* These methods are not really needed for this service - we'll give some default implementations */
+	
+	@Override
+	protected Object getInstance() throws Exception {
+		return null;
+	}
+
+	@Override
+	protected String getServicePath() {
+		return "/authentication";
+	}
+
+	@Override
+	protected Class<? extends Object> getClazz() {
+		return Object.class;
+	}
+	
 }
