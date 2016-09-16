@@ -18,6 +18,7 @@ public class DBConnectionFilter implements ContainerRequestFilter {
 	@Context
     HttpServletRequest webRequest;
     
+	
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException  
 	{ 
@@ -31,7 +32,7 @@ public class DBConnectionFilter implements ContainerRequestFilter {
 			System.err.println("Entity Manager Factory is not set - re-initialising...");
 			try{
 				Properties props = (Properties) application.getAttribute("entityManagerProps");
-				((ApplicationContext)application).initialiseDatabaseConnection( webRequest.getServletContext(), props);
+				ApplicationContext.initialiseDatabaseConnection( webRequest.getServletContext(), props);
 			}
 			catch(Exception e){
 				e.printStackTrace(System.err);

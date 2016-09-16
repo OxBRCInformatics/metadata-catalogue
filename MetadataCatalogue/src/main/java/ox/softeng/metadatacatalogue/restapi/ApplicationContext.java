@@ -69,7 +69,7 @@ public class ApplicationContext implements ServletContextListener
 		return props;
 	}
 
-	public void initialiseDatabaseConnection(ServletContext context, Properties props)
+	public static void initialiseDatabaseConnection(ServletContext context, Properties props)
 	{
 		logger.info("Intialising database connection...");
 		try{
