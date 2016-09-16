@@ -10,6 +10,9 @@ import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.core.SecurityContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,12 +24,15 @@ public class ApiContext extends DatabaseQueryHelper implements SecurityContext {
 
 	private static ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 
+	private static final Logger logger = LoggerFactory.getLogger(ApiContext.class);
 
 	private User user;
 
 	private ApiContext(Properties props)
 	{
 		cp = new ConnectionProvider(props);
+
+		logger.info("Creating new database connection!!");
 		emf = cp.newConnection();
 		user = null;
 	}

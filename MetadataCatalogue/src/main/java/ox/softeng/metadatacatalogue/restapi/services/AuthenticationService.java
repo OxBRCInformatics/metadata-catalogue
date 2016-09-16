@@ -87,7 +87,6 @@ public class AuthenticationService extends BasicCatalogueService{
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public boolean logout(@Context HttpServletRequest request)
 	{
-		getApiContext().close();
 		request.getSession().setAttribute("apiContext", null);
 		request.getSession().invalidate();
 		return true;
