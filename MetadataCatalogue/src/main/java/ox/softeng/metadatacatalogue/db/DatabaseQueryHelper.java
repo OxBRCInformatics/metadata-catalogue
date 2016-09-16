@@ -8,6 +8,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -21,6 +24,8 @@ public class DatabaseQueryHelper {
 	protected ConnectionProvider cp;
 	protected EntityManagerFactory emf;
 
+	private static final Logger logger = LoggerFactory.getLogger(DatabaseQueryHelper.class);
+	
 	public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
 
 	public <DomainClass> List<DomainClass> getAll(Class<DomainClass> domainClass) throws Exception
@@ -179,6 +184,7 @@ public class DatabaseQueryHelper {
 	public <T> T executeTransaction(EMCallable<T> doInTransaction) throws Exception {
 		if(!emf.isOpen())
 		{
+			logger.info("Creating new database connection!!");
 			emf = cp.newConnection();
 			System.out.println("Connection dropped... creating new connection.");
 		}
@@ -207,6 +213,7 @@ public class DatabaseQueryHelper {
 
 		if(!emf.isOpen())
 		{
+			logger.info("Creating new database connection!!");
 			emf.close();
 			emf = cp.newConnection();
 		}

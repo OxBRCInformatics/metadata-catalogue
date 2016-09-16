@@ -50,6 +50,7 @@ public class ApiContext extends DatabaseQueryHelper implements SecurityContext {
 		Properties props = new Properties();
 		props.load(new FileInputStream(properiesFilename));
 		cp = new ConnectionProvider(props);
+		logger.info("Creating new database connection!!");
 		emf = cp.newConnection();
 		getUser(username, password);
 	}
@@ -59,6 +60,7 @@ public class ApiContext extends DatabaseQueryHelper implements SecurityContext {
 		Properties props = new Properties();
 		props.load(new FileInputStream(propertiesFilename));
 		cp = new ConnectionProvider(props);
+		logger.info("Creating new database connection!!");
 		emf = cp.newConnection();
 		return props;
 	}

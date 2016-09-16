@@ -17,7 +17,10 @@ import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -39,7 +42,9 @@ import ox.softeng.metadatacatalogue.restapi.transport.UserCredentials;
                          FlywayTestExecutionListener.class })
 public abstract class APITest<ObjectType> {
 
-	public static String endpoint = "http://localhost:8082/api";  
+	public static String endpoint = "http://localhost:8082/api";
+	
+	private static final Logger logger = LoggerFactory.getLogger(APITest.class);
 
 	public static Client client;
 	public static WebTarget target;
@@ -59,12 +64,19 @@ public abstract class APITest<ObjectType> {
 	public void Before() throws Exception {
 
 		ConnectionProvider cp = new ConnectionProvider(null);
-		// Get the Bootstrap user
 		apiCtx = new ApiContext(cp, cp.newConnection(), "admin@metadatacatalogue.com", "password");
+		// Get the Bootstrap user
+		logger.info("Creating new database connection!!");
 	}
 
+	@After
+	public void After()
+	{
+		apiCtx.close();
+	}
+	
 	@AfterClass
-	public static void After() {
+	public static void AfterClass() {
 		client.close();
 	}
 
