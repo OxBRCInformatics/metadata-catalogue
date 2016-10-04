@@ -10,12 +10,17 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import ox.softeng.metadatacatalogue.api.DataModelComponentApi;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
+import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 @Path("/datamodelcomponent")
 public class DataModelComponentService extends SharableService {
@@ -38,6 +43,25 @@ public class DataModelComponentService extends SharableService {
 
 		return this.createSuccessfulResponse(ret, "classifier.pageView.id");
 		
+	}
+	
+	@Path("/search")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public ObjectNode searchDataModel(SearchParamsDTO searchParams) throws Exception
+	{
+		
+		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm());
+		ArrayNode dcs =  getApiContext().searchMap(
+				DataModelComponent.class, "datamodelcomponent.pageview.id", 
+				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
+		
+		ObjectNode jn = JsonNodeFactory.instance.objectNode();
+		jn.put("count", count);
+		jn.set("results", dcs);
+		return jn;
 	}
 
 		

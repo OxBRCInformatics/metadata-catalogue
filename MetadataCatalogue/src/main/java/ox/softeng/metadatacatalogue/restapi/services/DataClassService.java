@@ -41,7 +41,7 @@ public class DataClassService extends DataModelComponentService{
 		//return getApiContext().getByIdMap(DataClass.class, DataClassDTO.class, dataClassId);
 		
 	}
-
+/*
 	@Path("/search")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -54,7 +54,8 @@ public class DataClassService extends DataModelComponentService{
 				DataClass.class, "dataclass.pageview.id", 
 				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
 	}
-
+*/
+	
 	@Path("/newChildDataClass/{id}")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})

@@ -77,7 +77,7 @@ public class DataModelService extends FinalisableService{
 		return getApiContext().getAllMap(DataModel.class, "datamodel.treeview");
 	}
 
-	@Path("/search")
+/*	@Path("/search")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -89,7 +89,7 @@ public class DataModelService extends FinalisableService{
 				DataModel.class, "datamodel.pageview.id", 
 				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
 	}
-
+*/
 
 	@Path("/newChildDataClass/{id}")
 	@POST
@@ -167,9 +167,8 @@ public class DataModelService extends FinalisableService{
 	    StreamingOutput stream = new StreamingOutput() {
 	        public void write(OutputStream output) throws IOException, WebApplicationException {
 	            try {
-	            	JsonNode jn = getApiContext().getByIdMap(DataModel.class, "datamodel.export", dataModelId);
+	            	JsonNode jn = DataModelApi.export(getApiContext(), dataModelId);
 	            	output.write(jn.toString().getBytes());
-	            	
 	            	//output.flush();
 	            } catch (Exception e) {
 	                throw new WebApplicationException(e);

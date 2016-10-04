@@ -26,7 +26,7 @@ public class DatabaseQueryHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseQueryHelper.class);
 	
-	public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
+	//public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
 
 	public <DomainClass> List<DomainClass> getAll(Class<DomainClass> domainClass) throws Exception
 	{
@@ -119,6 +119,30 @@ public class DatabaseQueryHelper {
             }
 		});
 	}
+	
+	public <DomainClass extends CatalogueItem> long searchCount(Class<DomainClass> domainClass, String searchTerm) throws Exception
+	{
+		return executeQuery(new EMCallable<Long>(){
+            @Override
+            public Long call(EntityManager em) {
+            	try{
+            		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where "
+						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
+						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%'))";
+            		TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
+            		query.setParameter("searchTerm", searchTerm);
+            		Long ret = query.getSingleResult();
+            		return ret;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+	
 	
 	public <DomainClass> DomainClass getById(Class<DomainClass> domainClass, UUID uuid) throws Exception
 	{

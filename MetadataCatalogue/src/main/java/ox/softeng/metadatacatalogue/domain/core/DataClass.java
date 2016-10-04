@@ -59,6 +59,7 @@ public class DataClass extends DataModelComponent {
 
 	@Transient
 	@Projection(name="dataclass.pageview.id")
+	@Projection(name="datamodelcomponent.pageview.id")
 	private List<Breadcrumb> breadcrumbs;
 	
 	public DataClass()
@@ -145,10 +146,10 @@ public class DataClass extends DataModelComponent {
 		return breadcrumbs;
 	}
 	
-	@PostLoad
+	//@PostLoad
 	public void setBreadcrumbs() throws Exception
 	{
-		if(parentDataModel != null)
+		if(getParentDataModel() != null)
 		{
 			breadcrumbs = new ArrayList<Breadcrumb>();
 			breadcrumbs.add(new Breadcrumb(
@@ -158,9 +159,18 @@ public class DataClass extends DataModelComponent {
 					parentDataModel.getDtype() ));
 
 		}
-		else if(parentDataClass != null)
+		else if(getParentDataClass() != null)
 		{
 			breadcrumbs = new ArrayList<Breadcrumb>();
+			if(parentDataClass.getBreadcrumbs() == null)
+			{
+				parentDataClass.setBreadcrumbs();
+				if(parentDataClass.getBreadcrumbs() == null)
+				{
+					System.out.println("Breadcrumbs are still null!");
+				}
+			}
+		
 			breadcrumbs.addAll(parentDataClass.getBreadcrumbs());
 			breadcrumbs.add(new Breadcrumb(
 					parentDataClass.getId(), 
@@ -170,8 +180,8 @@ public class DataClass extends DataModelComponent {
 		}
 		else
 		{
-			//return null;
 			//throw new Exception("No parent for this data class: " + this.label);
+//			return null;
 		}
 	}
 	

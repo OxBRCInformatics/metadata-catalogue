@@ -47,6 +47,7 @@ public class DataElement extends DataModelComponent {
 	private DataClass parentDataClass;
 
 	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datamodelcomponent.pageview.id")
 	@Transient
 	private List<Breadcrumb> breadcrumbs;
 

@@ -33,7 +33,7 @@ public class DataElementService extends DataModelComponentService{
 		return getApiContext().getByIdMap(DataElement.class, "dataelement.pageview.id", dataElementId);
 		
 	}
-
+/*
 	@Path("/search")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -46,7 +46,7 @@ public class DataElementService extends DataModelComponentService{
 				DataElement.class, "dataelement.pageview.id", 
 				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
 	}
-
+*/
 
 
 }
