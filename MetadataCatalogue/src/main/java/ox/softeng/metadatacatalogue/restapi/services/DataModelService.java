@@ -1,12 +1,9 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -35,7 +32,6 @@ import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 
 @Path("/datamodel")
@@ -157,7 +153,7 @@ public class DataModelService extends FinalisableService{
 		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 
-	@Path("/export/{id}")
+/*	@Path("/export/{id}")
 	@GET
 	@Produces({"application/mc"})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -178,7 +174,7 @@ public class DataModelService extends FinalisableService{
 	    
 	    return Response.ok(stream).header("content-disposition","attachment; filename = dataModelExport.json").build();
 	}
-
+*/
 	@POST
 	@Path("/import")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
