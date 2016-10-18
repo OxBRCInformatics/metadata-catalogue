@@ -26,7 +26,7 @@ public class DatabaseQueryHelper {
 
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseQueryHelper.class);
 	
-	//public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
+	public static final JsonNodeFactory jsonFactory = JsonNodeFactory.instance;
 
 	public <DomainClass> List<DomainClass> getAll(Class<DomainClass> domainClass) throws Exception
 	{
