@@ -191,7 +191,11 @@
 			<artifactId>jersey-media-multipart</artifactId>
 			<version>2.22.2</version>
 		</dependency>
-
+<!-- 		<dependency>
+			<groupId>org.jvnet.mimepull</groupId>
+			<artifactId>mimepull</artifactId>
+			<version>1.9.3</version>
+		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -293,7 +297,7 @@
 		<dependency>
 			<groupId>Projector</groupId>
 			<artifactId>Projector</artifactId>
-			<version>0.0.1-20160905.222609-1</version>
+			<version>0.0.1-20161018.085607-1</version>
 		</dependency>
 	</dependencies>
 </project>
