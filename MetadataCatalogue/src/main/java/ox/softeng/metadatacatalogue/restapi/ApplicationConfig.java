@@ -9,6 +9,8 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.media.multipart.internal.MultiPartReaderClientSide;
+import org.glassfish.jersey.media.multipart.internal.MultiPartReaderServerSide;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
 import ox.softeng.metadatacatalogue.restapi.filters.AuthenticationFilter;
@@ -75,6 +77,7 @@ public class ApplicationConfig extends Application {
         resources.add(ResponseCorsFilter.class);
 
         resources.add(MultiPartFeature.class);
+        resources.add(MultiPartReaderServerSide.class);
         
         resources.add(RolesAllowedDynamicFeature.class);
         
