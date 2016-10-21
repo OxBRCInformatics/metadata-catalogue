@@ -2,7 +2,6 @@ package ox.softeng.metadatacatalogue.test.domain.core;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.ConnectionProvider;
-import ox.softeng.metadatacatalogue.restapi.ApplicationContext;
 
 import org.flywaydb.test.junit.FlywayTestExecutionListener;
 import org.junit.Before;

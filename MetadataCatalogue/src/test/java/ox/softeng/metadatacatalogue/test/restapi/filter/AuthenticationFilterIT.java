@@ -9,7 +9,6 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import ox.softeng.metadatacatalogue.test.restapi.APITest;
-import ox.softeng.metadatacatalogue.test.restapi.APITest.LoginResponse;
 
 public class AuthenticationFilterIT extends APITest<Object>{
 	
