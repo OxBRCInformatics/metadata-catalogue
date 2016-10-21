@@ -16,6 +16,7 @@ public class Database extends DataModel {
 	private static final long serialVersionUID = 1L;
 
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@Column(name="\"Dialect\"")
 	private String dialect;
 

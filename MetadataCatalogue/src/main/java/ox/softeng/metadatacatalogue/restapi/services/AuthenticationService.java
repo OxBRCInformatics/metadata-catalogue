@@ -121,7 +121,7 @@ public class AuthenticationService extends BasicCatalogueService{
 	{
 
 		User u = UserApi.getByEmailAddressAndPassword(apiCtx, username, password);
-		if(u == null || !u.getEmailAddress().equalsIgnoreCase(username) || u.getId() == null)
+		if(u == null || !u.getEmailAddress().equalsIgnoreCase(username))
 		{
 			return null;
 		}

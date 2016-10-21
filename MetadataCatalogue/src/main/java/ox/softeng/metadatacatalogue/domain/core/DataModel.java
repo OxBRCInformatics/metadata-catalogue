@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -46,14 +47,17 @@ public abstract class DataModel extends Finalisable {
 	private static final long serialVersionUID = 1L;
 
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@Column(name="\"Author\"")
 	private String author;
 
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@Column(name="\"Organization\"")
 	private String organization;
 
 	@Projection(name="datamodel.pageview.id")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@Column(name="\"Type\"")
 	private String type;
 
@@ -61,15 +65,17 @@ public abstract class DataModel extends Finalisable {
 	@JoinTable( name="\"DataModel_ImportsFrom\"", schema="\"Core\"",
 		joinColumns = { @JoinColumn (name="\"DataModel Id\"") },
 		inverseJoinColumns = { @JoinColumn (name="\"Imported DataModel Id\"") })
+	@Projection(name="datamodel.export.0.1.datamodel")
 	private Set<DataModel> importsFrom;
 
 	@ManyToMany (mappedBy = "importsFrom")
 	private Set<DataModel> importedBy;
 
-
+	@JsonManagedReference(value="parentDataModel")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parentDataModel")
 	@Projection(name="datamodel.pageview.id", recurseProjection="datamodel.pageview.dataclass")
 	@Projection(name="datamodel.treeview")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	private List<DataClass> childDataClasses;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "belongsToModel")
@@ -100,6 +106,28 @@ public abstract class DataModel extends Finalisable {
 		ownedDataClasses = new HashSet<DataClass>();
 		ownedDataElements = new HashSet<DataElement>();
 		ownedDataTypes = new HashSet<DataType>();
+	}
+	
+	public Set<User> findAllUsers()
+	{
+		HashSet<User> users = new HashSet<User>();
+		users.add(this.createdBy);
+		if(childDataClasses != null)
+		{
+			for(DataClass dc : childDataClasses)
+			{
+				users.addAll(dc.findAllUsers());
+			}
+		}
+		if(ownedDataTypes != null)
+		{
+			for(DataType dt : ownedDataTypes)
+			{
+				users.addAll(dt.findAllUsers());
+			}
+		}
+		return users;
+
 	}
 
 	public String getAuthor() {
@@ -144,6 +172,10 @@ public abstract class DataModel extends Finalisable {
 
 	public Set<DataType> getOwnedDataTypes() {
 		return ownedDataTypes;
+	}
+
+	public void setChildDataClasses(List<DataClass> childDataClasses) {
+		this.childDataClasses = childDataClasses;
 	}
 
 

@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -22,7 +21,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
@@ -38,9 +37,10 @@ public class CatalogueItem implements Serializable {
 	public static final long serialVersionUID = 1L;
 		
 	@Id
+	@JsonIdentityReference(alwaysAsId = true)
 	@Projection(always=true)
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(generator = "uuid2")
+	//@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	//@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
 	protected UUID id;
 
@@ -63,6 +63,7 @@ public class CatalogueItem implements Serializable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export")
 	@Column(name="\"Date/Time Created\"")
 	protected OffsetDateTime dateCreated;
 	
@@ -71,6 +72,7 @@ public class CatalogueItem implements Serializable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export")
 	@Column(name="\"Date/Time Last Updated\"")
 	protected OffsetDateTime lastUpdated;
 	
@@ -79,6 +81,7 @@ public class CatalogueItem implements Serializable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export")
 	@OneToMany(mappedBy = "belongsToCatalogueItem", cascade = CascadeType.ALL)
 	protected List<Metadata> metadata;
 		
@@ -87,7 +90,9 @@ public class CatalogueItem implements Serializable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
-	@ManyToOne
+	@Projection(name="datamodel.export.0.1.datamodel")
+	@Projection(name="datamodel.export.0.1.datatype")
+	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;
 
@@ -161,6 +166,10 @@ public class CatalogueItem implements Serializable {
 	@PreUpdate
 	protected void onUpdate() {
 		lastUpdated = OffsetDateTime.now();
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
 	}
 	
 	public Metadata addMetadata(String key, String value)
@@ -169,6 +178,6 @@ public class CatalogueItem implements Serializable {
 		//metadata.add(md);
 		return md;
 	}
-
+	
 	
 }

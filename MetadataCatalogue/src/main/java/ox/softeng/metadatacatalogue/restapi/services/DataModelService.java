@@ -153,7 +153,7 @@ public class DataModelService extends FinalisableService{
 		return createSuccessfulResponse(ret, "datatype.creation");
 	}
 
-/*	@Path("/export/{id}")
+	@Path("/export/0.1/{id}")
 	@GET
 	@Produces({"application/mc"})
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -163,10 +163,19 @@ public class DataModelService extends FinalisableService{
 	    StreamingOutput stream = new StreamingOutput() {
 	        public void write(OutputStream output) throws IOException, WebApplicationException {
 	            try {
-	            	JsonNode jn = DataModelApi.export(getApiContext(), dataModelId);
-	            	output.write(jn.toString().getBytes());
+	            	JsonNode jn = DataModelApi.export0_1(getApiContext(), dataModelId);
+	            	System.out.println(jn);
+	            	if(jn == null)
+	            	{
+	            		output.write("No Data Model with this identifier".getBytes());
+	            	}
+	            	else
+	            	{
+	            		output.write(jn.toString().getBytes());
+	            	}
 	            	//output.flush();
 	            } catch (Exception e) {
+	            	e.printStackTrace();
 	                throw new WebApplicationException(e);
 	            }
 	        }
@@ -174,7 +183,7 @@ public class DataModelService extends FinalisableService{
 	    
 	    return Response.ok(stream).header("content-disposition","attachment; filename = dataModelExport.json").build();
 	}
-*/
+
 	@POST
 	@Path("/import")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -183,7 +192,7 @@ public class DataModelService extends FinalisableService{
 		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
 	{
 
-		DataModelApi.importDataModel(getApiContext(), uploadedInputStream);
+		DataModelApi.import0_1(getApiContext(), uploadedInputStream);
 		
 		return Response.status(200).build();
 

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Finalisable")
@@ -15,9 +16,11 @@ public class Finalisable extends DataModelComponent {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name="\"Finalised\"")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	protected Boolean finalised;
 	
 	@Column(name="\"Release Label\"")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	protected String releaseLabel;
 
 	public Finalisable()

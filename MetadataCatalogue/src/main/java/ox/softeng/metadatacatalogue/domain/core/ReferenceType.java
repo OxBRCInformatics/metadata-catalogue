@@ -23,6 +23,7 @@ public class ReferenceType extends DataType {
 	@Projection(name="datatype.creation")
 
 	@ManyToOne
+	@Projection(name="datamodel.export.0.1.datatype")
 	@JoinColumn(name="\"Referenced Class\"")
 	protected DataClass referenceClass;
 

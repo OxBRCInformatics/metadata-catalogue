@@ -6,6 +6,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
 
@@ -27,6 +29,7 @@ public class EnumerationValue extends DataModelComponent {
 
 	
 	@ManyToOne
+	@JsonBackReference(value="enumerationType")
 	@JoinColumn(name="\"Enumeration Type\"")
 	protected EnumerationType enumerationType;
 	

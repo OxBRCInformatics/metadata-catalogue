@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
@@ -48,18 +46,11 @@ public final class UserApi extends CatalogueApi {
 	
 	public static User getByEmailAddress(ApiContext apiCtx, String emailAddress) throws Exception
 	{
+		String trimmedEmailAddress = emailAddress.toLowerCase().trim();
 		User u = apiCtx.executeQuery(new EMCallable<User>(){
             @Override
             public User call(EntityManager em) {
-				Query query = em.createNamedQuery("User.getUserByEmailAddress");
-				query.setParameter("emailAddress", emailAddress.trim());
-				User user;
-				try{
-					user = (User) query.getSingleResult();
-				}catch(NoResultException nre)
-				{
-					return null;
-				}
+				User user = em.find(User.class, trimmedEmailAddress);
 				return user;
             }
             

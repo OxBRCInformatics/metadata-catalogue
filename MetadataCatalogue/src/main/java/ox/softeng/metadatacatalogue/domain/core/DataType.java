@@ -38,6 +38,7 @@ public abstract class DataType extends DataModelComponent {
 
 	@Projection(name="datatype.pageview.id", recurseProjection="datatype.pageview.datamodel")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export",recurseProjection="datamodel.export.belongsToModel")
 	@ManyToOne
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
@@ -47,6 +48,7 @@ public abstract class DataType extends DataModelComponent {
 	protected Set<DataElement> forDataElements;
 	
 
+	@Projection(name="datamodel.export")
 	@Column(name="\"Type\"")
 	protected String type;
 
@@ -61,6 +63,14 @@ public abstract class DataType extends DataModelComponent {
 		this.belongsToModel = belongsToModel;
 		this.forDataElements = new HashSet<DataElement>();
 	}
+	
+	public Set<User> findAllUsers()
+	{
+		HashSet<User> users = new HashSet<User>();
+		users.add(this.createdBy);
+		return users;
+	}
+
 
 	public DataModel getBelongsToModel() {
 		return belongsToModel;

@@ -36,6 +36,7 @@ public class DataModelComponent extends Sharable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export")
 	protected List<Annotation> annotations;
 
 	
@@ -45,14 +46,10 @@ public class DataModelComponent extends Sharable {
 	@Projection(name="dataelement.pageview.id")
 	@Projection(name="datatype.pageview.id")
 	@Projection(name="datatype.creation")
+	@Projection(name="datamodel.export")
 	protected Set<Link> sourceForLinks;
 
 	@OneToMany (mappedBy = "target")
-	@Projection(name="datamodel.pageview.id")
-	@Projection(name="dataclass.pageview.id")
-	@Projection(name="dataelement.pageview.id")
-	@Projection(name="datatype.pageview.id")
-	@Projection(name="datatype.creation")
 	protected Set<Link> targetForLinks;
 
 	public DataModelComponent()

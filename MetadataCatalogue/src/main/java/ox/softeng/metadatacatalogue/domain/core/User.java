@@ -10,23 +10,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.GenericGenerator;
-
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ox.softeng.projector.annotations.Projectable;
@@ -35,18 +32,19 @@ import ox.softeng.projector.annotations.Projection;
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.User")
 @Table(schema="\"Core\"", name="\"User\"")
-@NamedQuery(
+/*@NamedQuery(
 		  name="User.getUserByEmailAddress",
 		  query="SELECT u FROM ox.softeng.metadatacatalogue.domain.core.User u WHERE UPPER(u.emailAddress) = UPPER(:emailAddress)"
-		)
+		)*/
 
 public class User implements Serializable, Principal{
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@GeneratedValue(generator = "uuid2")
+/*	@Id
+	@JsonIdentityReference(alwaysAsId = true)
+	//@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	//@GeneratedValue(generator = "uuid2")
 	@Column(name = "id", unique = true)
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
@@ -54,7 +52,11 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
 	@Projection(name="user.id")
-	protected UUID id;
+	@Projection(name="datamodel.export")
+	@Projection(name="datamodel.export.0.1.user")
+	@Projection(name="datamodel.export.0.1.datamodel")
+	
+	protected UUID id;*/
 
 	@Column(name="\"First Name\"")
 	@Projection(name="datamodel.pageview.id")
@@ -63,6 +65,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
 	@Projection(name="user.id")
+	@Projection(name="datamodel.export.0.1.user")
 	protected String firstName;
 	
 	@Column(name="\"Last Name\"")
@@ -72,6 +75,7 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
 	@Projection(name="user.id")
+	@Projection(name="datamodel.export.0.1.user")
 	protected String lastName;
 
 	
@@ -84,6 +88,8 @@ public class User implements Serializable, Principal{
 	@Projection(name="user.id")
 	protected UserRole userRole;
 	
+	@Id
+	@JsonIdentityReference(alwaysAsId = true)
 	@Column(name="\"Email Address\"", unique=true)
 	@Projection(name="datamodel.pageview.id")
 	@Projection(name="authentication.login")
@@ -91,6 +97,9 @@ public class User implements Serializable, Principal{
 	@Projection(name="dataelement.pageview.datamodel")
 	@Projection(name="datatype.pageview.datamodel")
 	@Projection(name="user.id")
+	@Projection(name="datamodel.export.0.1.datamodel")
+	@Projection(name="datamodel.export.0.1.datatype")
+	@Projection(name="datamodel.export.0.1.user")
 	protected String emailAddress;
 
 	@Column(name="\"Password\"")
@@ -106,7 +115,7 @@ public class User implements Serializable, Principal{
 			inverseJoinColumns = { @JoinColumn (name="\"Group Id\"") })
 	protected Set<UserGroup> groups;
 
-	@OneToMany(mappedBy = "createdBy")
+	@OneToMany(mappedBy = "createdBy", cascade=CascadeType.ALL)
 	protected Set<CatalogueItem> createdItems;
 
 	
@@ -122,7 +131,7 @@ public class User implements Serializable, Principal{
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.emailAddress = emailAddress;
+		this.emailAddress = normaliseEmailAddress(emailAddress);
 		this.userRole = role; 
 		
 		salt = generateSalt();
@@ -166,7 +175,7 @@ public class User implements Serializable, Principal{
 
 
 	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+		this.emailAddress = normaliseEmailAddress(emailAddress);
 	}
 
 
@@ -189,11 +198,11 @@ public class User implements Serializable, Principal{
 	
 
 
-
+/*
 	public UUID getId() {
 		return id;
 	}
-
+*/
 
 
 	public Set<UserGroup> getGroups() {
@@ -225,6 +234,16 @@ public class User implements Serializable, Principal{
 		return ret.toArray(new String[User.UserRole.values().length]);
 	}
 
+/*	@PrePersist
+	@PreUpdate
+	protected void onUpdate() {
+		if(id == null)
+		{
+			id = UUID.randomUUID();
+		}
+	}
+*/
+	
 	@JsonIgnore
 	@Override
 	public String getName() {
@@ -236,12 +255,17 @@ public class User implements Serializable, Principal{
 		return password;
 	}
 
+	/*
 	public void setId(UUID id) {
 		this.id = id;
-	}
+	}*/
 
 	public void setGroups(Set<UserGroup> groups) {
 		this.groups = groups;
 	}
 
+	private String normaliseEmailAddress(String emailAddress)
+	{
+		return emailAddress.trim().toLowerCase();
+	}
 }

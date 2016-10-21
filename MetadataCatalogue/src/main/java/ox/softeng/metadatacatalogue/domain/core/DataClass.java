@@ -1,7 +1,9 @@
 package ox.softeng.metadatacatalogue.domain.core;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,11 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import ox.softeng.projector.annotations.Projectable;
 import ox.softeng.projector.annotations.Projection;
@@ -31,11 +35,13 @@ public class DataClass extends DataModelComponent {
 	@JoinColumn(name="\"Belongs To Model\"")
 	protected DataModel belongsToModel;
 
+	@JsonBackReference(value="parentDataModel")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Model\"")
 	private DataModel parentDataModel;
 
 	
+	@JsonBackReference(value="parentDataClass")
 	@ManyToOne
 	@JoinColumn(name="\"Parent Class\"")
 	private DataClass parentDataClass;
@@ -44,12 +50,16 @@ public class DataClass extends DataModelComponent {
 	@Column(name="\"Path\"")
 	private String path;
 
+	@JsonManagedReference(value="parentDataClass")
 	@Projection(name="dataclass.pageview.id", recurseProjection="dataclass.pageview.subclass")
 	@Projection(name="datamodel.treeview")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataClass> childDataClasses;
 
+	@JsonManagedReference(value="elementParentDataClass")
 	@Projection(name="dataclass.pageview.id", recurseProjection="dataclass.pageview.dataelement")
+	@Projection(name="datamodel.export.0.1.datamodel")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="parentDataClass")
 	private List<DataElement> childDataElements;
 
@@ -85,6 +95,28 @@ public class DataClass extends DataModelComponent {
 		childDataClasses = new ArrayList<DataClass>();
 		childDataElements = new ArrayList<DataElement>();
 		targetOfReferenceType = new ArrayList<ReferenceType>();
+	}
+	
+	public Set<User> findAllUsers()
+	{
+		HashSet<User> users = new HashSet<User>();
+		users.add(this.createdBy);
+		if(childDataClasses != null)
+		{
+			for(DataClass dc : childDataClasses)
+			{
+				users.addAll(dc.findAllUsers());
+			}
+		}
+		if(childDataElements != null)
+		{
+			for(DataElement de : childDataElements)
+			{
+				users.addAll(de.findAllUsers());
+			}
+		}
+		return users;
+
 	}
 
 	public static long getSerialversionuid() {
@@ -126,10 +158,18 @@ public class DataClass extends DataModelComponent {
 		if(parentDataModel != null)
 		{
 			path = "" + parentDataModel.getId();
+			if(belongsToModel == null)
+			{
+				belongsToModel = parentDataModel;
+			}
 		}
 		else if(parentDataClass != null)
 		{
 			path = parentDataClass.getPath() + "/" + parentDataClass.getId();
+			if(belongsToModel == null)
+			{
+				belongsToModel = parentDataClass.belongsToModel;
+			}
 		}
 		else
 		{

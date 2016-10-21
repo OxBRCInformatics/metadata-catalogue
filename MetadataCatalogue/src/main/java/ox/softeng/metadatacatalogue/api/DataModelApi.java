@@ -2,17 +2,25 @@ package ox.softeng.metadatacatalogue.api;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
+import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
+import ox.softeng.metadatacatalogue.domain.core.User;
+import ox.softeng.projector.Projector;
 
 public class DataModelApi extends FinalisableApi {
 
@@ -106,25 +114,111 @@ public class DataModelApi extends FinalisableApi {
 	}
 
 
-	public static DataModel importDataModel(ApiContext apiCtx, InputStream is) throws Exception
+	public static DataModel import0_1(ApiContext apiCtx, InputStream is) throws Exception
 	{
-		return apiCtx.executeTransaction(new EMCallable<DataModel>(){
-            @Override
-            public DataModel call(EntityManager em) {
-            	try{
-            		DataModel dm = apiCtx.createObjectFromInputStream(is, DataModel.class);
-            		dm = em.merge(dm);
-            		return dm;
+		apiCtx.executeTransaction(new EMCallable<DataModel>(){
+			@Override
+			public DataModel call(EntityManager em) {
+				try{
+					ObjectMapper objectMapper = new ObjectMapper();
+					JsonNode jn = objectMapper.readTree(is);
+					//assert("0.1".equalsIgnoreCase(jn.get("exportVersion").asText()));
+					String label = jn.get("dataModel").get("label").asText();
+					System.out.println("Importing: " + label);
+			
+					JsonNode users = jn.get("users");
+					if(users.isArray())
+					{
+						for(JsonNode user : users)
+						{
+							User newUser = objectMapper.readValue(user.traverse(), User.class);
+					            		
+		            		User existingUser = em.find(User.class, newUser.getEmailAddress());
+		            		if(existingUser == null)
+		            		{
+		            			em.merge(newUser);
+		            		}
+						}
+					}
+					DataModel dm = objectMapper.readValue(jn.get("dataModel").traverse(), DataModel.class);
+					List<DataClass> dcs = dm.getChildDataClasses();
+					dm.setChildDataClasses(null);
+					em.merge(dm);
+					
+					JsonNode dataTypes = jn.get("dataTypes");
+					if(dataTypes.isArray())
+					{
+						for(JsonNode dataType : dataTypes)
+						{
+							DataType newDataType = objectMapper.readValue(dataType.traverse(), DataType.class);
+
+							DataType existingDataType = em.find(DataType.class, newDataType.getId());
+		            		if(existingDataType == null)
+		            		{
+		            			newDataType.setBelongsToModel(dm);
+		            			em.merge(newDataType);
+		            		}
+						}
+					}
+					dm.setChildDataClasses(dcs);
+					em.merge(dm);
+					return null;
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
 					return null;
 				}
+			}
+		});
+		
+		
+		//Class.forName(jn.get("dataModelType"))
+        //DataModel dm = DataModelApi.simpleImport(jn.get("dataModel"));
+                    
+        return null;
+		
+	}
+
+	public static JsonNode export0_1(ApiContext apiCtx, UUID uuid) throws Exception
+	{
+		return apiCtx.executeTransaction(new EMCallable<JsonNode>(){
+            @Override
+            public JsonNode call(EntityManager em) {
+            	try{
+            		ObjectNode on = ApiContext.jsonFactory.objectNode();
+            		on.put("exportVersion", "0.1");
+            		
+            		DataModel dm = em.find(DataModel.class, uuid);
+            		if(dm==null)
+            		{
+            			System.err.println("No data model with this ID: " + uuid);
+            			return null;
+            		}
+            		Set<DataType> dts = dm.getOwnedDataTypes();
+            		JsonNode dtsNode = Projector.project(dts, "datamodel.export.0.1.datatype");
+            		JsonNode dmNode = Projector.project(dm, "datamodel.export.0.1.datamodel");
+
+            		Set<User> users = dm.findAllUsers();
+            		JsonNode userNode = Projector.project(users, "datamodel.export.0.1.user");
+
+            		on.set("dataTypes", dtsNode);
+            		on.put("dataModelType", dm.getType());
+            		on.set("dataModel", dmNode);
+            		on.set("users", userNode);
+            		return on;
+            	}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.err.println("Exception in export: " + uuid);
+					return null;
+				}
             }
 		});
-
 	}
+	
+	 
 
 	
 }

@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.DataClassApi;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
@@ -22,7 +21,6 @@ import ox.softeng.metadatacatalogue.domain.core.DataElement;
 import ox.softeng.metadatacatalogue.domain.core.DataType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
-import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
 
 
 @Path("/dataclass")

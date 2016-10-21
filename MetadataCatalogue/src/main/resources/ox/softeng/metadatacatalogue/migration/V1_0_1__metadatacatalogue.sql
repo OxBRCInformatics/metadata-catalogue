@@ -21,7 +21,6 @@ SET default_with_oids = false;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE "User" (
-	id UUID NOT NULL DEFAULT uuid_generate_v1(),
 	"First Name" character varying(500),
 	"Last Name" character varying(500),
 	"Role" int,
@@ -31,7 +30,7 @@ CREATE TABLE "User" (
 );
 
 ALTER TABLE "User" OWNER TO metadatacatalogue;
-ALTER TABLE ONLY "User" ADD CONSTRAINT "User_pkey" PRIMARY KEY (id);
+ALTER TABLE ONLY "User" ADD CONSTRAINT "User_pkey" PRIMARY KEY ("Email Address");
 
 CREATE TABLE "UserGroup" (
 	id UUID NOT NULL,
@@ -42,7 +41,7 @@ ALTER TABLE "UserGroup" OWNER TO metadatacatalogue;
 ALTER TABLE ONLY "UserGroup" ADD CONSTRAINT "UserGroup_pkey" PRIMARY KEY (id);
 
 CREATE TABLE "User_UserGroup"(
-	"User Id" UUID NOT NULL,
+	"User Id" character varying(500) NOT NULL,
 	"Group Id" UUID NOT NULL
 );
 
@@ -52,7 +51,7 @@ CREATE TABLE "CatalogueItem" (
 	"Description" character varying(10485760),
 	"Date/Time Created" timestamp,
 	"Date/Time Last Updated" timestamp,
-	"Created By" UUID NOT NULL,
+	"Created By" character varying(500) NOT NULL,
 	"DType" character varying(100)
 );
 
@@ -82,7 +81,7 @@ ALTER TABLE ONLY "Sharable" ADD CONSTRAINT "Sharable_pkey" PRIMARY KEY (id);
 
 CREATE TABLE "ReadableByUsers" (
 	"Sharable Id" UUID NOT NULL,
-	"User Id" UUID NOT NULL
+	"User Id" character varying(500) NOT NULL
 );
 
 
@@ -93,7 +92,7 @@ CREATE TABLE "ReadableByGroups" (
 
 CREATE TABLE "WriteableByUsers" (
 	"Sharable Id" UUID NOT NULL,
-	"User Id" UUID NOT NULL
+	"User Id" character varying(500) NOT NULL
 );
 
 CREATE TABLE "WriteableByGroups" (
@@ -303,12 +302,12 @@ ALTER TABLE ONLY "Workflow" ADD CONSTRAINT "Workflow_pkey" PRIMARY KEY (id);
 -- Foreign keys for associations
 
 ALTER TABLE ONLY "User_UserGroup"
-    ADD CONSTRAINT "User_UserGroup_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+    ADD CONSTRAINT "User_UserGroup_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("Email Address");
 ALTER TABLE ONLY "User_UserGroup"
     ADD CONSTRAINT "User_UserGroup_Group_FKey" FOREIGN KEY ("Group Id") REFERENCES "UserGroup"("id");
 
 ALTER TABLE ONLY "CatalogueItem"
-    ADD CONSTRAINT "CatalogueItem_User_FKey" FOREIGN KEY ("Created By") REFERENCES "User"("id");
+    ADD CONSTRAINT "CatalogueItem_User_FKey" FOREIGN KEY ("Created By") REFERENCES "User"("Email Address");
 
 ALTER TABLE ONLY "Metadata"
     ADD CONSTRAINT "Metadata_CatalogueItem_FKey" FOREIGN KEY ("Catalogue Item") REFERENCES "CatalogueItem"("id");
@@ -316,7 +315,7 @@ ALTER TABLE ONLY "Metadata"
 ALTER TABLE ONLY "ReadableByUsers"
     ADD CONSTRAINT "ReadableByUsers_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
 ALTER TABLE ONLY "ReadableByUsers"
-    ADD CONSTRAINT "ReadableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+    ADD CONSTRAINT "ReadableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("Email Address");
 
 ALTER TABLE ONLY "ReadableByGroups"
     ADD CONSTRAINT "ReadableByGroups_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
@@ -326,7 +325,7 @@ ALTER TABLE ONLY "ReadableByGroups"
 ALTER TABLE ONLY "WriteableByUsers"
     ADD CONSTRAINT "WriteableByUsers_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
 ALTER TABLE ONLY "WriteableByUsers"
-    ADD CONSTRAINT "WriteableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("id");
+    ADD CONSTRAINT "WriteableByUsers_User_FKey" FOREIGN KEY ("User Id") REFERENCES "User"("Email Address");
 
 ALTER TABLE ONLY "WriteableByGroups"
     ADD CONSTRAINT "WriteableByGroups_Sharable_FKey" FOREIGN KEY ("Sharable Id") REFERENCES "Sharable"("id");
