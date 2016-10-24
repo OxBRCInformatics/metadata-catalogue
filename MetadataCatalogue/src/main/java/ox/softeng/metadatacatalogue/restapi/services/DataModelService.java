@@ -185,7 +185,7 @@ public class DataModelService extends FinalisableService{
 	}
 
 	@POST
-	@Path("/import")
+	@Path("/import/0.1")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response importModel(
 		@FormDataParam("file") InputStream uploadedInputStream,
