@@ -9,6 +9,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import ox.softeng.projector.annotations.Projectable;
+import ox.softeng.projector.annotations.Projection;
 
 @Projectable
 @Entity(name="ox.softeng.metadatacatalogue.domain.core.Classifier")
@@ -18,6 +19,7 @@ public class Classifier extends Sharable {
 
 	public static final long serialVersionUID = 1L;
 	
+	@Projection(name="classifier.all")
 	@ManyToMany
 	@JoinTable(name="\"ClassifiedComponents\"", schema="\"Core\"",
 			joinColumns = { @JoinColumn (name="\"Classifier Id\"") },

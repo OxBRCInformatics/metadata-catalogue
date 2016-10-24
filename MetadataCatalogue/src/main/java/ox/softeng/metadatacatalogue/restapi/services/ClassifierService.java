@@ -6,10 +6,13 @@ import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.ClassifierApi;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
@@ -32,5 +35,15 @@ public class ClassifierService extends SharableService {
 		return createSuccessfulResponse(ret, "classifier.pageview.id");
 	}
 
+	@Path("/all")
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public ArrayNode getAllClassifiers() throws Exception
+	{
+		ArrayNode dms = getApiContext().getAllMap(Classifier.class, "classifier.all");
+		return dms;
+	}
 		
 }

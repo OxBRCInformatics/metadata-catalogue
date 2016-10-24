@@ -1,10 +1,15 @@
 package ox.softeng.metadatacatalogue.api;
 
+import java.util.List;
+import java.util.UUID;
+
 import javax.persistence.EntityManager;
 
 import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
+import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
+import ox.softeng.metadatacatalogue.domain.core.Database;
 
 public class ClassifierApi extends SharableApi{
 
@@ -29,5 +34,33 @@ public class ClassifierApi extends SharableApi{
 		});
 	}
  	
- 	
+ 	public static List<DataModelComponent> getClassifiedComponents(ApiContext apiCtx, Classifier classifier) throws Exception
+ 	{
+ 		return apiCtx.executeQuery(new EMCallable<List<DataModelComponent>>(){
+			 @Override
+	         public List<DataModelComponent> call(EntityManager em) {
+				 
+				 List<DataModelComponent> dmcs = classifier.getClassifiedComponents();
+				 return dmcs;
+				 
+			 }
+		});
+ 	}
+
+ 	public static List<DataModelComponent> getClassifiedComponents(ApiContext apiCtx, UUID classifierID) throws Exception
+ 	{
+ 		return apiCtx.executeQuery(new EMCallable<List<DataModelComponent>>(){
+			 @Override
+	         public List<DataModelComponent> call(EntityManager em) {
+				 
+				 Classifier classifier = em.find(Classifier.class, classifierID);
+				 
+				 List<DataModelComponent> dmcs = classifier.getClassifiedComponents();
+				 return dmcs;
+				 
+			 }
+		});
+ 	}
+
+	
 }

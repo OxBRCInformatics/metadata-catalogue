@@ -173,5 +173,20 @@ public class DataModelServiceIT<ObjectType> extends FinalisableServiceIT<DataMod
 		assertTrue(((DataType)(dts.toArray())[0]).getDescription().equalsIgnoreCase("test et description"));
 		doLogout(lr.cookie);
 	}
+	
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
+	public void testImportExport() throws Exception {
+		
+		LoginResponse lr = doLogin();
+		
+		DataModel ds = getInstance();
+		
+		String path = getServicePath() + "/export/1.0/" + ds.getId();
+		
+
+		doLogout(lr.cookie);
+	}
+
 
 }
