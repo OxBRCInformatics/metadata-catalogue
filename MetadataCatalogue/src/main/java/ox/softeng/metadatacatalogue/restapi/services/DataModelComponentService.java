@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import ox.softeng.metadatacatalogue.api.DataModelComponentApi;
+import ox.softeng.metadatacatalogue.domain.core.Annotation;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
@@ -64,5 +65,19 @@ public class DataModelComponentService extends SharableService {
 		return jn;
 	}
 
+	@Path("/newAnnotation/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO addAnnotation(@PathParam("id") UUID dmcId, Annotation an) throws Exception
+	{
+		DataModelComponent dmc = getApiContext().getById(DataModelComponent.class, dmcId);
+
+		Annotation ret = DataModelComponentApi.newAnnotation(getApiContext(), dmc, an.getLabel(), an.getDescription());
+
+		return this.createSuccessfulResponse(ret, "annotation.pageView");
+		
+	}
 		
 }

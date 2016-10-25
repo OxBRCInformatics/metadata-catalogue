@@ -2,6 +2,7 @@ package ox.softeng.metadatacatalogue.test.restapi.service;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import ox.softeng.metadatacatalogue.api.ClassifierApi;
 import ox.softeng.metadatacatalogue.api.DataSetApi;
+import ox.softeng.metadatacatalogue.domain.core.Annotation;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
 
@@ -63,6 +65,36 @@ public class DataModelComponentServiceIT <ObjectType> extends SharableServiceIT<
 		assertTrue(cls.size() == 1);
 		assertTrue(((Classifier)(cls.toArray())[0]).getLabel().equalsIgnoreCase("my new classifier"));
 		assertTrue(((Classifier)(cls.toArray())[0]).getDescription().equalsIgnoreCase("new classifier label"));
+		doLogout(lr.cookie);
+	}
+	
+	@FlywayTest(invokeCleanDB=true, invokeBaselineDB=true)
+	@Test
+	public void addAnnotation() throws Exception {
+		
+		LoginResponse lr = doLogin();
+		DataModelComponent dmc = getInstance();
+		
+		Annotation an = new Annotation();
+		an.setLabel("My first annotation");
+		an.setDescription("description");
+		
+		String path = getServicePath() + "/newAnnotation/" + dmc.getId();
+		
+		Annotation anReturned = assertSuccessfulPost(path, lr.cookie, an, Annotation.class);
+		
+		assertTrue(anReturned.getId() != null);
+		assertTrue(anReturned.getLabel().equalsIgnoreCase("My first annotation"));
+		assertTrue(anReturned.getDescription().equalsIgnoreCase("description"));
+		
+		JsonNode jn = apiCtx.getByIdMap(getClazz(), "datamodel.pageview.id", dmc.getId());
+		
+		DataModelComponent newDMC = objectMapper.treeToValue(jn,  getClazz());
+		
+		List<Annotation> ans = newDMC.getAnnotations();
+		assertTrue(ans.size() == 1);
+		assertTrue((ans.get(0)).getLabel().equalsIgnoreCase("My first annotation"));
+		assertTrue((ans.get(0)).getDescription().equalsIgnoreCase("description"));
 		doLogout(lr.cookie);
 	}
 
