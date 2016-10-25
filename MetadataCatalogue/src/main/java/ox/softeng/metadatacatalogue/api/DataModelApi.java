@@ -116,7 +116,7 @@ public class DataModelApi extends FinalisableApi {
 
 	public static DataModel import0_1(ApiContext apiCtx, InputStream is) throws Exception
 	{
-		apiCtx.executeTransaction(new EMCallable<DataModel>(){
+		DataModel dm = apiCtx.executeTransaction(new EMCallable<DataModel>(){
 			@Override
 			public DataModel call(EntityManager em) {
 				try{
@@ -161,8 +161,8 @@ public class DataModelApi extends FinalisableApi {
 						}
 					}
 					dm.setChildDataClasses(dcs);
-					em.merge(dm);
-					return null;
+					dm = em.merge(dm);
+					return dm;
 				}
 				catch(Exception e)
 				{
@@ -171,13 +171,8 @@ public class DataModelApi extends FinalisableApi {
 				}
 			}
 		});
-		
-		
-		//Class.forName(jn.get("dataModelType"))
-        //DataModel dm = DataModelApi.simpleImport(jn.get("dataModel"));
-                    
-        return null;
-		
+		return dm;
+				
 	}
 
 	public static JsonNode export0_1(ApiContext apiCtx, UUID uuid) throws Exception

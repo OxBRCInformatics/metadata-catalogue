@@ -32,6 +32,7 @@ import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
 import ox.softeng.metadatacatalogue.domain.core.ReferenceType;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
+import ox.softeng.projector.Projector;
 
 
 @Path("/datamodel")
@@ -187,15 +188,15 @@ public class DataModelService extends FinalisableService{
 	@POST
 	@Path("/import/0.1")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response importModel(
+	public ResponseDTO importModel(
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
 	{
 
-		DataModelApi.import0_1(getApiContext(), uploadedInputStream);
+		DataModel newDM = DataModelApi.import0_1(getApiContext(), uploadedInputStream);
+		JsonNode jsonDM = Projector.project(newDM, "datamodel.import");
+		return createSuccessfulResponse(jsonDM, newDM.getDtype());
 		
-		return Response.status(200).build();
-
 	}
 
 	
