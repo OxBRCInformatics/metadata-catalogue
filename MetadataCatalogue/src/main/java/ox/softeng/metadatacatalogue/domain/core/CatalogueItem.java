@@ -92,7 +92,7 @@ public class CatalogueItem implements Serializable {
 	@Projection(name="datatype.creation")
 	@Projection(name="datamodel.export.0.1.datamodel")
 	@Projection(name="datamodel.export.0.1.datatype")
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name="\"Created By\"", nullable=false)
 	protected User createdBy;
 
