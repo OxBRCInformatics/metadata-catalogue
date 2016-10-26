@@ -78,6 +78,16 @@ public class DataModelComponent extends Sharable {
 		return annotations;
 	}
 
+	public void addClassifier(Classifier classifier)
+	{
+		if(classifiers == null)
+		{
+			classifiers = new HashSet<Classifier>();
+		}
+		classifiers.add(classifier);
+	}
+
+	
 	public void setAnnotations(List<Annotation> annotations) {
 		this.annotations = annotations;
 	}
@@ -100,7 +110,11 @@ public class DataModelComponent extends Sharable {
 	
 	public void addAnnotation(Annotation ann)
 	{
-		this.annotations.add(ann);
+		if(annotations == null)
+		{
+			annotations = new ArrayList<Annotation>();
+		}
+		annotations.add(ann);
 	}
 
 	

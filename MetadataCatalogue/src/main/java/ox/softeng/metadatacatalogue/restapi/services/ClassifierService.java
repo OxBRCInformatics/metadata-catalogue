@@ -2,7 +2,6 @@ package ox.softeng.metadatacatalogue.restapi.services;
 
 
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
-import ox.softeng.metadatacatalogue.domain.core.DataModel;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 
@@ -51,6 +50,18 @@ public class ClassifierService extends SharableService {
 		return dms;
 	}
 
+	@Path("/tree")
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public ArrayNode getClassifiersTree() throws Exception
+	{
+		getApiContext().getAll(Classifier.class);
+		ArrayNode dms = getApiContext().getAllMap(Classifier.class, "classifier.all");
+		return dms;
+	}
+
 	@Path("/pageView/{id}")
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -61,4 +72,18 @@ public class ClassifierService extends SharableService {
 		return getApiContext().getByIdMap(Classifier.class, "classifier.all", classifierId);
 		
 	}
+	
+	@Path("/createChild/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO createChildClassifier(@PathParam("id") UUID classifierId, Classifier cl) throws Exception
+	{		
+		Classifier parentClassifier = getApiContext().getById(Classifier.class, classifierId);
+		Classifier ret = ClassifierApi.createClassifier( getApiContext(), cl.getLabel(), cl.getDescription(), parentClassifier);
+		ret = (Classifier) maybeAddMetadata(ret, cl);
+		return createSuccessfulResponse(ret, "classifier.pageview.id");
+	}
+
 }

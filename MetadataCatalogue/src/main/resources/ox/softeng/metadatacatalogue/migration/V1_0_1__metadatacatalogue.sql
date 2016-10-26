@@ -111,7 +111,10 @@ ALTER TABLE ONLY "DataModelComponent" ADD CONSTRAINT "DataModelComponent_pkey" P
 
 CREATE TABLE "Annotation" (
 	id UUID NOT NULL,
-	"Annotated Component" UUID NOT NULL
+	"Path" character varying(1000),
+	"Annotated Component" UUID,
+	"Parent Annotation" UUID
+
 );
 
 ALTER TABLE "Annotation" OWNER TO metadatacatalogue;
@@ -131,7 +134,9 @@ ALTER TABLE ONLY "Link" ADD CONSTRAINT "Link_pkey" PRIMARY KEY (id);
 
 
 CREATE TABLE "Classifier" (
-	id UUID NOT NULL
+	id UUID NOT NULL,
+	"Path" character varying(1000),
+	"Parent Classifier" UUID
 );
 
 ALTER TABLE "Classifier" OWNER TO metadatacatalogue;
@@ -335,6 +340,10 @@ ALTER TABLE ONLY "WriteableByGroups"
 ALTER TABLE ONLY "Annotation"
     ADD CONSTRAINT "Annotation_Component_FKey" FOREIGN KEY ("Annotated Component") REFERENCES "DataModelComponent"("id");
 
+ALTER TABLE ONLY "Annotation"
+    ADD CONSTRAINT "Annotation_parentAnnotation_FKey" FOREIGN KEY ("Parent Annotation") REFERENCES "Annotation"("id");
+
+    
 ALTER TABLE ONLY "Link"
     ADD CONSTRAINT "Link_Source_FKey" FOREIGN KEY ("Source") REFERENCES "DataModelComponent"("id");
 ALTER TABLE ONLY "Link"
@@ -366,6 +375,9 @@ ALTER TABLE ONLY "DataElement"
 
 ALTER TABLE ONLY "DataType"
     ADD CONSTRAINT "DataType_BelongsTo_FKey" FOREIGN KEY ("Belongs To Model") REFERENCES "DataModel"("id");
+
+ALTER TABLE ONLY "Classifier"
+    ADD CONSTRAINT "Classifier_parentClassifier_FKey" FOREIGN KEY ("Parent Classifier") REFERENCES "Classifier"("id");
 
 ALTER TABLE ONLY "EnumerationValue"
     ADD CONSTRAINT "EnumerationValue_Type_FKey" FOREIGN KEY ("Enumeration Type") REFERENCES "EnumerationType"("id");

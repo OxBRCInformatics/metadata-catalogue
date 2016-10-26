@@ -1,5 +1,6 @@
 package ox.softeng.metadatacatalogue.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,7 +10,6 @@ import ox.softeng.metadatacatalogue.db.ApiContext;
 import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
-import ox.softeng.metadatacatalogue.domain.core.Database;
 
 public class ClassifierApi extends SharableApi{
 
@@ -22,6 +22,25 @@ public class ClassifierApi extends SharableApi{
             public Classifier call(EntityManager em) {
             	try{
             		Classifier cl = new Classifier(label, description, apiCtx.getUser());
+					em.persist(cl);
+					return cl;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+	
+	public static Classifier createClassifier(ApiContext apiCtx, String label, String description, Classifier parentClassifier) throws Exception
+	{
+		return apiCtx.executeTransaction(new EMCallable<Classifier>(){
+            @Override
+            public Classifier call(EntityManager em) {
+            	try{
+            		Classifier cl = new Classifier(label, description, apiCtx.getUser(), parentClassifier);
 					em.persist(cl);
 					return cl;
 				}
@@ -61,6 +80,32 @@ public class ClassifierApi extends SharableApi{
 			 }
 		});
  	}
+ 	
+ 	public static List<Classifier> getClassifierTree(ApiContext apiCtx) throws Exception
+ 	{
+ 		List<Classifier> classifiers = apiCtx.getAll(Classifier.class);
+
+ 		List<Classifier> parentClassifiers = new ArrayList<Classifier>();
+ 		return apiCtx.executeQuery(new EMCallable<List<Classifier>>(){
+			 @Override
+	         public List<Classifier> call(EntityManager em) {
+				 for(Classifier c : classifiers)
+				 {
+					 // reattach object
+					 em.merge(c);
+					 if(c.getParentClassifier() == null)
+					 {
+						 parentClassifiers.add(c);
+					 }
+					 
+				 }
+				 
+				 return parentClassifiers;
+			 }
+		});
+ 	}
+ 	
+ 	
 
 	
 }
