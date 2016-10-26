@@ -23,9 +23,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.DataModelApi;
+import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.api.EnumerationTypeApi;
 import ox.softeng.metadatacatalogue.domain.core.DataClass;
 import ox.softeng.metadatacatalogue.domain.core.DataModel;
+import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationType;
 import ox.softeng.metadatacatalogue.domain.core.EnumerationValue;
 import ox.softeng.metadatacatalogue.domain.core.PrimitiveType;
@@ -185,15 +187,81 @@ public class DataModelService extends FinalisableService{
 	    return Response.ok(stream).header("content-disposition","attachment; filename = dataModelExport.json").build();
 	}
 
+	@Path("/export/booster/{id}")
+	@GET
+	@Produces({"application/mc"})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public Response exportBooster(@PathParam("id") UUID dataModelId) throws Exception
+	{
+		String outputSystem = "system TestExport";
+	    StreamingOutput stream = new StreamingOutput() {
+	        public void write(OutputStream output) throws IOException, WebApplicationException {
+	            try {
+	            	DataModel dm = getApiContext().getById(DataModel.class, dataModelId);
+	            	//JsonNode jn = DataModelApi.export0_1(getApiContext(), dataModelId);
+	            	//System.out.println(jn);
+	            	if(dm == null)
+	            	{
+	            		output.write("No Data Model with this identifier".getBytes());
+	            	}
+	            	else
+	            	{
+	            		output.write(outputSystem.getBytes());
+	            	}
+	            	//output.flush();
+	            } catch (Exception e) {
+	            	e.printStackTrace();
+	                throw new WebApplicationException(e);
+	            }
+	        }
+	    };
+	    
+	    return Response.ok(stream).header("content-disposition","attachment; filename = testExport.boo2").build();
+	}
+
+	
+	
 	@POST
 	@Path("/import/0.1")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Secured(allowUnAuthenticated=false)
 	public ResponseDTO importModel(
 		@FormDataParam("file") InputStream uploadedInputStream,
 		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
 	{
 
 		DataModel newDM = DataModelApi.import0_1(getApiContext(), uploadedInputStream);
+		JsonNode jsonDM = Projector.project(newDM, "datamodel.import");
+		return createSuccessfulResponse(jsonDM, newDM.getDtype());
+		
+	}
+
+	@POST
+	@Path("/import/owl")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public ResponseDTO importOWL(
+		@FormDataParam("file") InputStream uploadedInputStream,
+		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
+	{
+		DataSet newDM = DataSetApi.createDataSet(getApiContext(), "Test Import Model From Ontology", "Test Import Model From Ontology", "Author", "Organisation");
+		
+		//DataModel newDM = DataModelApi.import0_1(getApiContext(), uploadedInputStream);
+		JsonNode jsonDM = Projector.project(newDM, "datamodel.import");
+		return createSuccessfulResponse(jsonDM, newDM.getDtype());
+		
+	}
+
+	@POST
+	@Path("/import/staruml")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public ResponseDTO importStarUML(
+		@FormDataParam("file") InputStream uploadedInputStream,
+		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
+	{
+		DataSet newDM = DataSetApi.createDataSet(getApiContext(), "Test Import Model From StarUML", "Test Import Model From StarUML", "Author", "Organisation");
+		
+		//DataModel newDM = DataModelApi.import0_1(getApiContext(), uploadedInputStream);
 		JsonNode jsonDM = Projector.project(newDM, "datamodel.import");
 		return createSuccessfulResponse(jsonDM, newDM.getDtype());
 		
