@@ -141,6 +141,8 @@ public class DataModelApi extends FinalisableApi {
 						}
 					}
 					DataModel dm = objectMapper.readValue(jn.get("dataModel").traverse(), DataModel.class);
+					dm.addUserReadable(apiCtx.getUser());
+					dm.addUserWriteable(apiCtx.getUser());
 					List<DataClass> dcs = dm.getChildDataClasses();
 					dm.setChildDataClasses(null);
 					em.merge(dm);

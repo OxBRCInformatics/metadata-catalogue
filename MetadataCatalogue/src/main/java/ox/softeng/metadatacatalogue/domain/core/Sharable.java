@@ -96,24 +96,65 @@ public class Sharable extends CatalogueItem implements Serializable {
 		writeableByGroups = new HashSet<UserGroup>();
 	}
 	
+	private void setupSharing()
+	{
+		if(readableByUsers == null)
+		{
+			readableByUsers = new HashSet<User>();
+		}
+		if(writeableByUsers == null)
+		{
+			writeableByUsers = new HashSet<User>();
+		}
+		if(readableByGroups == null)
+		{
+			readableByGroups = new HashSet<UserGroup>();
+		}
+		if(writeableByGroups == null)
+		{
+			writeableByGroups = new HashSet<UserGroup>();
+		}
+		/*if(createdBy != null)
+		{
+			readableByUsers.add(createdBy);
+			writeableByUsers.add(createdBy);
+		}*/
+	}
+	
 	public void addUserReadable(User u)
 	{
-		readableByUsers.add(u);
+		if(u != null)
+		{
+			setupSharing();
+			readableByUsers.add(u);
+		}
 	}
 
 	public void addUserWriteable(User u)
 	{
-		writeableByUsers.add(u);
+		if(u != null)
+		{
+			setupSharing();
+			writeableByUsers.add(u);
+		}
 	}
 
 	public void addGroupReadable(UserGroup ug)
 	{
-		readableByGroups.add(ug);
+		if(ug != null)
+		{
+			setupSharing();
+			readableByGroups.add(ug);
+		}
 	}
 
 	public void addGroupWriteable(UserGroup ug)
 	{
-		writeableByGroups.add(ug);
+		if(ug != null)
+		{
+			setupSharing();
+			writeableByGroups.add(ug);
+		}
 	}
 
 	public void removeUserReadable(User u)
