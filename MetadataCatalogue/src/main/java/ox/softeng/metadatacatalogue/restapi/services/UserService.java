@@ -1,10 +1,13 @@
 package ox.softeng.metadatacatalogue.restapi.services;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import ox.softeng.metadatacatalogue.api.UserApi;
 import ox.softeng.metadatacatalogue.domain.core.User;
@@ -31,5 +34,16 @@ public class UserService extends BasicCatalogueService {
 		return createSuccessfulResponse(u, "user.id");
 	}
 		
+	
+	@Path("/all")
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ArrayNode getAllUsers() throws Exception
+	{
+		ArrayNode us = getApiContext().getAllMap(User.class, "user.id");
+		return us;
+	}
 }
 		
