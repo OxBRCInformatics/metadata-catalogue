@@ -12,13 +12,13 @@ public class LinkApi extends SharableApi{
  	protected LinkApi() { } // Private constructor as it makes no sense to instantiate this!
  	
  	
-	public static Link createLink(ApiContext apiCtx, String label, String description, DataModelComponent source, DataModelComponent target) throws Exception
+	public static Link createLink(ApiContext apiCtx, DataModelComponent source, DataModelComponent target, Link.LinkType linkType) throws Exception
 	{
 		return apiCtx.executeTransaction(new EMCallable<Link>(){
             @Override
             public Link call(EntityManager em) {
             	try{
-            		Link l = new Link(label, description, apiCtx.getUser(), source, target);
+            		Link l = new Link(apiCtx.getUser(), source, target, linkType);
 					em.persist(l);
 					return l;
 				}

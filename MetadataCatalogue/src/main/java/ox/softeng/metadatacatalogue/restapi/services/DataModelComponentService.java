@@ -19,6 +19,7 @@ import ox.softeng.metadatacatalogue.domain.core.Annotation;
 import ox.softeng.metadatacatalogue.domain.core.CatalogueItem;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
+import ox.softeng.metadatacatalogue.domain.core.Link;
 import ox.softeng.metadatacatalogue.restapi.Secured;
 import ox.softeng.metadatacatalogue.restapi.transport.ResponseDTO;
 import ox.softeng.metadatacatalogue.restapi.transport.SearchParamsDTO;
@@ -98,5 +99,21 @@ public class DataModelComponentService extends SharableService {
 		return this.createSuccessfulResponse(ret, "annotation.pageView");
 		
 	}
+
+	@Path("/newLink/{id}")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated=false)
+	public ResponseDTO addLink(@PathParam("id") UUID dmcId, Link link) throws Exception
+	{
+		DataModelComponent dmcSource = getApiContext().getById(DataModelComponent.class, dmcId);
+		DataModelComponent dmcTarget = getApiContext().getById(DataModelComponent.class, link.getTarget().getId());
+
+		Link ret = DataModelComponentApi.newLink(getApiContext(), dmcSource, dmcTarget, link.getLinkType());
+
+		return this.createSuccessfulResponse(ret, "link.pageView");
 		
+	}
+
 }

@@ -8,6 +8,8 @@ import ox.softeng.metadatacatalogue.db.EMCallable;
 import ox.softeng.metadatacatalogue.domain.core.Annotation;
 import ox.softeng.metadatacatalogue.domain.core.Classifier;
 import ox.softeng.metadatacatalogue.domain.core.DataModelComponent;
+import ox.softeng.metadatacatalogue.domain.core.Link;
+import ox.softeng.metadatacatalogue.domain.core.Link.LinkType;
 
 public class DataModelComponentApi extends SharableApi{
 
@@ -71,6 +73,30 @@ public class DataModelComponentApi extends SharableApi{
             		dataModelComponent = em.merge(dataModelComponent);
             		ann = em.merge(ann);
 					return ann;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+	
+	public static Link newLink(ApiContext apiCtx, DataModelComponent source, DataModelComponent target, Link.LinkType linkType) throws Exception
+	{
+		return apiCtx.executeTransaction(new EMCallable<Link>(){
+            @Override
+            public Link call(EntityManager em) {
+            	try{
+            		// Reattach these objects
+            		DataModelComponent sourceDMC = em.merge(source);
+            		DataModelComponent targetDMC = em.merge(target);
+            		
+            		Link link = new Link(apiCtx.getUser(), sourceDMC, targetDMC, linkType);
+            		
+            		link = em.merge(link);
+					return link;
 				}
 				catch(Exception e)
 				{

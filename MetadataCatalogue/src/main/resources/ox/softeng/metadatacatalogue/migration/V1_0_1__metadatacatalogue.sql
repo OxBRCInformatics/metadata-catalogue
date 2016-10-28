@@ -125,7 +125,8 @@ ALTER TABLE ONLY "Annotation" ADD CONSTRAINT "Annotation_pkey" PRIMARY KEY (id);
 CREATE TABLE "Link" (
 	id UUID NOT NULL,
 	"Source" UUID NOT NULL,
-	"Target" UUID NOT NULL
+	"Target" UUID NOT NULL,
+	"Link Type" INTEGER
 );
 
 ALTER TABLE "Link" OWNER TO metadatacatalogue;
