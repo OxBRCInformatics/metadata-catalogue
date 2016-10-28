@@ -20,6 +20,10 @@ public class Link extends Sharable {
 
 	public static final long serialVersionUID = 1L;
 
+	@Projection(name="datamodel.pageview.id", recurseProjection="datamodel.pageview.link")
+	@Projection(name="dataclass.pageview.id", recurseProjection="datamodel.pageview.link")
+	@Projection(name="dataelement.pageview.id", recurseProjection="datamodel.pageview.link")
+	@Projection(name="datatype.pageview.id", recurseProjection="datamodel.pageview.link")
 	@ManyToOne
 	@JoinColumn(name="\"Source\"", nullable=false)
 	protected DataModelComponent source;
