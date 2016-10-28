@@ -267,6 +267,20 @@ public class DataModelService extends FinalisableService{
 		
 	}
 
+	@POST
+	@Path("/import/xsd")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public ResponseDTO importXSD(
+		@FormDataParam("file") InputStream uploadedInputStream,
+		@FormDataParam("file") FormDataContentDisposition fileDetail) throws Exception 
+	{
+		DataSet newDM = DataSetApi.createDataSet(getApiContext(), "Test Import Model From XSD", "Test Import Model From XSD", "Author", "Organisation");
+		
+		//DataModel newDM = DataModelApi.import0_1(getApiContext(), uploadedInputStream);
+		JsonNode jsonDM = Projector.project(newDM, "datamodel.import");
+		return createSuccessfulResponse(jsonDM, newDM.getDtype());
+		
+	}
 	
 
 
