@@ -54,10 +54,10 @@ public class DataModelComponentService extends SharableService {
 	public ObjectNode searchDataModel(SearchParamsDTO searchParams) throws Exception
 	{
 		
-		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm());
+		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm(), searchParams.getDtypes());
 		ArrayNode dcs =  getApiContext().searchMap(
 				DataModelComponent.class, "datamodelcomponent.pageview.id", 
-				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
+				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit(), searchParams.getDtypes());
 		
 		ObjectNode jn = JsonNodeFactory.instance.objectNode();
 		jn.put("count", count);
@@ -73,10 +73,10 @@ public class DataModelComponentService extends SharableService {
 	public ObjectNode searchLabelDataModel(SearchParamsDTO searchParams) throws Exception
 	{
 		
-		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm());
+		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm(), searchParams.getDtypes());
 		ArrayNode dcs =  getApiContext().searchLabelMap(
 				DataModelComponent.class, "datamodelcomponent.pageview.id", 
-				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
+				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit(), searchParams.getDtypes());
 		
 		ObjectNode jn = JsonNodeFactory.instance.objectNode();
 		jn.put("count", count);

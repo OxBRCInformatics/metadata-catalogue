@@ -69,17 +69,25 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass extends CatalogueItem> List<DomainClass> search(Class<DomainClass> domainClass, String searchTerm, Integer offset, Integer limit) throws Exception
+	public <DomainClass extends CatalogueItem> List<DomainClass> search(Class<DomainClass> domainClass, String searchTerm, Integer offset, Integer limit, List<String> dtypes) throws Exception
 	{
 		return executeQuery(new EMCallable<List<DomainClass>>(){
             @Override
             public List<DomainClass> call(EntityManager em) {
             	try{
-            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
+            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
-						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%'))";
+						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
             		query.setFirstResult(offset);
             		query.setMaxResults(limit);
             		List<DomainClass> queryResults = query.getResultList();
@@ -94,7 +102,7 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass extends CatalogueItem> List<DomainClass> searchLabel(Class<DomainClass> domainClass, String searchTerm, Integer offset, Integer limit) throws Exception
+	public <DomainClass extends CatalogueItem> List<DomainClass> searchLabel(Class<DomainClass> domainClass, String searchTerm, Integer offset, Integer limit, List<String> dtypes) throws Exception
 	{
 		return executeQuery(new EMCallable<List<DomainClass>>(){
             @Override
@@ -102,8 +110,16 @@ public class DatabaseQueryHelper {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
             		query.setFirstResult(offset);
             		query.setMaxResults(limit);
             		List<DomainClass> queryResults = query.getResultList();
@@ -118,17 +134,25 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass extends CatalogueItem> ArrayNode searchMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit) throws Exception
+	public <DomainClass extends CatalogueItem> ArrayNode searchMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit, List<String> dtypes) throws Exception
 	{
 		return executeQuery(new EMCallable<ArrayNode>(){
             @Override
             public ArrayNode call(EntityManager em) {
             	try{
-            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
+            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
-						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%'))";
+						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
             		query.setFirstResult(offset);
             		query.setMaxResults(limit);
             		List<DomainClass> queryResults = query.getResultList();
@@ -144,7 +168,7 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass extends CatalogueItem> ArrayNode searchLabelMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit) throws Exception
+	public <DomainClass extends CatalogueItem> ArrayNode searchLabelMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit, List<String> dtypes) throws Exception
 	{
 		return executeQuery(new EMCallable<ArrayNode>(){
             @Override
@@ -152,8 +176,16 @@ public class DatabaseQueryHelper {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
             		query.setFirstResult(offset);
             		query.setMaxResults(limit);
             		List<DomainClass> queryResults = query.getResultList();
@@ -169,17 +201,25 @@ public class DatabaseQueryHelper {
 		});
 	}
 
-	public <DomainClass extends CatalogueItem> long searchCount(Class<DomainClass> domainClass, String searchTerm) throws Exception
+	public <DomainClass extends CatalogueItem> long searchCount(Class<DomainClass> domainClass, String searchTerm, List<String> dtypes) throws Exception
 	{
 		return executeQuery(new EMCallable<Long>(){
             @Override
             public Long call(EntityManager em) {
             	try{
-            		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where "
+            		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
-						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%'))";
+						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
             		TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
             		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
             		Long ret = query.getSingleResult();
             		return ret;
 				}
@@ -191,6 +231,37 @@ public class DatabaseQueryHelper {
             }
 		});
 	}
+
+	public <DomainClass extends CatalogueItem> long searchCountLabel(Class<DomainClass> domainClass, String searchTerm, List<String> dtypes) throws Exception
+	{
+		return executeQuery(new EMCallable<Long>(){
+            @Override
+            public Long call(EntityManager em) {
+            	try{
+            		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where "
+						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
+            		if(dtypes != null)
+            		{
+            			queryStr += "and dtype IN :dtypes";
+            		}
+            		TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
+            		query.setParameter("searchTerm", searchTerm);
+            		if(dtypes != null)
+            		{
+            			query.setParameter("dtypes", dtypes);
+            		}
+            		Long ret = query.getSingleResult();
+            		return ret;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+
 	
 	
 	public <DomainClass> DomainClass getById(Class<DomainClass> domainClass, UUID uuid) throws Exception
