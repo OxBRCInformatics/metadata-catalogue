@@ -93,7 +93,31 @@ public class DatabaseQueryHelper {
             }
 		});
 	}
-	
+
+	public <DomainClass extends CatalogueItem> List<DomainClass> searchLabel(Class<DomainClass> domainClass, String searchTerm, Integer offset, Integer limit) throws Exception
+	{
+		return executeQuery(new EMCallable<List<DomainClass>>(){
+            @Override
+            public List<DomainClass> call(EntityManager em) {
+            	try{
+            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
+						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
+            		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
+            		query.setParameter("searchTerm", searchTerm);
+            		query.setFirstResult(offset);
+            		query.setMaxResults(limit);
+            		List<DomainClass> queryResults = query.getResultList();
+            		return queryResults;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+
 	public <DomainClass extends CatalogueItem> ArrayNode searchMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit) throws Exception
 	{
 		return executeQuery(new EMCallable<ArrayNode>(){
@@ -119,7 +143,32 @@ public class DatabaseQueryHelper {
             }
 		});
 	}
-	
+
+	public <DomainClass extends CatalogueItem> ArrayNode searchLabelMap(Class<DomainClass> domainClass, String projectionName, String searchTerm, Integer offset, Integer limit) throws Exception
+	{
+		return executeQuery(new EMCallable<ArrayNode>(){
+            @Override
+            public ArrayNode call(EntityManager em) {
+            	try{
+            		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
+						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
+            		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
+            		query.setParameter("searchTerm", searchTerm);
+            		query.setFirstResult(offset);
+            		query.setMaxResults(limit);
+            		List<DomainClass> queryResults = query.getResultList();
+            		ArrayNode ret = Projector.project(queryResults, projectionName);
+            		return ret;
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					return null;
+				}
+            }
+		});
+	}
+
 	public <DomainClass extends CatalogueItem> long searchCount(Class<DomainClass> domainClass, String searchTerm) throws Exception
 	{
 		return executeQuery(new EMCallable<Long>(){

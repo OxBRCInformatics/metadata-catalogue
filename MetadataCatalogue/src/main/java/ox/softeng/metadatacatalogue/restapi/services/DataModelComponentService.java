@@ -65,6 +65,25 @@ public class DataModelComponentService extends SharableService {
 		return jn;
 	}
 
+	@Path("/search/label")
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Secured(allowUnAuthenticated= true)
+	public ObjectNode searchLabelDataModel(SearchParamsDTO searchParams) throws Exception
+	{
+		
+		long count = getApiContext().searchCount(DataModelComponent.class, searchParams.getSearchTerm());
+		ArrayNode dcs =  getApiContext().searchLabelMap(
+				DataModelComponent.class, "datamodelcomponent.pageview.id", 
+				searchParams.getSearchTerm(), searchParams.getOffset(), searchParams.getLimit());
+		
+		ObjectNode jn = JsonNodeFactory.instance.objectNode();
+		jn.put("count", count);
+		jn.set("results", dcs);
+		return jn;
+	}
+
 	@Path("/newAnnotation/{id}")
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
