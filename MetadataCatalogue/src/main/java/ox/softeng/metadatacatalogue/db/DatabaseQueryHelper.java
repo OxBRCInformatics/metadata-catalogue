@@ -78,13 +78,13 @@ public class DatabaseQueryHelper {
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
 						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
@@ -110,13 +110,13 @@ public class DatabaseQueryHelper {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
@@ -143,13 +143,13 @@ public class DatabaseQueryHelper {
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
 						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
@@ -176,13 +176,13 @@ public class DatabaseQueryHelper {
             	try{
             		String queryStr = "SELECT distinct res FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<DomainClass> query = em.createQuery(queryStr, domainClass);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
@@ -210,13 +210,13 @@ public class DatabaseQueryHelper {
             		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where ("
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%')) or " 
 						+ "lower(res.description) 	like lower(concat('%',:searchTerm,'%')))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
@@ -240,13 +240,13 @@ public class DatabaseQueryHelper {
             	try{
             		String queryStr = "SELECT count(distinct res) FROM " + domainClass.getName() + " res where "
 						+ "lower(res.label) 		like lower(concat('%',:searchTerm,'%'))";
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			queryStr += "and dtype IN :dtypes";
             		}
             		TypedQuery<Long> query = em.createQuery(queryStr, Long.class);
             		query.setParameter("searchTerm", searchTerm);
-            		if(dtypes != null)
+            		if(dtypes != null && dtypes.size() > 0)
             		{
             			query.setParameter("dtypes", dtypes);
             		}
