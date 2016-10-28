@@ -49,6 +49,10 @@ public class DataModelComponent extends Sharable {
 	@Projection(name="datamodel.export")
 	protected Set<Link> sourceForLinks;
 
+	@Projection(name="datamodel.pageview.id")
+	@Projection(name="dataclass.pageview.id")
+	@Projection(name="dataelement.pageview.id")
+	@Projection(name="datatype.pageview.id")
 	@OneToMany (mappedBy = "target")
 	protected Set<Link> targetForLinks;
 
