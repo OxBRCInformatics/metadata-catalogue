@@ -4,6 +4,7 @@ import ox.softeng.metadatacatalogue.api.DataSetApi;
 import ox.softeng.metadatacatalogue.api.LinkApi;
 import ox.softeng.metadatacatalogue.domain.core.DataSet;
 import ox.softeng.metadatacatalogue.domain.core.Link;
+import ox.softeng.metadatacatalogue.domain.core.Link.LinkType;
 
 public class LinkServiceIT<ObjectType> extends SharableServiceIT<Link> {
 
@@ -12,7 +13,7 @@ public class LinkServiceIT<ObjectType> extends SharableServiceIT<Link> {
 	{
 		DataSet sourceDS = DataSetApi.createDataSet(apiCtx, "My test source dataset", "My test source dataset description", "Test Author", "Test Organization");
 		DataSet targetDS = DataSetApi.createDataSet(apiCtx, "My test target dataset", "My test target dataset description", "Test Author", "Test Organization");
-		return LinkApi.createLink(apiCtx, "My test Link", "My test Link description", sourceDS, targetDS);
+		return LinkApi.createLink(apiCtx, sourceDS, targetDS, LinkType.SAME_AS);
 	}
 	
 	@Override
